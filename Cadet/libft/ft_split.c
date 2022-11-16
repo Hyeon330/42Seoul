@@ -6,71 +6,77 @@
 /*   By: hyeonsul <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 21:11:12 by hyeonsul          #+#    #+#             */
-/*   Updated: 2022/11/11 20:05:42 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2022/11/14 17:22:33 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	count_s(char const *s, char c, int *str_n)
+int	count_s(char const *s, char c)
 {
 	int	flag;
+	int	str_n;
 	int	i;
 
-	*str_n = 0;
+	str_n = 0;
 	flag = 1;
 	i = -1;
 	while (s[++i])
 	{
 		if (flag && s[i] != c)
 		{
-			(*str_n)++;
+			str_n++;
 			flag = 0;
 		}
 		if (s[i] == c)
 			flag = 1;
 	}
-	return (*str_n);
+	return (str_n);
 }
 
-char	*make_pc_malloc(char const *s, char c, int *i)
+int	count_c(char const *s, char c)
 {
-	int	pc_size;
+	int	cnt;
 
-	pc_size = 0;
-	while (s[*i] && s[*i] != c)
-	{
-		pc_size++;
-		(*i)++;
-	}
-	return ((char *)malloc(sizeof(char) * (pc_size + 1)));
+	cnt = -1;
+	while (s[++cnt] && s[cnt] != c)
+		;
+	return (cnt);
 }
 
-void	input_ppc(char **ppc, char const *s, char c, int str_n)
+void	fill_pc_split(char **ppc, char const *s, int ppc_i, int pc_size)
 {
-	int	i;
-	int	j;
-	int	k;
+	int	pc_i;
 
-	i = 0;
-	k = 0;
-	while (i < str_n)
+	pc_i = -1;
+	while (++pc_i < pc_size)
+		ppc[ppc_i][pc_i] = s[pc_i];
+}
+
+int	fill_ppc(char **ppc, char const *s, char c)
+{
+	int		s_i;
+	int		ppc_i;
+	int		pc_size;
+
+	s_i = 0;
+	ppc_i = -1;
+	while (s[s_i])
 	{
-		j = -1;
-		while (s[k] && s[k] != c)
+		pc_size = count_c(s + s_i, c);
+		if (pc_size)
 		{
-			ppc[i][++j] = s[k];
-			k++;
-			if (!s[k] || s[k] == c)
-			{
-				ppc[i][++j] = 0;
-				i++;
-			}
+			ppc[++ppc_i] = (char *)malloc(sizeof(char) * (pc_size + 1));
+			if (!ppc[ppc_i])
+				return (0);
+			ppc[ppc_i][pc_size] = 0;
+			fill_pc_split(ppc, s + s_i, ppc_i, pc_size);
+			s_i += pc_size;
 		}
-		while (s[k] && s[k] == c)
-			k++;
+		else
+			s_i++;
 	}
-	ppc[i] = NULL;
+	return (1);
 }
 
 char	**ft_split(char const *s, char c)
@@ -78,26 +84,23 @@ char	**ft_split(char const *s, char c)
 	char	**ppc;
 	int		str_n;
 	int		i;
-	int		j;
 
 	if (!s)
 		return (NULL);
-	ppc = (char **)malloc(sizeof(char *) * (count_s(s, c, &str_n) + 1));
+	str_n = count_s(s, c);
+	ppc = (char **)malloc(sizeof(char *) * (str_n + 1));
 	if (!ppc)
 		return (NULL);
 	i = 0;
-	j = -1;
-	while (s[i])
+	while (i <= str_n)
+		ppc[i++] = NULL;
+	if (!fill_ppc(ppc, s, c))
 	{
-		if (s[i] != c)
-		{
-			ppc[++j] = make_pc_malloc(s, c, &i);
-			if (!ppc[j])
-				return (NULL);
-		}
-		else
-			i++;
+		i = -1;
+		while (ppc[++i] && i < str_n)
+			free(ppc[i]);
+		free(ppc);
+		return (NULL);
 	}
-	input_ppc(ppc, s, c, str_n);
 	return (ppc);
 }

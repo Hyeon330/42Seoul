@@ -6,41 +6,37 @@
 /*   By: hyeonsul <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 03:30:06 by hyeonsul          #+#    #+#             */
-/*   Updated: 2022/11/11 23:44:51 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2022/11/14 16:27:30 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+void	fill_pc_substr(char *pc, char const *s, unsigned int pc_size)
+{
+	unsigned int	i;
+
+	i = -1;
+	while (++i < pc_size)
+		pc[i] = s[i];
+}
+
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char			*pc;
-	unsigned int	s_size;
-	unsigned int	i;
-	size_t			j;
+	unsigned int	pc_size;
 
 	if (s == NULL)
 		return (NULL);
-	s_size = ft_strlen(s);
-	if (s_size <= start)
+	if (ft_strlen(s) <= start)
 		return (ft_strdup(""));
-	if (s_size < len)
-		pc = (char *)malloc(sizeof(char) * (s_size - start + 1));
-	else
-		pc = (char *)malloc(sizeof(char) * (len + 1));
-	if (pc == NULL)
+	pc_size = 0;
+	while (s[start + pc_size] && (size_t)pc_size < len)
+		pc_size++;
+	pc = (char *)malloc(sizeof(char) * (pc_size + 1));
+	if (!pc)
 		return (NULL);
-	i = 0;
-	j = 0;
-	while (s[i] && j < len)
-	{
-		if (i >= start)
-		{
-			pc[j] = s[i];
-			j++;
-		}
-		i++;
-	}
-	pc[j] = 0;
+	pc[pc_size] = 0;
+	fill_pc_substr(pc, s + start, pc_size);
 	return (pc);
 }
