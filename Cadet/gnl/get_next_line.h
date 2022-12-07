@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 15:31:53 by hyeonsul          #+#    #+#             */
-/*   Updated: 2022/12/06 20:18:43 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2022/12/07 20:45:19 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,18 @@
 # include <unistd.h>
 # include <stdlib.h>
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
 // delete 
 # include <stdio.h>
-# define BUFF_SIZE 42
 
 typedef struct s_strs {
 	struct s_strs	*next;
 	int				fd;
 	int				buf_i;
-	char			buf[BUFF_SIZE];
+	char			buf[BUFFER_SIZE];
 }	t_strs;
 
 char	*get_next_line(int fd);
