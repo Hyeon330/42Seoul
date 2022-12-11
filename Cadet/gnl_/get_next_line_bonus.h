@@ -32,16 +32,20 @@ typedef struct s_buflst {
 	int				fd;
 }	t_buflst;
 
-typedef struct s_strlst {
-	struct s_strlst	*next;
-	ssize_t			size;
-	char			str[BUFFER_SIZE];
-}	t_strlst;
+// typedef struct s_strlst {
+// 	struct s_strlst	*next;
+// 	ssize_t			size;
+// 	char			str[BUFFER_SIZE];
+// }	t_strlst;
 
 // get_next_line_bonus.c
-char	get_next_line(int fd);
+char		*get_next_line(int fd);
 
 // get_next_line_utils_bonus.c
-void	ft_strjoin(char **dst, char *src, ssize_t dst_len, ssize_t src_len);
+void		ft_strjoin(char **dst, char *src, ssize_t dst_len, ssize_t src_len);
+t_buflst	*isfd(t_buflst *buflst, int fd);
+t_buflst	*lstnew(int fd);
+void		lstadd_back(t_buflst **lst, t_buflst *new);
+void		lstdelone(t_buflst **lst, int fd);
 
 #endif

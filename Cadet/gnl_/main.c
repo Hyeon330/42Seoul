@@ -11,75 +11,80 @@
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
+//#include "get_next_line.h"
 #include <fcntl.h>
+#include <stdio.h>
 
 typedef struct s_lst {
-	char			*str;
 	struct s_lst	*next;
-	struct s_lst	*before;
+	char			*str;
+	int				i;
 }	t_lst;
 
-void	func1(t_lst **lst)
-{
-	*lst = (*lst)->next;
-}
+// void	func(t_lst *lst, int i)
+// {
+// 	while (lst)
+// 	{
+// 		if (lst->i == )
+// 	}
+// }
 
-void	func2(t_lst **lst)
-{
-	printf("--%s\n", (*lst)->before->str);
-	printf("--%s\n", (*lst)->next->str);
-	/*(*lst)->before->next = (*lst)->next;
-	FREE(tmp->str);
-	FREE(tmp);*/
-}
-
-void	func(t_lst **lst)
-{
-	t_lst *tmp;
-
-	tmp = *lst;
-	func1(lst);
-	printf("%s\n", (*lst)->str);
-	printf("before->%p\n", (*lst)->before);
-	printf("%s\n", (*lst)->next->str);
-//	func2(lst);
-	*lst = tmp;
-	printf("%s\n", (*lst)->str);
-}
+// void	put_lst(t_lst *lst)
+// {
+// 	while (lst)
+// 	{
+// 		printf("str = %s || i = %d\n", lst->str, lst->i);
+// 		lst = lst->next;
+// 	}
+// }
 
 int	main(void)
 {
-	t_lst	*lst;
+	// t_lst	*lst, *tmp;
+	// int	lst_s, lst_max, lst_s_i;
 
-	lst = (t_lst *)malloc(sizeof(lst));
-	lst->before = NULL;
-	lst->str = (char *)malloc(sizeof(char) * 3);
-	lst->str[0] = 'h';
-	lst->str[1] = 'e';
-	lst->str[2] = 0;
-	printf("-->%s\n", lst->str);
-	lst->next = (t_lst *)malloc(sizeof(lst));
-	lst->next->before = lst;
-	printf("before->%p\n", lst);
-	printf("before->%p\n", lst->next->before);
-	lst->next->str = (char *)malloc(sizeof(char) * 3);
-	lst->next->str[0] = 'w';
-	lst->next->str[1] = 'o';
-	lst->next->str[2] = 0;
-	printf("-->%s\n", lst->next->str);
-	lst->next->next = (t_lst *)malloc(sizeof(lst));
-	printf("next-->%p\n", lst->next->next);
-	lst->next->next->before = lst->next;
-	lst->next->next->str = (char *)malloc(sizeof(char) * 3);
-	lst->next->next->str[0] = 'i';
-	lst->next->next->str[1] = 'j';
-	lst->next->next->str[2] = 0;
-	printf("-->%s\n", lst->next->next->str);
-	lst->next->next->next = NULL;
+	// lst = NULL;
+	// tmp = NULL;
+	// lst_max = 4;
+	// lst_s = 0;
+	// while (++lst_s <= lst_max)
+	// {
+	// 	if (!tmp)
+	// 	{
+	// 		lst = (t_lst *)malloc(sizeof(t_lst));
+	// 		tmp = lst;
+	// 	}
+	// 	tmp->str = (char *)malloc(sizeof(char) * lst_max + 1);
+	// 	tmp->str[lst_max] = 0;
+	// 	lst_s_i = -1;
+	// 	while (++lst_s_i < lst_max)
+	// 		tmp->str[lst_s_i] = lst_s + '0';
+	// 	tmp->i = lst_s;
+	// 	if (lst_s == lst_max)
+	// 		tmp->next = NULL;
+	// 	else
+	// 		tmp->next = (t_lst *)malloc(sizeof(t_lst));
+	// 	tmp = tmp->next;
+	// }
 
-	func(&lst);
+	// put_lst(lst);
+	// printf("----------------\n");
+
+	// tmp = lst;
+	// tmp = tmp->next;
+	// lst->next = tmp->next;
+	// FREE(tmp->str);
+	// FREE(tmp);
+
+	// put_lst(lst);
+
+	int fd1 = open("fdsa", O_RDONLY);
+	int fd2 = open("test", O_RDONLY);
+	// printf("%s", get_next_line(fd1));
+	printf("%s", get_next_line(fd2));
+	// printf("%s", get_next_line(fd1));
+	printf("%s", get_next_line(fd2));
 
 
-	
 	return (0);
 }

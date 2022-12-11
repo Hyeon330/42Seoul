@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 ssize_t	app_size(ssize_t buf_i, t_buflst *buflst)
 {
@@ -32,63 +32,55 @@ ssize_t	app_size(ssize_t buf_i, t_buflst *buflst)
 
 int	app_buf(t_buflst *buflst, char **line, ssize_t *line_size)
 {
-	ssize_t	app_tmp;
+	ssize_t		app_tmp;
 
-	app_tmp = app_size(buflst->buf_i, *buflst);
+	app_tmp = app_size(buflst->buf_i, buflst);
 	ft_strjoin(line, buflst->buf + buflst->buf_i, *line_size, app_tmp);
 	if (!(*line))
-	{
-		FREE(buf->buf);
-		FREE(*line);
 		return (1);
-	}
-	buf->buf_i += app_tmp;
+	buflst->buf_i += app_tmp;
 	*line_size += app_tmp;
-	if (buf->buf[buf->buf_i - 1] == '\n')
-	{
-		if (buf->buf_i == buf->read_size)
-			FREE(buf->buf);
+	if (buflst->buf[buflst->buf_i - 1] == '\n')
 		return (1);
-	}
 	return (0);
 }
 
-int	isloop(t_buf *buf, char **line, int fd)
+int	isloop(t_buflst **buflst_f, t_buflst *buflst, char **line, int fd)
 {
-	buf->read_size = read(fd, buf->buf, BUFFER_SIZE);
-	if (!buf->read_size)
-		FREE(buf->buf);
-	if (buf->read_size < 0)
+	buflst->read_size = read(fd, buflst->buf, BUFFER_SIZE);
+	if (!buflst->read_size)
+		lstdelone(buflst_f, fd);
+	if (buflst->read_size < 0)
 	{
-		FREE(buf->buf);
 		FREE(*line);
 		return (0);
 	}
-	return (buf->read_size);
+	return (buflst->read_size);
 }
 
-char	*read_line(t_buflst *buflst, int fd)
+char	*read_line(t_buflst **buflst_f, t_buflst **buflst, int fd)
 {
-	ssize_t			line_size;
-	char			*line;
+	ssize_t	line_size;
+	char	*line;
 
 	line_size = 0;
 	line = NULL;
-	if (isbuflst(&buflst, fd))
+	if (*buflst)
 	{
-		if (app_buf(buflst, &line, &line_size))
+		if (app_buf(*buflst, &line, &line_size))
 			return (line);
 	}
 	else
 	{
-		buf->buf = (char *)malloc(sizeof(char) * BUFFER_SIZE);
-		if (!buf->buf)
-			return (NULL);
+		*buflst = lstnew(fd);
+		if (!(*buflst))
+			return (0);
+		lstadd_back(buflst_f, *buflst);
 	}
-	while (isloop(buf, &line, fd))
+	while (isloop(buflst_f, *buflst, &line, fd))
 	{
-		buf->buf_i = 0;
-		if (app_buf(buf, &line, &line_size))
+		(*buflst)->buf_i = 0;
+		if (app_buf(*buflst, &line, &line_size))
 			return (line);
 	}
 	return (line);
@@ -97,11 +89,18 @@ char	*read_line(t_buflst *buflst, int fd)
 char	*get_next_line(int fd)
 {
 	static t_buflst	*buflst;
+	t_buflst		*eq_fd;
+	char			*line;
 
+	eq_fd = isfd(buflst, fd);
 	if (fd < 0 || BUFFER_SIZE < 1 || read(fd, NULL, 0) < 0)
 	{
-		FREE(buflst);
+		if (eq_fd)
+			lstdelone(&buflst, fd);
 		return (NULL);
 	}
-	return (read_line(buflst, fd));
+	line = read_line(&buflst, &eq_fd, fd);
+	if (!line)
+		lstdelone(&buflst, fd);
+	return (line);
 }
