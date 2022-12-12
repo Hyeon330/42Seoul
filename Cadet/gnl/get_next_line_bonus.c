@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 15:37:35 by hyeonsul          #+#    #+#             */
-/*   Updated: 2022/12/12 18:37:57 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2022/12/12 21:25:52 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ int	isloop(t_buflst *buflst, char **line, int fd)
 	buflst->read_size = read(fd, buflst->buf, BUFFER_SIZE);
 	if (buflst->read_size < 0)
 	{
-		FREE(*line);
+		free(*line);
+		*line = NULL;
 		return (0);
 	}
 	return (buflst->read_size);

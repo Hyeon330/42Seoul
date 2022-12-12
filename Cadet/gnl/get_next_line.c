@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 15:37:35 by hyeonsul          #+#    #+#             */
-/*   Updated: 2022/12/12 18:36:40 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2022/12/12 21:24:15 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int	app_buf(t_buf *buf, char **line, ssize_t *line_size)
 	ft_strjoin(line, buf->buf + buf->buf_i, *line_size, app_tmp);
 	if (!(*line))
 	{
-		FREE(buf->buf);
+		free(buf->buf);
+		buf->buf = NULL;
 		return (1);
 	}
 	buf->buf_i += app_tmp;
@@ -46,7 +47,10 @@ int	app_buf(t_buf *buf, char **line, ssize_t *line_size)
 	if (buf->buf[buf->buf_i - 1] == '\n')
 	{
 		if (buf->buf_i == buf->read_size)
-			FREE(buf->buf);
+		{
+			free(buf->buf);
+			buf->buf = NULL;
+		}
 		return (1);
 	}
 	return (0);
@@ -57,7 +61,8 @@ int	isloop(t_buf *buf, char **line, int fd)
 	buf->read_size = read(fd, buf->buf, BUFFER_SIZE);
 	if (buf->read_size < 0)
 	{
-		FREE(*line);
+		free(*line);
+		*line = NULL;
 		return (0);
 	}
 	return (buf->read_size);
@@ -65,8 +70,8 @@ int	isloop(t_buf *buf, char **line, int fd)
 
 char	*read_line(t_buf *buf, int fd)
 {
-	ssize_t			line_size;
-	char			*line;
+	ssize_t	line_size;
+	char	*line;
 
 	line_size = 0;
 	line = NULL;
@@ -87,7 +92,8 @@ char	*read_line(t_buf *buf, int fd)
 		if (app_buf(buf, &line, &line_size))
 			return (line);
 	}
-	FREE(buf->buf);
+	free(buf->buf);
+	buf->buf = NULL;
 	return (line);
 }
 
@@ -97,7 +103,8 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE < 1 || read(fd, NULL, 0) < 0)
 	{
-		FREE(buf.buf);
+		free(buf.buf);
+		buf.buf = NULL;
 		return (NULL);
 	}
 	return (read_line(&buf, fd));

@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 14:35:18 by hyeonsul          #+#    #+#             */
-/*   Updated: 2022/12/12 18:22:13 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2022/12/12 21:23:08 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# define FREE(ptr) if (ptr) { free(ptr); ptr = NULL; }
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42

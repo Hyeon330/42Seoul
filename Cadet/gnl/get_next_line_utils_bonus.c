@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 15:37:47 by hyeonsul          #+#    #+#             */
-/*   Updated: 2022/12/12 18:12:38 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2022/12/12 21:29:41 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	ft_strjoin(char **dst, char *src, ssize_t dst_len, ssize_t src_len)
 	pc = (char *)malloc(sizeof(char) * (dst_len + src_len + 1));
 	if (!pc)
 	{
-		FREE(*dst);
+		free(*dst);
+		*dst = NULL;
 		return ;
 	}
 	pc[dst_len + src_len] = 0;
@@ -32,7 +33,7 @@ void	ft_strjoin(char **dst, char *src, ssize_t dst_len, ssize_t src_len)
 	i = 0;
 	while (i < src_len)
 		pc[pc_i++] = src[i++];
-	FREE(*dst);
+	free(*dst);
 	*dst = pc;
 }
 
@@ -57,7 +58,7 @@ t_buflst	*lstnew(int fd)
 	lst->buf = (char *)malloc(sizeof(char) * BUFFER_SIZE);
 	if (!lst->buf)
 	{
-		FREE(lst);
+		free(lst);
 		return (NULL);
 	}
 	lst->next = NULL;
@@ -93,8 +94,8 @@ void	lstdelone(t_buflst **lst, t_buflst *lst_copy, int fd)
 	if ((*lst)->fd == fd)
 	{
 		tmp = (*lst)->next;
-		FREE((*lst)->buf);
-		FREE(*lst);
+		free((*lst)->buf);
+		free(*lst);
 		*lst = tmp;
 		return ;
 	}
@@ -103,8 +104,8 @@ void	lstdelone(t_buflst **lst, t_buflst *lst_copy, int fd)
 		if (lst_copy->next->fd == fd)
 		{
 			tmp = lst_copy->next->next;
-			FREE(lst_copy->next->buf);
-			FREE(lst_copy->next);
+			free(lst_copy->next->buf);
+			free(lst_copy->next);
 			lst_copy->next = tmp;
 			break ;
 		}

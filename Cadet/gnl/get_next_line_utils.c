@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 15:37:47 by hyeonsul          #+#    #+#             */
-/*   Updated: 2022/12/12 18:26:58 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2022/12/12 21:26:58 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@ void	ft_strjoin(char **dst, char *src, ssize_t dst_len, ssize_t src_len)
 	pc = (char *)malloc(sizeof(char) * (dst_len + src_len + 1));
 	if (!pc)
 	{
-		FREE(*dst);
+		free(*dst);
 		*dst = NULL;
+		return ;
 	}
 	pc[dst_len + src_len] = 0;
 	pc_i = 0;
@@ -32,6 +33,6 @@ void	ft_strjoin(char **dst, char *src, ssize_t dst_len, ssize_t src_len)
 	i = 0;
 	while (i < src_len)
 		pc[pc_i++] = src[i++];
-	FREE(*dst);
+	free(*dst);
 	*dst = pc;
 }
