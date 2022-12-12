@@ -6,23 +6,23 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 15:37:35 by hyeonsul          #+#    #+#             */
-/*   Updated: 2022/12/12 21:24:15 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2022/12/12 21:35:37 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-ssize_t	app_size(ssize_t buf_i, ssize_t read_size, char *buf)
+ssize_t	app_size(ssize_t buf_i, t_buf *buf)
 {
 	ssize_t	cnt;
 
 	cnt = 0;
-	while (buf_i < read_size && buf[buf_i] != '\n')
+	while (buf_i < buf->read_size && (buf->buf)[buf_i] != '\n')
 	{
 		buf_i++;
 		cnt++;
 	}
-	if (buf_i != read_size && buf[buf_i] == '\n')
+	if (buf_i != buf->read_size && (buf->buf)[buf_i] == '\n')
 	{
 		buf_i++;
 		cnt++;
@@ -34,7 +34,7 @@ int	app_buf(t_buf *buf, char **line, ssize_t *line_size)
 {
 	ssize_t	app_tmp;
 
-	app_tmp = app_size(buf->buf_i, buf->read_size, buf->buf);
+	app_tmp = app_size(buf->buf_i, buf);
 	ft_strjoin(line, buf->buf + buf->buf_i, *line_size, app_tmp);
 	if (!(*line))
 	{
