@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 15:31:53 by hyeonsul          #+#    #+#             */
-/*   Updated: 2022/12/07 20:45:19 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2022/12/12 18:21:47 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,22 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+# define FREE(ptr) if (ptr) { free(ptr); ptr = NULL; }
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
 # endif
 
-// delete 
-# include <stdio.h>
+typedef struct s_buf {
+	ssize_t	buf_i;
+	ssize_t	read_size;
+	char	*buf;
+}	t_buf;
 
-typedef struct s_strs {
-	struct s_strs	*next;
-	int				fd;
-	int				buf_i;
-	char			buf[BUFFER_SIZE];
-}	t_strs;
-
+// get_next_line.c
 char	*get_next_line(int fd);
+
+// get_next_line_utils.c
+void	ft_strjoin(char **dst, char *src, ssize_t dst_len, ssize_t src_len);
 
 #endif

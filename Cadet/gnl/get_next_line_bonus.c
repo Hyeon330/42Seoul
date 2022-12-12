@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 15:37:35 by hyeonsul          #+#    #+#             */
-/*   Updated: 2022/12/08 23:37:55 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2022/12/12 18:37:57 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,32 @@ ssize_t	app_size(ssize_t buf_i, t_buflst *buflst)
 	return (cnt);
 }
 
-int	app_buf(t_buflst *buflst, char **line, ssize_t *line_size)
+int	app_buf(t_buflst **buflst_f, t_buflst *buflst, \
+		char **line, ssize_t *line_size)
 {
 	ssize_t		app_tmp;
 
 	app_tmp = app_size(buflst->buf_i, buflst);
 	ft_strjoin(line, buflst->buf + buflst->buf_i, *line_size, app_tmp);
 	if (!(*line))
+	{
+		lstdelone(buflst_f, *buflst_f, buflst->fd);
 		return (1);
+	}
 	buflst->buf_i += app_tmp;
 	*line_size += app_tmp;
 	if (buflst->buf[buflst->buf_i - 1] == '\n')
+	{
+		if (buflst->buf_i == buflst->read_size)
+			lstdelone(buflst_f, *buflst_f, buflst->fd);
 		return (1);
+	}
 	return (0);
 }
 
-int	isloop(t_buflst **buflst_f, t_buflst *buflst, char **line, int fd)
+int	isloop(t_buflst *buflst, char **line, int fd)
 {
 	buflst->read_size = read(fd, buflst->buf, BUFFER_SIZE);
-	if (!buflst->read_size)
-		lstdelone(buflst_f, fd);
 	if (buflst->read_size < 0)
 	{
 		FREE(*line);
@@ -67,7 +73,7 @@ char	*read_line(t_buflst **buflst_f, t_buflst **buflst, int fd)
 	line = NULL;
 	if (*buflst)
 	{
-		if (app_buf(*buflst, &line, &line_size))
+		if (app_buf(buflst_f, *buflst, &line, &line_size))
 			return (line);
 	}
 	else
@@ -77,12 +83,13 @@ char	*read_line(t_buflst **buflst_f, t_buflst **buflst, int fd)
 			return (0);
 		lstadd_back(buflst_f, *buflst);
 	}
-	while (isloop(buflst_f, *buflst, &line, fd))
+	while (isloop(*buflst, &line, fd))
 	{
 		(*buflst)->buf_i = 0;
-		if (app_buf(*buflst, &line, &line_size))
+		if (app_buf(buflst_f, *buflst, &line, &line_size))
 			return (line);
 	}
+	lstdelone(buflst_f, *buflst_f, fd);
 	return (line);
 }
 
@@ -90,17 +97,13 @@ char	*get_next_line(int fd)
 {
 	static t_buflst	*buflst;
 	t_buflst		*eq_fd;
-	char			*line;
 
 	eq_fd = isfd(buflst, fd);
 	if (fd < 0 || BUFFER_SIZE < 1 || read(fd, NULL, 0) < 0)
 	{
 		if (eq_fd)
-			lstdelone(&buflst, fd);
+			lstdelone(&buflst, buflst, fd);
 		return (NULL);
 	}
-	line = read_line(&buflst, &eq_fd, fd);
-	if (!line)
-		lstdelone(&buflst, fd);
-	return (line);
+	return (read_line(&buflst, &eq_fd, fd));
 }

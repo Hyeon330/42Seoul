@@ -6,124 +6,99 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 15:37:35 by hyeonsul          #+#    #+#             */
-/*   Updated: 2022/12/07 20:44:21 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2022/12/12 18:36:40 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strjoin(char *dst, char *src, int dst_len, int src_len)
+ssize_t	app_size(ssize_t buf_i, ssize_t read_size, char *buf)
 {
-	char	*pc;
-	int	pc_i;
-	int	i;
+	ssize_t	cnt;
 
-	pc = (char *)malloc(sizeof(char) * (dst_len + src_len + 1));
-	if (!pc)
-		return (NULL);
-	pc[dst_len + src_len] = 0;
-	pc_i = 0;
+	cnt = 0;
+	while (buf_i < read_size && buf[buf_i] != '\n')
+	{
+		buf_i++;
+		cnt++;
+	}
+	if (buf_i != read_size && buf[buf_i] == '\n')
+	{
+		buf_i++;
+		cnt++;
+	}
+	return (cnt);
+}
 
-	i = 0;
-	while (i < dst_len)
-		pc[pc_i++] = dst[i++];
+int	app_buf(t_buf *buf, char **line, ssize_t *line_size)
+{
+	ssize_t	app_tmp;
 
-	i = 0;
-	while (i < src_len)
-		pc[pc_i++] = src[i++];
-	free(dst);
-	return (pc);
+	app_tmp = app_size(buf->buf_i, buf->read_size, buf->buf);
+	ft_strjoin(line, buf->buf + buf->buf_i, *line_size, app_tmp);
+	if (!(*line))
+	{
+		FREE(buf->buf);
+		return (1);
+	}
+	buf->buf_i += app_tmp;
+	*line_size += app_tmp;
+	if (buf->buf[buf->buf_i - 1] == '\n')
+	{
+		if (buf->buf_i == buf->read_size)
+			FREE(buf->buf);
+		return (1);
+	}
+	return (0);
+}
+
+int	isloop(t_buf *buf, char **line, int fd)
+{
+	buf->read_size = read(fd, buf->buf, BUFFER_SIZE);
+	if (buf->read_size < 0)
+	{
+		FREE(*line);
+		return (0);
+	}
+	return (buf->read_size);
+}
+
+char	*read_line(t_buf *buf, int fd)
+{
+	ssize_t			line_size;
+	char			*line;
+
+	line_size = 0;
+	line = NULL;
+	if (buf->buf)
+	{
+		if (app_buf(buf, &line, &line_size))
+			return (line);
+	}
+	else
+	{
+		buf->buf = (char *)malloc(sizeof(char) * BUFFER_SIZE);
+		if (!buf->buf)
+			return (NULL);
+	}
+	while (isloop(buf, &line, fd))
+	{
+		buf->buf_i = 0;
+		if (app_buf(buf, &line, &line_size))
+			return (line);
+	}
+	FREE(buf->buf);
+	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	static char		*buf;
-	static int		buf_i;
-	static int		read_size;
-	int				buf_start;
-	int				line_size;
-	char			*line;
+	static t_buf	buf;
 
 	if (fd < 0 || BUFFER_SIZE < 1 || read(fd, NULL, 0) < 0)
 	{
-		free(buf);
-		buf = NULL;
+		FREE(buf.buf);
 		return (NULL);
 	}
-	line_size = 0;
-	line = NULL;
-	if (buf)
-	{
-		buf_start = buf_i;
-		while (buf_i < read_size && buf[buf_i] != '\n')
-			buf_i++;
-		if (buf_i != read_size && buf[buf_i] == '\n')
-			buf_i++;
-		line = ft_strjoin(line, buf + buf_start, line_size, buf_i - buf_start);
-		if (!line)
-		{
-			free(buf);
-			buf = NULL;
-			return (NULL);
-		}
-		line_size = buf_i - buf_start;
-		if (buf[buf_i - 1] == '\n')
-		{
-			if (buf_i == read_size)
-			{
-				free(buf);
-				buf = NULL;
-			}
-			return (line);
-		}
-	}
-	else
-	{
-		buf = (char *)malloc(sizeof(char) * BUFFER_SIZE);
-		if (!buf)
-			return (NULL);
-	}
-	while (1)
-	{
-		read_size = read(fd, buf, BUFFER_SIZE);
-		if (!read_size)
-		{
-			free(buf);
-			buf = NULL;
-			break ;
-		}
-		if (read_size < 0)
-		{
-			free(buf);
-			buf = NULL;
-			free(line);
-			return (NULL);
-		}
-
-		buf_i = 0;
-		while (buf_i < read_size && buf[buf_i] != '\n')
-			buf_i++;
-		if (buf_i != read_size && buf[buf_i] == '\n')
-			buf_i++;
-		
-		line = ft_strjoin(line, buf, line_size, buf_i);
-		if (!line)
-		{
-			free(buf);
-			buf = NULL;
-			return (NULL);
-		}
-		line_size += buf_i;
-
-		if (buf[buf_i - 1] == '\n')
-		{
-			if (buf_i == read_size)
-			{
-				free(buf);
-				buf = NULL;
-			}
-			return (line);
-		}
-	}
-	return (line);
+	return (read_line(&buf, fd));
 }
