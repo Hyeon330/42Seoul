@@ -6,7 +6,7 @@
 /*   By: hyeonsul <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:21:39 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/01/12 17:15:05 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/01/16 14:16:07 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ void	push(t_stack **s, int num)
 		return ;
 	new->num = num;
 	new->next = *s;
+	new->prev = NULL;
+	if (*s)
+		(*s)->prev = new;
 	*s = new;
 }
 
