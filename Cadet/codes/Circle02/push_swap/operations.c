@@ -3,63 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   operations.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonsul <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/12 16:46:15 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/01/16 15:26:12 by hyeonsul         ###   ########.fr       */
+/*   Created: 2023/02/24 20:43:30 by hyeonsul          #+#    #+#             */
+/*   Updated: 2023/02/25 03:27:06 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	s(t_stack **s)
+void	s(t_deque *dq)
 {
 	int	tmp1;
 	int	tmp2;
 
-	if (size(*s) > 1)
+	if (dq->size > 1)
 	{
-		tmp1 = pop(s);
-		tmp2 = pop(s);
-		push(s, tmp1);
-		push(s, tmp2);
+		tmp1 = poll_head(dq);
+		tmp2 = poll_head(dq);
+		add_head(dq, tmp1);
+		add_head(dq, tmp2);
 	}
 }
 
-void	p(t_stack **s1, t_stack **s2, t_stack **s1_t, t_stack **s2_t)
+void	p(t_deque *dq1, t_deque *dq2)
 {
-	if (!isempty(*s2))
-	{
-		push(s1, pop(s2));
-		if (size(*s1) == 1)
-			*s1_t = *s1;
-		if (isempty(*s2))
-			*s2_t = NULL;
-	}
+	if (dq2->size > 0)
+		add_head(dq1, poll_head(dq2));
 }
 
-void	r(t_stack **s, t_stack **tail)
+void	r(t_deque *dq)
 {
-	if (size(*s) > 1)
-	{
-		(*tail)->next = *s;
-		(*s)->prev = *tail;
-		*s = (*s)->next;
-		(*s)->prev = NULL;
-		*tail = (*tail)->next;
-		(*tail)->next = NULL;
-	}
+	if (dq->size > 1)
+		add_tail(dq, poll_head(dq));
 }
 
-void	rr(t_stack **s, t_stack **tail)
+void	rr(t_deque *dq)
 {
-	if (size(*s) > 1)
-	{
-		(*s)->prev = *tail;
-		(*tail)->next = *s;
-		*tail = (*tail)->prev;
-		(*tail)->next = NULL;
-		*s = (*s)->prev;
-		(*s)->prev = NULL;
-	}
+	if (dq->size > 1)
+		add_head(dq, poll_tail(dq));
 }

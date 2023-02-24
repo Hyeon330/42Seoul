@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonsul <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:21:44 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/01/16 21:53:35 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/02/25 03:26:00 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,34 @@
 
 # include <stdio.h>
 
-typedef struct s_stack {
-	struct s_stack	*prev;
-	struct s_stack	*next;
+typedef struct s_node {
+	struct s_node	*prev;
+	struct s_node	*next;
 	int				num;
-}	t_stack;
+}	t_node;
 
-// stack.c
-void	push(t_stack **s, int num);
-int		pop(t_stack **s);
-int		size(t_stack *s);
-int		isempty(t_stack *s);
+typedef struct s_deque {
+	struct s_node	*head;
+	struct s_node	*tail;
+	int				size;
+}	t_deque;
+
+void	put(t_deque dq);
+
+// deque.c
+void	add_head(t_deque *dq, int num);
+void	add_tail(t_deque *dq, int num);
+int		poll_head(t_deque *dq);
+int		poll_tail(t_deque *dq);
 
 // operations.c
-void	s(t_stack **s);
-void	p(t_stack **s1, t_stack **s2, t_stack **s1_t, t_stack **s2_t);
-void	r(t_stack **s, t_stack **tail);
-void	rr(t_stack **s, t_stack **tail);
+void	s(t_deque *dq);
+void	p(t_deque *dq1, t_deque *dq2);
+void	r(t_deque *dq);
+void	rr(t_deque *dq);
+
+// helpers.c
+int		set_deque(t_deque *dq, char **av, int ac);
 
 // libft
 char	**ft_split(char const *s, char c);
