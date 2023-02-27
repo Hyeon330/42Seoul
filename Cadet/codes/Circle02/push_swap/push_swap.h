@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:21:44 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/02/25 03:26:00 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/02/27 14:08:45 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ typedef struct s_deque {
 
 void	put(t_deque dq);
 
+// push_swap.c
+void	push_swap(t_deque *dq);
+
 // deque.c
 void	add_head(t_deque *dq, int num);
 void	add_tail(t_deque *dq, int num);
@@ -49,6 +52,9 @@ void	rr(t_deque *dq);
 
 // helpers.c
 int		set_deque(t_deque *dq, char **av, int ac);
+
+// run
+void	run(t_deque *dq, int cmd);
 
 // libft
 char	**ft_split(char const *s, char c);

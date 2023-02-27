@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 17:49:59 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/02/25 03:36:15 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/02/27 15:47:25 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int	main(int ac, char **av)
 	t_deque	dq[2];
 
 	init_deque(dq);
+	if (ac == 2)
+		return (0);
 	if (ac > 1)
 	{
 		if (!set_deque(&dq[0], av, ac))
@@ -49,9 +51,15 @@ int	main(int ac, char **av)
 			write(2, "Error\n", 6);
 			return (0);
 		}
+		if (ac == 3)
+		{
+			if (dq[0].head->num - dq[0].head->next->num > 0)
+				printf("sa\n");
+			return (0);
+		}
+		push_swap(dq);
 		put(dq[0]);
 	}
 	else
 		write(2, "Error\n", 6);
-	return (0);
 }
