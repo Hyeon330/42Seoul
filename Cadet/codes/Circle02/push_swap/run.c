@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 11:48:26 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/03 18:42:52 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/03/04 23:13:12 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,28 @@ void	run1(t_deque *dq, int c)
 
 void	run2(int c)
 {
-	if (c == 1 || c == 3)
+	if (c == 1)
 		printf("%s\n", "sa");
-	if (c == 2 || c == 3)
+	if (c == 2)
 		printf("%s\n", "sb");
+	if (c == 3)
+		printf("%s\n", "ss");
 	if (c == 4)
 		printf("%s\n", "pa");
 	if (c == 5)
 		printf("%s\n", "pb");
-	if (c == 6 || c == 8)
+	if (c == 6)
 		printf("%s\n", "ra");
-	if (c == 7 || c == 8)
+	if (c == 7)
 		printf("%s\n", "rb");
-	if (c == 9 || c == 11)
+	if (c == 8)
+		printf("%s\n", "rr");
+	if (c == 9)
 		printf("%s\n", "rra");
-	if (c == 10 || c == 11)
+	if (c == 10)
 		printf("%s\n", "rrb");
+	if (c == 11)
+		printf("%s\n", "rrr");
 }
 
 void	run(t_deque *dq, int cmd)

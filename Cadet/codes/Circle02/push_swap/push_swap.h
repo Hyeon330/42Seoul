@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:21:44 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/03 22:03:31 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/03/05 02:49:01 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ typedef struct s_deque {
 typedef struct s_cmd_info {
 	size_t	a;
 	size_t	b;
+	size_t	cmd_tot;
 	int		uda;
 	int		udb;
-	int		push_num;
 }	t_cmd_info;
 
 void	put(t_deque dq);
@@ -61,12 +61,17 @@ void	rr(t_deque *dq);
 // sort.c
 void	q_sort(int *arr, int left, int right);
 
-// helpers.c
+// set_deque.c
 int		set_deque(t_deque *dq, char **av, int ac);
-int		set_pi(t_deque dq, int *pi);
 
 // run.c
 void	run(t_deque *dq, int cmd);
+
+// greedy1.c
+void	greedy(t_deque *dq);
+
+// greedy2.c
+void	loop_b(t_deque *dq, t_node **n, t_cmd_info *cmd_info);
 
 // libft.a
 char	**ft_split(char const *s, char c);

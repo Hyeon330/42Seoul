@@ -6,23 +6,44 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 13:12:59 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/03 22:52:17 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/03/05 02:49:27 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+int	set_pi(t_deque dq, int *pi, int *min)
+{
+	t_node	*n;
+	int		*arr;
+	int		i;
+
+	arr = (int *)malloc(sizeof(int) * dq.size);
+	if (!arr)
+		return (0);
+	n = dq.head;
+	i = 0;
+	while (n)
+	{
+		arr[i++] = n->num;
+		n = n->next;
+	}
+	q_sort(arr, 0, dq.size - 1);
+	i = -1;
+	pi[0] = arr[dq.size / 3];
+	pi[1] = arr[(dq.size << 1) / 3];
+	*min = arr[0];
+	free(arr);
+	return (1);
+}
+
 void	sp_three_area(t_deque *dq, int *pi)
 {
 	int	size;
-	int	max;
 
-	max = 0;
 	size = dq[0].size;
 	while (size--)
 	{
-		if (max < dq[0].head->num)
-			max = dq[0].head->num;
 		if (dq[0].head->num > pi[1])
 			run(dq, 6);
 		else
@@ -32,89 +53,11 @@ void	sp_three_area(t_deque *dq, int *pi)
 				run(dq, 7);
 		}
 	}
-	while (dq[0].size != 1)
-	{
-		if (dq[0].head->num == max)
-			run(dq, 6);
-		else
-			run(dq, 5);
-	}
+	while (dq[0].size > 2)
+		run(dq, 5);
 }
 
-void	run_cmd(t_deque *dq, t_cmd_info cmd)
-{
-	if (cmd.uda == cmd.udb)
-	{
-		while (cmd.a && cmd.b)
-		{
-			run(dq, 8 + cmd.uda * 3);
-			cmd.a--;
-			cmd.b--;
-		}
-	}
-	while (cmd.a--)
-		run(dq, 6 + cmd.uda * 3);
-	while (cmd.b--)
-		run(dq, 9 + cmd.udb * 3);
-	run(dq, 4);
-}
-
-void	greedy(t_deque *dq, int max)
-{
-	t_node		*an;
-	t_node		*bn;
-	t_cmd_info	cmd;
-	t_cmd_info	tmp;
-
-	while (dq[1].size)
-	{
-		if (dq[0].size == 1)
-			run(dq, 4);
-		else
-		{
-			ft_memset(&cmd, 0, sizeof(cmd));
-			ft_memset(&tmp, 0, sizeof(tmp));
-			cmd.a = INT_MAX;
-			cmd.b = INT_MAX;
-			bn = dq[1].head;
-			while (bn)
-			{
-				tmp.a = 1;
-				tmp.uda = 0;
-				tmp.push_num = bn->num;
-				an = dq[0].head;
-				while (an)
-				{
-					if (an->next)
-					{
-						if ((an->num == max && an->next->num > tmp.push_num) || \
-							(an->num < tmp.push_num && an->next->num > tmp.push_num))
-							break ;
-						tmp.a++;
-					}
-					else
-						tmp.a = 0;
-					an = an->next;
-				}
-				if ((dq[0].size >> 1) < tmp.a)
-				{
-					tmp.a = dq[0].size - tmp.a;
-					tmp.uda = 1;
-				}
-				if ((tmp.udb && cmd.a + cmd.b > tmp.a + (dq[0].size - tmp.b)) || \
-					(!tmp.udb && cmd.a + cmd.b > tmp.a + tmp.b))
-					ft_memcpy(&cmd, &tmp, sizeof(cmd));
-				bn = bn->next;
-				tmp.b++;
-				if (!tmp.udb && (dq[1].size >> 1) < tmp.b)
-					tmp.udb = 1;
-			}
-			run_cmd(dq, cmd);
-		}
-	}
-}
-
-void	fix_a(t_deque *dq, int max)
+void	fix_a(t_deque *dq, int min)
 {
 	t_node	*n;
 	int		i;
@@ -124,20 +67,20 @@ void	fix_a(t_deque *dq, int max)
 	i = 0;
 	while (n)
 	{
-		if (n->num == max)
+		if (n->num == min)
 			break ;
 		n = n->next;
 		i++;
 	}
 	chk_cmd = 6 + ((dq[0].size >> 1) < i) * 3;
-	while (dq[0].tail->num != max)
+	while (dq[0].head->num != min)
 		run(dq, chk_cmd);
 }
 
 int	push_swap(t_deque *dq)
 {
 	int	pi[2];
-	int	max;
+	int	min;
 
 	if (dq[0].size == 2)
 	{
@@ -145,12 +88,9 @@ int	push_swap(t_deque *dq)
 			run(dq, 1);
 		return (1);
 	}
-	set_pi(dq[0], pi);
+	set_pi(dq[0], pi, &min);
 	sp_three_area(dq, pi);
-	put(dq[0]);
-	put(dq[1]);
-	max = dq[0].head->num;
-	greedy(dq, max);
-	fix_a(dq, max);
+	greedy(dq);
+	fix_a(dq, min);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 17:49:59 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/03 22:46:00 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/03/05 02:51:02 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,18 @@ void	put(t_deque dq)
 	printf("\n");
 }
 
+void	free_nodes(t_node *n)
+{
+	t_node	*tmp;
+
+	while (n)
+	{
+		tmp = n->next;
+		free(n);
+		n = tmp;
+	}
+}
+
 int	main(int ac, char **av)
 {
 	t_deque	dq[2];
@@ -39,8 +51,8 @@ int	main(int ac, char **av)
 			write(2, "Error\n", 6);
 			return (0);
 		}
-		put(dq[0]);
 	}
 	else
 		write(2, "Error\n", 6);
+	free_nodes(dq[0].head);
 }
