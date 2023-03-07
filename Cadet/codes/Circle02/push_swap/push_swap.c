@@ -5,55 +5,59 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/25 03:47:39 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/02/27 15:14:02 by hyeonsul         ###   ########.fr       */
+/*   Created: 2023/02/28 13:12:59 by hyeonsul          #+#    #+#             */
+/*   Updated: 2023/03/07 18:51:31 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	isloop(t_deque *dq)
+int	set_pi(t_deque dq, int *pi, int *min)
 {
 	t_node	*n;
-
-	n = dq[0].head;
-	while (n->next)
-	{
-		if (n->num - n->next->num > 0)
-			return (1);
-		n = n->next;
-	}
-	return (0);
-}
-
-int	cmd(t_deque dq)
-{
-	t_node	*n;
-	int		min;
-	int		min_i;
+	int		*arr;
 	int		i;
 
-	min = INT_MAX;
-	i = 0;
+	arr = (int *)malloc(sizeof(int) * dq.size);
+	if (!arr)
+		return (0);
 	n = dq.head;
-	while (++i <= dq.size)
+	i = 0;
+	while (n)
 	{
-		if (min >= n->num)
-		{
-			min = n->num;
-			min_i = i;
-		}
+		arr[i++] = n->num;
 		n = n->next;
 	}
-	if (min_i == 1)
-		return (5);
-	if ((dq.size >> 1) + (dq.size & 1) >= min_i)
-		return (6);
-	else
-		return (9);
+	q_sort(arr, 0, dq.size - 1);
+	i = -1;
+	pi[0] = arr[dq.size / 3];
+	pi[1] = arr[(dq.size << 1) / 3];
+	*min = arr[0];
+	free(arr);
+	return (1);
 }
 
-void	left_three(t_deque *dq)
+void	fix_a(t_deque *dq, int min)
+{
+	t_node	*n;
+	size_t	i;
+	size_t	chk_cmd;
+
+	n = dq[0].head;
+	i = 0;
+	while (n)
+	{
+		if (n->num == min)
+			break ;
+		n = n->next;
+		i++;
+	}
+	chk_cmd = 6 + ((dq[0].size >> 1) < i) * 3;
+	while (dq[0].head->num != min)
+		run(dq, chk_cmd);
+}
+
+void	num_three(t_deque *dq)
 {
 	int	compare[3];
 
@@ -81,18 +85,39 @@ void	left_three(t_deque *dq)
 	run(dq, 1);
 }
 
-void	push_swap(t_deque *dq)
-{   
-	while (isloop(dq))
+int	under_three(t_deque *dq)
+{
+	if (dq[0].size == 1)
+		return (1);
+	if (dq[0].size == 2)
 	{
-		if (dq[0].size <= 3)
-		{
-			left_three(dq);
-			break ;
-		}
-		else
-			run(dq, cmd(dq[0]));
+		run(dq, 1);
+		return (1);
 	}
-	while (dq[1].size > 0)
-		run(dq, 4);
+	if (dq[0].size == 3)
+	{
+		num_three(dq);
+		return (1);
+	}
+	return (0);
+}
+
+int	push_swap(t_deque *dq)
+{
+	int	pi[2];
+	int	min;
+
+	if (issort(dq[0]))
+		return (1);
+	if (under_three(dq))
+		return (1);
+	set_pi(dq[0], pi, &min);
+	if (dq[0].size > 50)
+		sp_three_area(dq, pi);
+	else
+		push_b(dq);
+	num_three(dq);
+	greedy(dq);
+	fix_a(dq, min);
+	return (1);
 }

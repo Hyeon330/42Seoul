@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   push_swap_bonus.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:21:44 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/07 17:56:44 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/03/07 18:08:57 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#ifndef PUSH_SWAP_BONUS_H
+# define PUSH_SWAP_BONUS_H
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -31,55 +31,36 @@ typedef struct s_deque {
 	size_t			size;
 }	t_deque;
 
-typedef struct s_cmd_info {
-	size_t	a;
-	size_t	b;
-	size_t	cmd_tot;
-	int		uda;
-	int		udb;
-}	t_cmd_info;
-
-// push_swap.c
-int		push_swap(t_deque *dq);
-
-// push.c
-void	sp_three_area(t_deque *dq, int *pi);
-void	push_b(t_deque *dq);
-
-// deque.c
+// deque_bonus.c
 void	add_head(t_deque *dq, int num);
 void	add_tail(t_deque *dq, int num);
 int		poll_head(t_deque *dq);
 int		poll_tail(t_deque *dq);
 
-// operations.c
+// operations_bonus.c
 void	s(t_deque *dq);
 void	p(t_deque *dq1, t_deque *dq2);
 void	r(t_deque *dq);
 void	rr(t_deque *dq);
 
-// sort.c
-void	q_sort(int *arr, int left, int right);
-int		issort(t_deque dq);
-
-// set_deque.c
+// set_deque_bonus.c
 int		set_deque(t_deque *dq, char **av, int ac);
 
-// run.c
-void	run(t_deque *dq, int cmd);
+// checker_bonus.c
+int		checker(t_deque *dq);
 
-// greedy1.c
-void	greedy(t_deque *dq);
-
-// greedy2.c
-void	loop_b(t_deque *dq, t_node **n, t_cmd_info *cmd_info);
+// run_bonus.c
+int		run(t_deque *dq, int cmd);
 
 // libftprintf.a
 int		ft_printf(const char *format, ...);
 
+// libgnl.a
+char	*get_next_line(int fd);
+
 // libft.a
 char	**ft_split(char const *s, char c);
 void	*ft_memset(void *b, int c, size_t len);
-void	*ft_memcpy(void *dst, const void *src, size_t n);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 #endif

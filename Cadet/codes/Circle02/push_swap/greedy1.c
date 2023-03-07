@@ -1,40 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   greedy1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/24 17:49:59 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/07 18:52:18 by hyeonsul         ###   ########.fr       */
+/*   Created: 2023/03/05 00:30:15 by hyeonsul          #+#    #+#             */
+/*   Updated: 2023/03/05 02:51:53 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	free_nodes(t_node *n)
+void	run_cmd(t_deque *dq, t_cmd_info cmd)
 {
-	t_node	*tmp;
-
-	while (n)
+	if (cmd.uda == cmd.udb)
 	{
-		tmp = n->next;
-		free(n);
-		n = tmp;
+		while (cmd.a && cmd.b)
+		{
+			run(dq, 8 + cmd.uda * 3);
+			cmd.a--;
+			cmd.b--;
+		}
 	}
+	while (cmd.a--)
+		run(dq, 6 + cmd.uda * 3);
+	while (cmd.b--)
+		run(dq, 7 + cmd.udb * 3);
+	run(dq, 4);
 }
 
-int	main(int ac, char **av)
+void	greedy(t_deque *dq)
 {
-	t_deque	dq[2];
+	t_node		*n[2];
+	t_cmd_info	cmd_info[2];
 
-	if (ac == 1)
-		ft_printf("Error\n");
-	else
+	while (dq[1].size)
 	{
-		ft_memset(&dq, 0, sizeof(dq));
-		if (!set_deque(&dq[0], av, ac) || !push_swap(dq))
-			ft_printf("Error\n");
-		free_nodes(dq[0].head);
+		loop_b(dq, n, cmd_info);
+		run_cmd(dq, cmd_info[0]);
 	}
 }
