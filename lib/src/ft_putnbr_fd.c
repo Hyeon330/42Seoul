@@ -6,11 +6,11 @@
 /*   By: hyeonsul <hyeonsul@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 23:17:52 by hyeonsul          #+#    #+#             */
-/*   Updated: 2022/11/30 21:50:11 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/03/13 17:49:18 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../header/libft.h"
 
 void	print_num(int n, int fd, int sign, int *cnt)
 {

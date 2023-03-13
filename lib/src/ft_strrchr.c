@@ -1,23 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonsul <hyeonsul@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: hyeonsul <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/11 23:07:23 by hyeonsul          #+#    #+#             */
-/*   Updated: 2022/11/30 21:41:03 by hyeonsul         ###   ########.fr       */
+/*   Created: 2022/11/07 16:09:18 by hyeonsul          #+#    #+#             */
+/*   Updated: 2023/03/13 17:52:23 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../header/libft.h"
 
-int	ft_putstr_fd(char *s, int fd)
+char	*ft_strrchr(const char *s, int c)
 {
-	int	cnt;
+	char	*copy;
 
-	cnt = -1;
-	while (s[++cnt])
-		write(fd, s + cnt, 1);
-	return (cnt);
+	copy = NULL;
+	while (*s)
+	{
+		if (*s == (char) c)
+			copy = (char *) s;
+		s++;
+	}
+	if ((char) c == '\0')
+		return ((char *) s);
+	return (copy);
 }

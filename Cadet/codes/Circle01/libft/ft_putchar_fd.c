@@ -6,13 +6,14 @@
 /*   By: hyeonsul <hyeonsul@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 23:01:00 by hyeonsul          #+#    #+#             */
-/*   Updated: 2022/11/11 23:06:15 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2022/11/30 21:39:45 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putchar_fd(char c, int fd)
+int	ft_putchar_fd(char c, int fd)
 {
 	write(fd, &c, 1);
+	return (1);
 }
