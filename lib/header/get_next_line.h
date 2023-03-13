@@ -6,12 +6,12 @@
 /*   By: hyeonsul <hyeonsul@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 14:35:18 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/13 17:31:39 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/03/13 20:43:00 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_BONUS_H
-# define GET_NEXT_LINE_BONUS_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -32,7 +32,7 @@ typedef struct s_buflst {
 char		*get_next_line(int fd);
 
 // get_next_line_utils.c
-void		ft_strjoin(char **dst, char *src, ssize_t dst_len, ssize_t src_len);
+void		s_join(char **dst, char *src, ssize_t dst_len, ssize_t src_len);
 t_buflst	*isfd(t_buflst *buflst, int fd);
 t_buflst	*lstnew(int fd);
 void		lstadd_back(t_buflst **lst, t_buflst *new);

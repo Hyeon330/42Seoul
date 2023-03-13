@@ -6,13 +6,13 @@
 /*   By: hyeonsul <hyeonsul@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 15:37:47 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/13 17:53:45 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/03/13 20:40:06 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/get_next_line.h"
 
-void	ft_strjoin(char **dst, char *src, ssize_t dst_len, ssize_t src_len)
+void	s_join(char **dst, char *src, ssize_t dst_len, ssize_t src_len)
 {
 	char	*pc;
 	ssize_t	pc_i;

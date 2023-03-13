@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 15:37:35 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/13 17:53:34 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/03/13 20:39:09 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	app_buf(t_buflst **buflst_f, t_buflst *buflst, \
 	ssize_t		app_tmp;
 
 	app_tmp = app_size(buflst->buf_i, buflst);
-	ft_strjoin(line, buflst->buf + buflst->buf_i, *line_size, app_tmp);
+	s_join(line, buflst->buf + buflst->buf_i, *line_size, app_tmp);
 	if (!(*line))
 	{
 		lstdelone(buflst_f, *buflst_f, buflst->fd);

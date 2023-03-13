@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:50:06 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/13 17:53:04 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/03/13 20:34:44 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	proc_field(const char **format, t_args *lst)
 	}
 }
 
-t_args	*lstnew(va_list *ap, const char **format)
+static t_args	*lstnew(va_list *ap, const char **format)
 {
 	t_args	*lst;
 
