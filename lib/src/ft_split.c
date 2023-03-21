@@ -6,7 +6,7 @@
 /*   By: hyeonsul <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 21:11:12 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/21 22:15:20 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/03/21 22:44:13 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ char	**ft_split(char const *s, char c)
 	ppc = (char **)malloc(sizeof(char *) * (str_n + 1));
 	if (!ppc)
 		return (NULL);
-	i = 0;
 	ppc[str_n] = NULL;
 	if (!fill_ppc(ppc, s, c))
 	{
