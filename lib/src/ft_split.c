@@ -6,7 +6,7 @@
 /*   By: hyeonsul <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 21:11:12 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/13 17:49:59 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/03/21 22:15:20 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,7 @@ char	**ft_split(char const *s, char c)
 	if (!ppc)
 		return (NULL);
 	i = 0;
-	while (i <= str_n)
-		ppc[i++] = NULL;
+	ppc[str_n] = NULL;
 	if (!fill_ppc(ppc, s, c))
 	{
 		i = -1;
