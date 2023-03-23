@@ -6,7 +6,7 @@
 /*   By: hyeonsul <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 21:11:12 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/21 22:44:13 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/03/23 16:49:13 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,19 @@
 
 int	count_s(char const *s, char c)
 {
-	int	flag;
 	int	str_n;
-	int	i;
 
 	str_n = 0;
-	flag = 1;
-	i = -1;
-	while (s[++i])
+	while (*s)
 	{
-		if (flag && s[i] != c)
+		if (*s != c)
 		{
 			str_n++;
-			flag = 0;
+			while (*s && *s != c)
+				s++;
 		}
-		if (s[i] == c)
-			flag = 1;
+		else
+			s++;
 	}
 	return (str_n);
 }
@@ -55,26 +52,24 @@ void	fill_pc_split(char **ppc, char const *s, int ppc_i, int pc_size)
 
 int	fill_ppc(char **ppc, char const *s, char c)
 {
-	int		s_i;
 	int		ppc_i;
 	int		pc_size;
 
-	s_i = 0;
 	ppc_i = -1;
-	while (s[s_i])
+	while (*s)
 	{
-		pc_size = count_c(s + s_i, c);
+		pc_size = count_c(s, c);
 		if (pc_size)
 		{
 			ppc[++ppc_i] = (char *)malloc(sizeof(char) * (pc_size + 1));
 			if (!ppc[ppc_i])
 				return (0);
 			ppc[ppc_i][pc_size] = 0;
-			fill_pc_split(ppc, s + s_i, ppc_i, pc_size);
-			s_i += pc_size;
+			fill_pc_split(ppc, s, ppc_i, pc_size);
+			s += pc_size;
 		}
 		else
-			s_i++;
+			s++;
 	}
 	return (1);
 }
