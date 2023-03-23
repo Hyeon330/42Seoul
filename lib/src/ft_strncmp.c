@@ -6,7 +6,7 @@
 /*   By: hyeonsul <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:59:49 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/13 17:51:45 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/03/23 23:11:38 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,11 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 
 	_s1 = (unsigned char *)s1;
 	_s2 = (unsigned char *)s2;
-	i = 0;
-	while (i < n)
+	i = -1;
+	while (++i < n)
 	{
-		if (!(_s1[i] && _s2[i]) || _s1[i] != _s2[i])
+		if (!_s1[i] || !_s2[i] || _s1[i] != _s2[i])
 			return (_s1[i] - _s2[i]);
-		i++;
 	}
 	return (0);
 }
