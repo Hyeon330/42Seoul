@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 10:55:13 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/05 22:46:05 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/06 22:07:41 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,11 @@
 # include <mlx.h>
 
 # define BUFF_SIZE 1500 // 1296
-# define BLOCK_HEIGHT 40
 # define BLOCK_WIDTH 40
+# define BLOCK_HEIGHT 40
+# define MAX_RESOL_WIDTH 1920
+# define MAX_RESOL_HEIGHT 1080
+# define SPACE_COLOR 0x002F2D36
 
 enum e_err {
 	ARGUMENT = 0,
@@ -58,10 +61,11 @@ typedef struct s_queue {
 }	t_queue;
 
 // checker.c
-int		chk_map(t_vars *vars, t_img *bg);
+int		chk_map1(t_vars *vars);
+int		chk_map2(t_vars *vars);
 
 // bfs.c
-int		bfs(t_vars *vars, t_img *bg, int x, int y);
+int		bfs(t_vars *vars, int x, int y);
 
 // queue.c
 void	init_queue(t_queue *queue);

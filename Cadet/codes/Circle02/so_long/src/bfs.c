@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 18:13:12 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/05 22:45:05 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/06 22:04:56 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,16 @@ void	enqueuer(t_vars *vars, t_queue *queue, int *now, int **flag)
 	int	ud[4];
 	int	lr[4];
 	int	tmp[2];
-	int	bg_len[2];
 	int	i;
 
 	init_directions(ud, lr);
-	bg_len[0] = vars->x_height / BLOCK_HEIGHT;
-	bg_len[1] = vars->x_width / BLOCK_WIDTH;
 	i = -1;
 	while (++i < 4)
 	{
 		tmp[0] = now[0] + ud[i];
 		tmp[1] = now[1] + lr[i];
-		if (tmp[0] >= 0 && tmp[0] < bg_len[0] && \
-			tmp[1] >= 0 && tmp[1] < bg_len[1] && \
+		if (tmp[0] >= 0 && tmp[0] < vars->x_height && \
+			tmp[1] >= 0 && tmp[1] < vars->x_width && \
 			!flag[tmp[0]][tmp[1]] && \
 			vars->map[tmp[0]][tmp[1]] != '1')
 		{
@@ -51,7 +48,7 @@ void	enqueuer(t_vars *vars, t_queue *queue, int *now, int **flag)
 	}
 }
 
-int	bfs_loop(t_vars *vars, t_img *bg, t_queue *queue, int **flag)
+int	bfs_loop(t_vars *vars, t_queue *queue, int **flag)
 {
 	int	now[2];
 	int	element[3];
@@ -63,9 +60,6 @@ int	bfs_loop(t_vars *vars, t_img *bg, t_queue *queue, int **flag)
 		tmp = dequeue(queue);
 		now[0] = tmp / BUFF_SIZE;
 		now[1] = tmp % BUFF_SIZE;
-		if (now[0] == 0 || now[0] == bg->height - 1 || \
-			now[1] == 0 || now[1] == bg->width - 1)
-			return (0);
 		if (vars->map[now[0]][now[1]] == 'P')
 			element[0]++;
 		if (vars->map[now[0]][now[1]] == 'C')
@@ -74,25 +68,26 @@ int	bfs_loop(t_vars *vars, t_img *bg, t_queue *queue, int **flag)
 			element[2]++;
 		enqueuer(vars, queue, now, flag);
 	}
-	if (element[0] != 1 || element[2] != 1 || element[1] != vars->count_C)
+	if (element[0] != 1 || element[2] != 1 || \
+		element[1] != vars->count_C || !element[1])
 		return (0);
 	return (1);
 }
 
-int	bfs(t_vars *vars, t_img *bg, int x, int y)
+int	bfs(t_vars *vars, int x, int y)
 {
 	t_queue	queue;
 	int		**flag;
 	int		i;
 	int		ret;
 
-	flag = ft_calloc(bg->height, sizeof(int *));
+	flag = ft_calloc(vars->x_height, sizeof(int *));
 	if (!flag)
 		ft_error(DYNAMIC);
 	i = -1;
-	while (++i < bg->height)
+	while (++i < vars->x_height)
 	{
-		flag[i] = ft_calloc(bg->width, sizeof(int));
+		flag[i] = ft_calloc(vars->x_width, sizeof(int));
 		if (!flag[i])
 		{
 			free_two_ptr_int(flag, i);
@@ -102,7 +97,7 @@ int	bfs(t_vars *vars, t_img *bg, int x, int y)
 	init_queue(&queue);
 	enqueue(&queue, y * BUFF_SIZE + x);
 	flag[y][x] = 1;
-	ret = bfs_loop(vars, bg, &queue, flag);
-	free_two_ptr_int(flag, bg->height);
+	ret = bfs_loop(vars, &queue, flag);
+	free_two_ptr_int(flag, vars->x_height);
 	return (ret);
 }
