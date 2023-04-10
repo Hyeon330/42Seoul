@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 10:55:13 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/10 13:50:55 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/10 21:40:25 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ enum e_err {
 	ARGUMENT = 0,
 	DYNAMIC,
 	FORMAT,
+	EXTENTION,
 	OPEN = 32
 };
 
@@ -104,6 +105,8 @@ int		ft_printf(const char *format, ...);
 void	*ft_memset(void *b, int c, size_t len);
 char	**ft_split(char const *s, char c);
 void	*ft_calloc(size_t count, size_t size);
+char	*ft_strrchr(const char *s, int c);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t	ft_strlen(const char *s);
 
 #endif
