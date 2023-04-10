@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 18:32:05 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/05 22:10:50 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/07 18:55:38 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_error(int errno)
 {
 	char	*msg;
-	
+
 	if (errno < 32)
 	{
 		if (errno == ARGUMENT)

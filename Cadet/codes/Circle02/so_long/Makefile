@@ -3,7 +3,7 @@ NAME	= so_long
 CFLAGS	= -Wall -Wextra -Werror
 RM		= rm -rf
 
-SRC		= main.c checker.c bfs.c queue.c free_two_ptr.c error.c
+SRC		= main.c setting.c viewer.c checker.c bfs.c queue.c error.c
 OBJ		= $(SRC:.c=.o)
 
 OBJ_DIR	= obj/

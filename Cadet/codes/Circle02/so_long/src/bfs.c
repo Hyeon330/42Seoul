@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 18:13:12 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/06 22:04:56 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/10 13:51:11 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,24 @@
 
 void	init_directions(int *ud, int *lr)
 {
-	ud[0] = 1;
+	ud[0] = 0;
+	lr[0] = -1;
 	ud[1] = 0;
-	ud[2] = -1;
-	ud[3] = 0;
-	lr[0] = 0;
 	lr[1] = 1;
+	ud[2] = 1;
 	lr[2] = 0;
-	lr[3] = -1;
+	ud[3] = -1;
+	lr[3] = 0;
+}
+
+void	free_two_ptr_int(int **ptr, size_t size)
+{
+	size_t	i;
+
+	i = -1;
+	while (++i < size)
+		free(ptr[i]);
+	free(ptr);
 }
 
 void	enqueuer(t_vars *vars, t_queue *queue, int *now, int **flag)
@@ -66,10 +76,11 @@ int	bfs_loop(t_vars *vars, t_queue *queue, int **flag)
 			element[1]++;
 		if (vars->map[now[0]][now[1]] == 'E')
 			element[2]++;
-		enqueuer(vars, queue, now, flag);
+		if (vars->map[now[0]][now[1]] != 'E')
+			enqueuer(vars, queue, now, flag);
 	}
 	if (element[0] != 1 || element[2] != 1 || \
-		element[1] != vars->count_C || !element[1])
+		element[1] != vars->count_c || !element[1])
 		return (0);
 	return (1);
 }

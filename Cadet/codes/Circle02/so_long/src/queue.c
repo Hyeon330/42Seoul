@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 07:25:13 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/05 21:54:18 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/07 18:54:50 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,5 @@ int	dequeue(t_queue *queue)
 		return (0);
 	--queue->size;
 	queue->front = (queue->front + 1) % BUFF_SIZE;
-	return queue->queue[queue->front];
+	return (queue->queue[queue->front]);
 }

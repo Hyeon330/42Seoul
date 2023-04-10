@@ -6,12 +6,12 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 10:55:13 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/06 22:07:41 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/10 13:50:55 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SOLONG_H
-# define SOLONG_H
+#ifndef SO_LONG_H
+# define SO_LONG_H
 
 # include <unistd.h>
 # include <fcntl.h>
@@ -34,15 +34,6 @@ enum e_err {
 	OPEN = 32
 };
 
-typedef struct s_vars {
-	void    *mlx;
-	void    *win;
-	char	**map;
-	int		x_width;
-	int		x_height;
-	int		count_C;
-}   t_vars;
-
 typedef struct s_img {
 	void	*img;
 	char	*addr;
@@ -53,6 +44,30 @@ typedef struct s_img {
 	int		height;
 }	t_img;
 
+typedef struct s_element {
+	t_img	back;
+	t_img	wall;
+	t_img	collectible;
+	t_img	exit_c;
+	t_img	exit_o;
+	t_img	player_r;
+	t_img	player_l;
+}	t_element;
+
+typedef struct s_vars {
+	t_element	element;
+	void		*mlx;
+	void		*win;
+	char		**map;
+	int			x_width;
+	int			x_height;
+	int			x;
+	int			y;
+	int			count_c;
+	int			move;
+	int			lnr;
+}	t_vars;
+
 typedef struct s_queue {
 	int	queue[BUFF_SIZE];
 	int	size;
@@ -60,30 +75,35 @@ typedef struct s_queue {
 	int	rear;
 }	t_queue;
 
+// setting.c
+int		set_map(char *mapname, t_vars *vars);
+void	set_textures(t_vars *vars);
+
+// viewer.c
+void	view(t_vars *vars);
+void	my_mlx_pixel_put(t_img *data, int x, int y, int color);
+
 // checker.c
 int		chk_map1(t_vars *vars);
 int		chk_map2(t_vars *vars);
 
 // bfs.c
 int		bfs(t_vars *vars, int x, int y);
+void	init_directions(int *ud, int *lr);
 
 // queue.c
 void	init_queue(t_queue *queue);
 void	enqueue(t_queue *queue, int val);
 int		dequeue(t_queue *queue);
 
-// free_two_ptr.c
-void	free_two_ptr_int(int **ptr, size_t size);
-void	free_two_ptr_char(char **ptr);
-
 // error.c
 void	ft_error(int errno);
 
 // libft.a
 int		ft_printf(const char *format, ...);
-void    *ft_memset(void *b, int c, size_t len);
-char    **ft_split(char const *s, char c);
-void    *ft_calloc(size_t count, size_t size);
+void	*ft_memset(void *b, int c, size_t len);
+char	**ft_split(char const *s, char c);
+void	*ft_calloc(size_t count, size_t size);
 size_t	ft_strlen(const char *s);
 
 #endif
