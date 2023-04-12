@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_total_size_bonus.c                              :+:      :+:    :+:   */
+/*   ft_take_info.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonsul <hyeonsul@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:50:06 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/13 20:34:44 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/12 20:54:45 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/ft_printf.h"
+#include "ft_printf.h"
 
 void	init_arg_list(t_args *lst)
 {

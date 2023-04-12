@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_chk_count1.c                                    :+:      :+:    :+:   */
+/*   ft_checkers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonsul <hyeonsul@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 08:24:44 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/13 17:41:37 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/12 20:36:03 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/ft_printf.h"
+#include "ft_printf.h"
 
 char	chk_spec(const char *format)
 {

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_base.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonsul <hyeonsul@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 21:50:36 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/13 17:49:23 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/12 20:51:59 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/libft.h"
+#include "libft.h"
 
 static void	print_num(unsigned long n, char *base, unsigned long base_len, \
 		int *cnt)

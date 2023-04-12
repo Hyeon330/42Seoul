@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonsul <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 17:04:55 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/13 17:52:34 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/12 20:54:37 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/libft.h"
+#include "libft.h"
 
 int	ck_set(char const c, char const *set)
 {

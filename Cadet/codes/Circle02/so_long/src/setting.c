@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 18:42:26 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/10 21:41:25 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/12 12:27:09 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@ int	set_map(char *mapname, t_vars *vars)
 {
 	int		fd;
 	char	buff[BUFF_SIZE];
+	char	*dot;
 
 	ft_memset(buff, 0, BUFF_SIZE);
-	if (ft_strncmp(ft_strrchr(mapname, '.'), ".ber", 4))
+	dot = ft_strrchr(mapname, '.');
+	if (ft_strncmp(dot, ".ber", 4))
 		ft_error(EXTENTION);
 	fd = open(mapname, O_RDONLY);
 	if (fd == -1 || read(fd, buff, BUFF_SIZE) == -1)

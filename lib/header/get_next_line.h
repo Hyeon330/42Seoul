@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonsul <hyeonsul@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 14:35:18 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/13 20:43:00 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/12 20:30:26 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdlib.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1000 
+#  define BUFFER_SIZE 1000
 # endif
 
 typedef struct s_buflst {
@@ -35,7 +35,7 @@ char		*get_next_line(int fd);
 void		s_join(char **dst, char *src, ssize_t dst_len, ssize_t src_len);
 t_buflst	*isfd(t_buflst *buflst, int fd);
 t_buflst	*lstnew(int fd);
-void		lstadd_back(t_buflst **lst, t_buflst *new);
+void		lstadd_back(t_buflst **lst, t_buflst *n);
 void		lstdelone(t_buflst **lst, t_buflst *lst_copy, int fd);
 
 #endif

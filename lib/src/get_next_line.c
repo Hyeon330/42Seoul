@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 15:37:35 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/13 20:39:09 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/12 20:55:04 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/get_next_line.h"
+#include "get_next_line.h"
 
 ssize_t	app_size(ssize_t buf_i, t_buflst *buflst)
 {
