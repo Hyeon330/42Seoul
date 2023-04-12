@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_chk_count.c                                     :+:      :+:    :+:   */
+/*   ft_field_counters.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonsul <hyeonsul@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 08:17:46 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/13 17:42:09 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/12 20:36:36 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/ft_printf.h"
+#include "ft_printf.h"
 
 void	count_flag(const char *format, t_args *lst)
 {

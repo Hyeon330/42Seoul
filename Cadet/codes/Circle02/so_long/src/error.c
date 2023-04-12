@@ -6,11 +6,11 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 18:32:05 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/10 21:44:08 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/12 21:03:53 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/so_long.h"
+#include "so_long.h"
 
 void	ft_error(int errno)
 {

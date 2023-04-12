@@ -6,11 +6,11 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 07:25:13 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/07 18:54:50 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/12 21:04:02 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/so_long.h"
+#include "so_long.h"
 
 void	init_queue(t_queue *queue)
 {

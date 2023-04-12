@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonsul <hyeonsul@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 15:37:47 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/13 20:40:06 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/12 20:54:59 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/get_next_line.h"
+#include "get_next_line.h"
 
 void	s_join(char **dst, char *src, ssize_t dst_len, ssize_t src_len)
 {
@@ -68,7 +68,7 @@ t_buflst	*lstnew(int fd)
 	return (lst);
 }
 
-void	lstadd_back(t_buflst **lst, t_buflst *new)
+void	lstadd_back(t_buflst **lst, t_buflst *n)
 {
 	t_buflst	*tmp;
 
@@ -76,13 +76,13 @@ void	lstadd_back(t_buflst **lst, t_buflst *new)
 		return ;
 	if (!(*lst))
 	{
-		*lst = new;
+		*lst = n;
 		return ;
 	}
 	tmp = *lst;
 	while (tmp->next)
 		tmp = tmp->next;
-	tmp->next = new;
+	tmp->next = n;
 }
 
 void	lstdelone(t_buflst **lst, t_buflst *lst_copy, int fd)

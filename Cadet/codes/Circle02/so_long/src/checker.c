@@ -6,11 +6,11 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 22:43:14 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/10 13:51:23 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/12 21:12:08 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/so_long.h"
+#include "so_long.h"
 
 int	chk_border(t_vars *vars)
 {
@@ -49,6 +49,8 @@ int	chk_map1(t_vars *vars)
 	int		base_width;
 	int		count_e;
 
+	if (!vars->map[0])
+		return (0);
 	count_e = 0;
 	base_width = ft_strlen(vars->map[0]);
 	vars->x_height = -1;

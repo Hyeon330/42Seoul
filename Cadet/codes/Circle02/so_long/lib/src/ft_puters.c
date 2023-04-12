@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_input_bonus.c                                   :+:      :+:    :+:   */
+/*   ft_puters.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonsul <hyeonsul@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 13:49:49 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/13 17:48:48 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/12 20:51:50 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/ft_printf.h"
+#include "ft_printf.h"
 
 void	input_str(char *pc, char *str, t_args *lst)
 {

@@ -6,11 +6,11 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 18:42:26 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/12 12:27:09 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/12 21:04:07 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/so_long.h"
+#include "so_long.h"
 
 int	set_map(char *mapname, t_vars *vars)
 {
@@ -20,7 +20,7 @@ int	set_map(char *mapname, t_vars *vars)
 
 	ft_memset(buff, 0, BUFF_SIZE);
 	dot = ft_strrchr(mapname, '.');
-	if (ft_strncmp(dot, ".ber", 4))
+	if (!dot || ft_strncmp(dot, ".ber", 5))
 		ft_error(EXTENTION);
 	fd = open(mapname, O_RDONLY);
 	if (fd == -1 || read(fd, buff, BUFF_SIZE) == -1)

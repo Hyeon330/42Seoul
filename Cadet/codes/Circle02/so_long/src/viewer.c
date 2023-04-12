@@ -6,11 +6,11 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 18:46:51 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/10 13:52:10 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/12 21:04:12 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/so_long.h"
+#include "so_long.h"
 
 void	my_mlx_pixel_put(t_img *data, int x, int y, int color)
 {

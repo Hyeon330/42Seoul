@@ -6,14 +6,26 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 03:23:26 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/10 13:51:39 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/12 21:03:58 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/so_long.h"
+#include "so_long.h"
 
-int	cls(void)
+int	cls(t_vars *vars)
 {
+	size_t	i;
+
+	i = -1;
+	while (vars->map[++i])
+		free(vars->map[i]);
+	free(vars->map);
+	free(vars->element.wall.img);
+	free(vars->element.collectible.img);
+	free(vars->element.exit_c.img);
+	free(vars->element.exit_o.img);
+	free(vars->element.player_r.img);
+	free(vars->element.player_l.img);
 	exit(EXIT_SUCCESS);
 	return (0);
 }
@@ -39,7 +51,7 @@ int	key_press(int keycode, t_vars *vars)
 	if (keycode >= 123 && keycode <= 126 && vars->map[tmp[0]][tmp[1]] != '1')
 	{
 		if (vars->map[tmp[0]][tmp[1]] == 'E' && !vars->count_c)
-			cls();
+			cls(vars);
 		if (vars->map[tmp[0]][tmp[1]] == '0')
 			move(vars, tmp);
 		if (vars->map[tmp[0]][tmp[1]] == 'C')
@@ -52,7 +64,7 @@ int	key_press(int keycode, t_vars *vars)
 		view(vars);
 	}
 	if (keycode == 53)
-		cls();
+		cls(vars);
 	return (0);
 }
 

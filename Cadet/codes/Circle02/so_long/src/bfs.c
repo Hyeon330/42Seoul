@@ -6,11 +6,11 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 18:13:12 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/10 13:51:11 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/12 21:06:03 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/so_long.h"
+#include "so_long.h"
 
 void	init_directions(int *ud, int *lr)
 {
