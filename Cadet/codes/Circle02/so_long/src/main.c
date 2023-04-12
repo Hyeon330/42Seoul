@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 03:23:26 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/12 21:03:58 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/12 21:21:59 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int	main(int ac, char **av)
 	vars.lnr = vars.x_width / 2 > vars.x;
 	set_textures(&vars);
 	view(&vars);
+	ft_printf("%d\n", 0);
 	mlx_hook(vars.win, 2, 0, key_press, &vars);
 	mlx_hook(vars.win, 17, 0, cls, &vars);
 	mlx_loop(vars.mlx);
