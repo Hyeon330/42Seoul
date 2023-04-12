@@ -1,6 +1,5 @@
 CFLAGS	= -Wall -Wextra -Werror
-RM		= rm -rf
-INC		= -I header
+INC		= -Iheader
 
 NAME	= libft.a
 
@@ -36,7 +35,7 @@ $(OBJ_DIR):
 	mkdir $(OBJ_DIR)
 
 clean:
-	$(RM) $(OBJ_DIR)
+	$(RM) -r $(OBJ_DIR)
 
 fclean: clean
 	$(RM) $(NAME)
