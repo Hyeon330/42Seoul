@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_count_bonus.c                                   :+:      :+:    :+:   */
+/*   ft_arg_counters.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonsul <hyeonsul@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 17:44:21 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/13 17:37:35 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/12 20:35:44 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/ft_printf.h"
+#include "ft_printf.h"
 
 int	count_str(char *str, t_args *lst)
 {

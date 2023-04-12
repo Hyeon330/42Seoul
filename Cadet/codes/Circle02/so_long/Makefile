@@ -1,16 +1,16 @@
 NAME	= so_long
 
 CFLAGS	= -Wall -Wextra -Werror
-RM		= rm -rf
+INC		= -Iheader
 
-SRC		= main.c setting.c viewer.c checker.c bfs.c queue.c error.c
+SRC		= main setting viewer checker bfs queue error
 OBJ		= $(SRC:.c=.o)
 
 OBJ_DIR	= obj/
 SRC_DIR = src/
 
-SRCS	= $(addprefix $(SRC_DIR), $(SRC))
-OBJS	= $(addprefix $(OBJ_DIR), $(OBJ))
+SRCS	= $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC)))
+OBJS	= $(addprefix $(OBJ_DIR), $(addsuffix .o, $(OBJ)))
 
 LIB_DIR	= lib/
 LIB		= $(LIB_DIR)libft.a
@@ -23,7 +23,7 @@ $(NAME): $(LIB) $(OBJS)
 	$(CC) $(OBJS) $(LIB) -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	$(CC) $(CFLAGS) -Imlx -c $< -o $@
+	$(CC) $(CFLAGS) $(INC) -Imlx -c $< -o $@
 
 $(OBJ_DIR):
 	mkdir $(OBJ_DIR)
@@ -33,7 +33,7 @@ $(LIB):
 	$(MAKE) -C $(MLX_DIR)
 
 clean:
-	$(RM) $(OBJ_DIR)
+	$(RM) -r $(OBJ_DIR)
 	$(MAKE) fclean -C $(LIB_DIR)
 	$(MAKE) clean -C $(MLX_DIR)
 
