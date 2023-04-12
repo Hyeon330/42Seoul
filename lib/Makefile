@@ -1,7 +1,7 @@
 CFLAGS	= -Wall -Wextra -Werror
 RM		= rm -rf
-
 INC		= -I header
+
 NAME	= libft.a
 
 SRC		= ft_printf ft_take_info ft_checkers ft_field_counters \
