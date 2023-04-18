@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 18:09:56 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/14 19:13:37 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/18 09:36:19 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,16 @@
 # include <stdlib.h>
 # include <string.h>
 # include <pthread.h>
+
+typedef struct s_vars {
+	pthread_mutex_t	mutex;
+	pthread_t		*philo;
+	int				*fork;
+	int				nop;
+	int				ttd;
+	int				tte;
+	int				tts;
+	int				notepme;
+}	t_vars;
 
 #endif

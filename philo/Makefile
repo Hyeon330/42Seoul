@@ -1,30 +1,29 @@
 NAME	= philo
 
 CFLAGS	= -Wall -Wextra -Werror
-RM		= rm -rf
+INC		= -Iheader
 
-SRC		= 
-OBJ		= $(SRC:.c=.o)
+SRC		= main
 
 OBJ_DIR	= obj/
 SRC_DIR	= src/
 
-SRCS	= $(addprefix $(SRC_DIR), $(SRC))
-OBJS	= $(addprefix $(OBJ_DIR), $(OBJ))
+SRCS	= $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC)))
+OBJS	= $(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC)))
 
-all: $(OBJ_DIR) $(NAME)
+all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJ_DIR) $(LIB) $(OBJS)
 	$(CC) $(OBJS) -o $(NAME)
 
-$(OBJ_DIR)%.o: %(SRC_DIR)%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(OBJ_DIR):
 	mkdir $(OBJ_DIR)
 
 clean:
-	$(RM) $(OBJ_DIR)
+	$(RM)r $(OBJ_DIR)
 
 fclean: clean
 	$(RM) $(NAME)

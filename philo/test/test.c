@@ -64,7 +64,58 @@ void	test2()
 	printf("end??\n");
 }
 
+typedef struct s_aa {
+	pthread_mutex_t mutex;
+	int count;
+}	t_aa;
+
+void *increment_count(void *arg) {
+	t_aa *aa;
+	pthread_t tid;
+    int i;
+
+	aa = (t_aa *)arg;
+	tid = pthread_self();
+    for (i = 0; i < 100; i++) {
+        // 뮤텍스 잠금
+		pthread_mutex_lock(&aa->mutex);
+
+        // 전역 변수 증가
+		printf("tid: %x, count: %d\n", (unsigned int)tid, ++aa->count);
+
+        // 뮤텍스 해제
+		pthread_mutex_unlock(&aa->mutex);
+    }
+    return NULL;
+}
+
+int	test3()
+{
+	t_aa aa;
+
+	aa.count = 0;
+
+	pthread_mutex_init(&aa.mutex, NULL);
+
+    // 두 개의 스레드 생성
+    pthread_t thread1, thread2;
+    pthread_create(&thread1, NULL, increment_count, (void *)&aa);
+    pthread_create(&thread2, NULL, increment_count, (void *)&aa);
+
+    // 두 스레드가 종료될 때까지 대기
+    pthread_join(thread1, NULL);
+    pthread_join(thread2, NULL);
+
+    // 결과 출력
+    printf("count: %d\n", aa.count);
+
+    // 뮤텍스 제거
+    pthread_mutex_destroy(&aa.mutex);
+
+    return 0;
+}
+
 int main()
 {
-	test2();
+	test3();
 }
