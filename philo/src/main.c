@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 20:36:16 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/18 09:54:25 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/22 08:01:05 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,49 +32,60 @@ int	set_vars(t_vars *vars, char **av)
 			(av[5] && set_num(&vars->notepme, av[5])));
 }
 
-int	set_philo_fork(t_vars *vars)
+int	set_philo_fork(t_vars *vars, t_philo *philo)
 {
 	int	i;
 	
-	vars->philo = (pthread_t *)malloc(sizeof(pthread_t) * vars->nop);
-	if (!vars->philo)
+	philo = (t_philo *)malloc(sizeof(t_philo) * vars->nop);
+	if (!philo)
 		return (0);
 	vars->fork = (int *)malloc(sizeof(int) * vars->nop);
 	if (!vars->fork)
 	{
-		i = -1;
-		while (++i < vars->nop)
-			free(vars->philo[i]);
+		free(philo);
 		return (0);
 	}
-	memset(vars->philo, 0, sizeof(pthread_t) * vars->nop);
+	memset(philo, 0, sizeof(t_philo) * vars->nop);
 	memset(vars->fork, 0, sizeof(int) * vars->nop);
 	return (1);
 }
 
 void	*philo(void *arg)
 {
+	t_philo	*philo;
 	t_vars	*vars;
 
-	vars = (t_vars *)arg;
-	printf("tid: %x, nop: %d, tts: %d\n", (unsigned int)pthread_self(), vars->nop, vars->tts);
+	philo = (t_philo *)arg;
+	vars = philo->vars;
+	if (vars->fork[philo->no - 1] && vars->fork[philo->no % vars->nop])
+	{
+		
+	}
 	return (NULL);
 }
 
 int	main(int ac, char **av)
 {
-	t_vars			vars;
-	int				i;
+	t_vars	vars;
+	t_philo	*philo;
+	int		i;
 
-	if (ac < 5 || ac > 6 || set_vars(&vars, av) || !set_philo_fork(&vars))
+	if (ac < 5 || ac > 6 || set_vars(&vars, av) || !set_philo_fork(&vars, philo))
 		return (0);
 	pthread_mutex_init(&vars.mutex, NULL);
+	gettimeofday(&vars.start_time, NULL);
 	i = -1;
 	while (++i < vars.nop)
-		pthread_create(&vars.philo[i], NULL, philo, (void *)&vars);
+	{
+		philo[i].no = i + 1;
+		philo[i].vars = &vars;
+		pthread_create(&philo[i].thread, NULL, philo, (void *)&philo[i]);
+	}
 	i = -1;
 	while (++i < vars.nop)
-		pthread_join(vars.philo[i], NULL);
+		pthread_join(philo[i].thread, NULL);
 	pthread_mutex_destroy(&vars.mutex);
-	printf("%d\n", vars.notepme);
+	free(philo);
+	free(vars.fork);
+	return (0);
 }

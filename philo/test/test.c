@@ -24,7 +24,7 @@ void	*p_function(void *data)
 
 	while (i < 3)
 	{
-		printf("htread name: %s, tid: %x, pid: %u\n", thread_name, (unsigned int)tid, (unsigned int)pid);
+		printf("htread name: %s, tid: %p, pid: %u\n", thread_name, &tid, (unsigned int)pid);
 		i++;
 		sleep(1);
 	}
@@ -117,5 +117,5 @@ int	test3()
 
 int main()
 {
-	test3();
+	test2();
 }
