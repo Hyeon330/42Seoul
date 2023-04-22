@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 20:36:16 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/22 08:01:05 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/04/22 09:31:11 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,12 @@ void	*philo(void *arg)
 
 	philo = (t_philo *)arg;
 	vars = philo->vars;
+	// 먹고->자고->생각하고 처리
 	if (vars->fork[philo->no - 1] && vars->fork[philo->no % vars->nop])
+	{
+		
+	}
+	else
 	{
 		
 	}
@@ -73,7 +78,6 @@ int	main(int ac, char **av)
 	if (ac < 5 || ac > 6 || set_vars(&vars, av) || !set_philo_fork(&vars, philo))
 		return (0);
 	pthread_mutex_init(&vars.mutex, NULL);
-	gettimeofday(&vars.start_time, NULL);
 	i = -1;
 	while (++i < vars.nop)
 	{
