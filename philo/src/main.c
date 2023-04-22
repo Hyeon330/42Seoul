@@ -26,46 +26,46 @@ int	set_num(int *var, char *agmt)
 
 int	set_vars(t_vars *vars, char **av)
 {
-	vars->notepme = 0;
+	vars->notepme = -1;
 	return (set_num(&vars->nop, av[1]) || set_num(&vars->ttd, av[2]) || \
 			set_num(&vars->tte, av[3]) || set_num(&vars->tts, av[4]) || \
 			(av[5] && set_num(&vars->notepme, av[5])));
 }
 
-int	set_philo_fork(t_vars *vars, t_philo *philo)
+int	set_philo_fork(t_vars *vars, t_philo **philo)
 {
-	int	i;
-	
-	philo = (t_philo *)malloc(sizeof(t_philo) * vars->nop);
-	if (!philo)
+	*philo = (t_philo *)malloc(sizeof(t_philo) * vars->nop);
+	if (!*philo)
 		return (0);
 	vars->fork = (int *)malloc(sizeof(int) * vars->nop);
 	if (!vars->fork)
 	{
-		free(philo);
+		free(*philo);
 		return (0);
 	}
-	memset(philo, 0, sizeof(t_philo) * vars->nop);
+	memset(*philo, 0, sizeof(t_philo) * vars->nop);
 	memset(vars->fork, 0, sizeof(int) * vars->nop);
 	return (1);
 }
 
-void	*philo(void *arg)
+void	*thread(void *arg)
 {
 	t_philo	*philo;
 	t_vars	*vars;
 
 	philo = (t_philo *)arg;
+	(void)philo;
 	vars = philo->vars;
+	printf("no: %d, nop: %d, notepme: %d\n", philo->no, vars->nop, vars->notepme);
 	// 먹고->자고->생각하고 처리
-	if (vars->fork[philo->no - 1] && vars->fork[philo->no % vars->nop])
-	{
+	// if (vars->fork[philo->no - 1] && vars->fork[philo->no % vars->nop])
+	// {
 		
-	}
-	else
-	{
+	// }
+	// else
+	// {
 		
-	}
+	// }
 	return (NULL);
 }
 
@@ -75,7 +75,8 @@ int	main(int ac, char **av)
 	t_philo	*philo;
 	int		i;
 
-	if (ac < 5 || ac > 6 || set_vars(&vars, av) || !set_philo_fork(&vars, philo))
+	philo = NULL;
+	if (ac < 5 || ac > 6 || set_vars(&vars, av) || !set_philo_fork(&vars, &philo))
 		return (0);
 	pthread_mutex_init(&vars.mutex, NULL);
 	i = -1;
@@ -83,7 +84,7 @@ int	main(int ac, char **av)
 	{
 		philo[i].no = i + 1;
 		philo[i].vars = &vars;
-		pthread_create(&philo[i].thread, NULL, philo, (void *)&philo[i]);
+		pthread_create(&philo[i].thread, NULL, thread, (void *)&philo[i]);
 	}
 	i = -1;
 	while (++i < vars.nop)

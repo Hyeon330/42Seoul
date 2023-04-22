@@ -7,7 +7,7 @@ void    test1()
 	while (1)
 	{
 		gettimeofday(&tm, NULL);
-		printf("%ld %d\n", tm.tv_sec, tm.tv_usec);
+		printf("%ld %ld\n", tm.tv_sec, tm.tv_usec);
 	}
 }
 
@@ -115,7 +115,19 @@ int	test3()
     return 0;
 }
 
+typedef struct s_abc {
+	int	a;
+	int	b;
+	int c;
+}	t_abc;
+
 int main()
 {
-	test2();
+	t_abc *abc;
+
+	abc = (t_abc *)malloc(sizeof(t_abc) * 4);
+	abc[0].a = 1;
+	abc[0].b = 2;
+	abc[0].c = 3;
+	printf("%d, %d, %d\n", abc[0].a, abc[0].b, abc[0].c);
 }
