@@ -14,13 +14,12 @@ SRC		= ft_printf ft_take_info ft_checkers ft_field_counters \
 		ft_putchar_fd ft_putstr_fd ft_putendl_fd ft_putnbr_fd \
 		ft_putnbr_base ft_putunbr \
 		get_next_line get_next_line_utils
-OBJ		= $(SRC:.c=.o)
 
 SRC_DIR	= src/
 OBJ_DIR	= obj/
 
 SRCS	= $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC)))
-OBJS	= $(addprefix $(OBJ_DIR), $(addsuffix .o, $(OBJ)))
+OBJS	= $(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC)))
 
 
 all: $(OBJ_DIR) $(NAME)
@@ -35,7 +34,7 @@ $(OBJ_DIR):
 	mkdir $(OBJ_DIR)
 
 clean:
-	$(RM) -r $(OBJ_DIR)
+	$(RM)r $(OBJ_DIR)
 
 fclean: clean
 	$(RM) $(NAME)
