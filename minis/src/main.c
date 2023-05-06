@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 23:14:32 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/06 04:05:31 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/06 13:35:05 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,11 @@ int	isbiltin(char *cmd)
 
 void	exec(int ac, char **av)
 {
-	int	chk_biltin;
+	int	biltin_no;
 
-	(void)ac;
-	chk_biltin = isbiltin(av[0]);
-	if (0 < chk_biltin)
-		printf("biltin\n");
+	biltin_no = isbiltin(av[0]);
+	if (0 < biltin_no)
+		biltin(biltin_no, ac, av);
 	else
 		printf("not biltin\n");
 }
@@ -53,7 +52,7 @@ int	main(void)
 		if (!ft_strncmp(str, "exit", 4))
 			break ;
 		else
-			exec(0, &str);
+			exec(5, ft_split(str, ' '));
 		add_history(str);
 		free(str);
 	}

@@ -5,7 +5,7 @@ CFLAGS	= -Wall -Wextra -Werror
 HEADER	= header
 INC		= -I$(HEADER)
 
-FILES	= main error
+FILES	= main error biltin
 
 OBJ_DIR	= obj/
 SRC_DIR	= src/

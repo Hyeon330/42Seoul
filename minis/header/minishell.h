@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 23:39:03 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/06 04:05:30 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/06 13:41:31 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,14 @@ enum e_biltin {
 	ENV
 };
 
+// biltin.c
+void	biltin(int bilt_no, int ac, char **av);
+
 // error.c
 void	ft_error(int e_no);
 
 // libft.a
+char	**ft_split(char const *s, char c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 #endif
