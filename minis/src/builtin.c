@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   biltin.c                                           :+:      :+:    :+:   */
+/*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 11:14:53 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/06 14:04:57 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/09 22:13:40 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	echo(int ac, char **av)
 		printf("\n");
 }
 
-void	biltin(int bilt_no, int ac, char **av)
+void	builtin(int builtin_no, int ac, char **av)
 {
-	if (bilt_no == ECHO)
+	if (builtin_no == ECHO)
 		echo(ac, av);
 }
