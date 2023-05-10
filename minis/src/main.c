@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 23:14:32 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/09 22:28:46 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/11 05:01:41 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,31 +29,32 @@ int	isbuiltin(char *cmd)
 	return (0);
 }
 
-void	exec(t_list *cmd_list, char **env)
+void	exec(t_cmd **cmds, char **env)
 {
-	// int	biltin_no;
-
-	// biltin_no = isbiltin(av[0]);
-	// if (0 < biltin_no)
-	// 	biltin(biltin_no, ac, av);
-	// else
-	// 	printf("not biltin\n");
-	int		builtin_no;
 	t_cmd	*cmd;
+	int		builtin_no;
+	int		i;
 
-	while (cmd_list)
+	i = -1;
+	while (cmds[++i])
 	{
-		cmd = (t_cmd *)cmd_list->content;
-		builtin_no = isbuiltin(cmd->av[0]);
-		if (0 < builtin_no)
-			builtin(builtin_no, cmd->ac, cmd->av);
+		while (cmds[i])
+		{
+			if (cmds[i]->type & CMD)
+				cmd = cmds[i];
+			if (cmds[i]->type & (IN_REDIR | HERE_DOC))
+				in_redir(cmds[i]);
+			if (cmds[i]->type & (OUT_REDIR | APPEND))
+				out_redir(cmds[i]);
+			cmds[i] = cmds[i]->next;
+		}
 	}
 }
 
 int	main(int ac, char **av, char **env)
 {
 	char	*str;
-	char	*cmds;
+	t_cmd	**cmds;
 
 	(void)ac;
 	(void)av;

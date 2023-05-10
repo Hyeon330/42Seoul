@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 23:39:03 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/09 22:26:54 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/11 05:05:49 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <fcntl.h>
 # include <errno.h>
 # include <dirent.h>
 # include <signal.h>
 
 enum e_err {
-	DYNAMIC = 0
+	DYNAMIC = 0,
+	OPEN = 32
 };
 
 enum e_builtin {
@@ -37,34 +39,38 @@ enum e_builtin {
 };
 
 enum e_type {
-	FIRST = 0,
-	PIPE,
-	IN_REDIR,
-	OUT_REDIR,
-	HERE_DOC,
-	APPEND_MODE
+	CMD = 1,
+	IN_REDIR = 2,
+	OUT_REDIR = 4,
+	HERE_DOC = 8,
+	APPEND = 16
 };
 
 typedef struct s_cmd {
-	char	*path;
-	char	**av;
-	int		ac;
-	int		type;
+	struct s_cmd	*next;
+	char			*path;
+	char			**av;
+	int				ac;
+	int				type;
 }	t_cmd;
-
-typedef struct s_list {
-	void	*content;
-	t_list	*next;
-}	t_list;
 
 // builtin.c
 void	builtin(int builtin_no, int ac, char **av);
+
+// redirection.c
+void	in_redir();
+void	out_redir();
 
 // error.c
 void	ft_error(int e_no);
 
 // libft.a
+char	*get_next_line(int fd);
 char	**ft_split(char const *s, char c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+size_t	ft_strlen(const char *s);
+char	*ft_strrchr(const char *s, int c);
+char	*ft_strjoin(char const *s1, char const *s2);
+void	*ft_memset(void *b, int c, size_t len);
 
 #endif
