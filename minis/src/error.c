@@ -13,24 +13,24 @@
 #include "minishell.h"
 
 // "minish: "
-char	*set_err_msg(t_cmd *cmd)
-{
-	char	*str;
-	int		path_len;
-	int		av_len;
-	int		str_len;
-	int		i;
+// char	*set_err_msg(t_cmd *cmd)
+// {
+// 	char	*str;
+// 	int		path_len;
+// 	int		av_len;
+// 	int		str_len;
+// 	int		i;
 
-	path_len = ft_strlen(cmd->path);
-	av_len = ft_strlen(cmd->av[1]);
-	str_len = 8 + path_len + ((av_len && 1) * 2) + av_len + 1;
-	str = (char *)malloc(sizeof(char) * str_len);
-	if (!str)
-		ft_error(DYNAMIC);
-	str[str_len] = 0;
+// 	path_len = ft_strlen(cmd->path);
+// 	av_len = ft_strlen(cmd->av[1]);
+// 	str_len = 8 + path_len + ((av_len && 1) * 2) + av_len + 1;
+// 	str = (char *)malloc(sizeof(char) * str_len);
+// 	if (!str)
+// 		ft_error(DYNAMIC);
+// 	str[str_len] = 0;
 
-	return (NULL);
-}
+// 	return (NULL);
+// }
 
 void	ft_error(int e_no)
 {
@@ -40,7 +40,7 @@ void	ft_error(int e_no)
 	if (e_no == DYNAMIC)
 		msg = "Dynamic allocation error.\n";
 	if (e_no == OPEN)
-		
+		msg = "Open error";
 	while (*msg)
 		write(2, msg++, 1);
 	exit(EXIT_FAILURE);
