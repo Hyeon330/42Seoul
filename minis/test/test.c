@@ -2,28 +2,19 @@
 
 int main(void)
 {
-	// int fd[2];
-	// char buff[30];
+	char buf[1024];
 
-	// ft_memset(buff, 0, 30);
-	// pipe(fd);
+	getcwd(buf, sizeof(buf));
+	printf("%s\n", buf);
 
-	// char *str = "hello\n";
-	// while (*str)
-	// 	write(fd[1], str++, 1);
-	// str = "world";
-	// while (*str)
-	// 	write(fd[1], str++, 1);
-	// str = "hahahaha";
-	// while (*str)
-	// 	write(fd[1], str++, 1);
-	// close(fd[1]);
-	// read(fd[0], buff, 30);
-	// printf("%s\n", buff);
-	char *str[3];
+	printf("%d\n", chdir("test"));
 
-	str[0] = "cat";
-	str[1] = "fdsa";
-	str[2] = NULL;
-	execve("/bin/cat", str, NULL);
+	getcwd(buf, sizeof(buf));
+	printf("%s\n", buf);
+
+	char *av[2];
+
+	av[0] = "ls";
+	av[1] = NULL;
+	execve("/bin/ls", av, NULL);
 }

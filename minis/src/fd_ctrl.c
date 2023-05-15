@@ -1,35 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   fd_ctrl.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/05 23:14:32 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/15 03:45:15 by hyeonsul         ###   ########.fr       */
+/*   Created: 2023/05/15 01:30:46 by hyeonsul          #+#    #+#             */
+/*   Updated: 2023/05/15 04:13:14 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int ac, char **av, char **env)
+void	pipex(int *fd, int INOUT)
 {
-	char	*str;
-	t_cmd	**cmds;
-
-	(void)ac;
-	(void)av;
-	while (1)
+	if (INOUT)
+		dup2(fd[1], INOUT);
+	else
 	{
-		str = readline("minishell$ ");
-		if (!str)
-			ft_error(DYNAMIC);
-		if (!ft_strncmp(str, "exit", 5))
-			break ;
-		else
-			exec(cmds, 0, env);
-		add_history(str);
-		free(str);
+		dup2(fd[0], INOUT);
+		close(fd[0]);
 	}
-	free(str);
+	close(fd[1]);
+}
+
+void	redirect(t_cmd *cmd)
+{
+	while (cmd)
+	{
+		if (cmd->type & (IN_REDIR | HERE_DOC))
+			in_redir(cmd);
+		if (cmd->type & (OUT_REDIR | APPEND))
+			out_redir(cmd);
+		cmd = cmd->next;
+	}
+}
+
+void	fd_ctrl(t_cmd *cmd, int pipe_chk, int *fd)
+{
+	if (pipe_chk)
+		pipex(fd, STDOUT_FILENO);
+	redirect(cmd);
 }

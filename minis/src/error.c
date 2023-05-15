@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 03:22:49 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/11 05:24:13 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/15 09:11:27 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,19 @@
 
 void	ft_error(int e_no)
 {
-	char		*msg;
+	char	*msg;
 
-	msg = NULL;
-	if (e_no == DYNAMIC)
-		msg = "Dynamic allocation error.\n";
-	if (e_no == OPEN)
-		msg = "Open error";
-	while (*msg)
-		write(2, msg++, 1);
-	exit(EXIT_FAILURE);
+	if (e_no < SYSTEM)
+	{
+		if (e_no == DYNAMIC)
+			msg = "Dynamic allocation error\n";
+		if (e_no == CHDIR_ARG)
+			msg = "cd: too many arguments\n";
+		while (*msg)
+			write(2, msg++, 1);
+	}
+	else
+		perror("minish");
 }
 
 // cd fdsa

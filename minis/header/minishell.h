@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 23:39:03 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/11 05:05:49 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/15 12:43:41 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@
 
 enum e_err {
 	DYNAMIC = 0,
-	OPEN = 32
+	CHDIR_PATH = 1,
+	CHDIR_ARG = 2,
+	SYSTEM = 32
 };
 
 enum e_builtin {
@@ -54,12 +56,18 @@ typedef struct s_cmd {
 	int				type;
 }	t_cmd;
 
+// exec.c
+void	exec(t_cmd **cmds, int cmd_num, char **env);
+
 // builtin.c
-void	builtin(int builtin_no, int ac, char **av);
+void	builtin(int builtin_no, t_cmd *cmd);
+
+// fd_ctrl.c
+void	fd_ctrl(t_cmd *cmd, int pipe_chk, int *fd);
 
 // redirection.c
-void	in_redir();
-void	out_redir();
+void	in_redir(t_cmd *cmd);
+void	out_redir(t_cmd *cmd);
 
 // error.c
 void	ft_error(int e_no);
