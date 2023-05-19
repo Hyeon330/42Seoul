@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 03:43:59 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/15 12:42:43 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/19 02:53:46 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,12 @@ void	exec(t_cmd **cmds, int cmd_num, char **env)
 		if (builtin_no)
 		{
 			fd_ctrl(cmds[i], pipe_chk, fd);
-			builtin(builtin_no, cmds[i]);
+			builtin(builtin_no, cmds[i], env);
 		}
 		else
 			child_proc(cmds[i], pipe_chk, fd, env);
 		if (pipe_chk)
 			pipex(fd, STDIN_FILENO);
 	}
-	while (wait(0) != -1)
-		;
+	
 }
