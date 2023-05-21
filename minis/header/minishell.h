@@ -66,10 +66,10 @@ typedef struct s_env {
 }	t_env;
 
 // exec.c
-void	exec(t_cmd **cmds, int cmd_num, char **env);
+void	exec(t_cmd **cmds, int cmd_num, t_env **env);
 
 // builtin.c
-void	builtin(int builtin_no, t_cmd *cmd, char **env);
+void	builtin(int builtin_no, t_cmd *cmd, t_env **env);
 
 // fd_ctrl.c
 void	fd_ctrl(t_cmd *cmd, int pipe_chk, int *fd);

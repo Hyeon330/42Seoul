@@ -22,6 +22,7 @@ void	set_env(t_env **root, char **env)
 		var = ft_split(*env, '=');
 		if (!var)
 			ft_error(DYNAMIC);
+		if (ft_strncmp(var[0], ))
 		insert(root, var[0], getenv(var[0]));
 		i = 0;
 		while (var[++i])
@@ -49,7 +50,7 @@ int	main(int ac, char **av, char **env)
 		if (!ft_strncmp(str, "exit", 5))
 			break ;
 		else
-			exec(cmds, 0, env);
+			exec(cmds, 0, sh_env);
 		add_history(str);
 		free(str);
 	}

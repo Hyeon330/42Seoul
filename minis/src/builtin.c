@@ -33,8 +33,7 @@ void	cd(t_cmd *cmd, char **env)
 {
 	char		now[PATH_LEN];
 	char		*before;
-
-	getcwd(now, sizeof(now));
+	
 	if (cmd->av[2])
 		ft_error(CHDIR_ARG);
 	if (!ft_strncmp(cmd->av[1], "-", 2))
@@ -65,7 +64,7 @@ void	export(t_cmd *cmd)
 	
 }
 
-void	builtin(int builtin_no, t_cmd *cmd, char **env)
+void	builtin(int builtin_no, t_cmd *cmd, t_env **env)
 {
 	if (builtin_no == ECHO)
 		echo(cmd);
