@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 23:39:03 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/24 17:17:25 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/24 23:14:18 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ enum e_type {
 
 typedef struct s_cmd {
 	struct s_cmd	*next;
-	char			*path;
+	char			*cmd;
 	char			**av;
 	int				ac;
 	int				type;

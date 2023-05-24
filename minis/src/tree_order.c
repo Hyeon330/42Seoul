@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 08:51:20 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/24 17:18:52 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/24 23:24:28 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,23 @@ void	envp_visit(t_env *node, char ***envp, int idx)
 	int	i;
 	int	s_key;
 	int	s_val;
+	int	s_tot;
 
 	s_key = ft_strlen(node->key);
 	s_val = ft_strlen(node->val);
-	(*envp)[idx] = (char *)malloc(s_key + s_val + 2);
+	s_tot = s_key + s_val + 1;
+	(*envp)[idx] = (char *)malloc(sizeof(char) * (s_tot + 1));
 	if (!(*envp)[idx])
 	{
 		clear_ppc(envp);
 		ft_error(DYNAMIC);
 	}
 	(*envp)[idx][s_key] = '=';
-	(*envp)[idx][s_key + s_val + 1] = 0;
+	(*envp)[idx][s_tot] = 0;
 	i = -1;
 	while (++i < s_key)
 		(*envp)[idx][i] = node->key++;
-	while (++i < s_key + s_val + 1)
+	while (++i < s_tot)
 		(*envp)[idx][i] = node->val++;
 }
 
