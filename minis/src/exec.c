@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 03:43:59 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/19 02:53:46 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/24 18:15:25 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,53 @@ int	isbuiltin(char *cmd)
 	return (0);
 }
 
-void	child_proc(t_cmd *cmd, int pipe_chk, int *fd, char **env)
+void	execution(t_cmd *cmd, t_tree *env)
 {
+	char	**envp;
+	char	**paths;
+	int		i;
+
+	envp = (char **)ft_calloc(env->size + 1, sizeof(char *));
+	if (!envp)
+		ft_error(DYNAMIC);
+	i = 0;
+	get_envp(env->root, &envp, &i);
+	paths = ft_split(search(env, "PATH"), ":");
+	if (!paths)
+		ft_error(DYNAMIC);
+}
+
+void	child_proc(t_cmd *cmd, int pipe_chk, int *fd, t_tree *env)
+{
+	char	**envp;
 	pid_t	pid;
+	int		i;
 
 	pid = fork();
 	if (pid == -1)
 		ft_error(SYSTEM);
 	if (!pid)
 	{
+		envp = (char **)ft_calloc(env->size + 1, sizeof(char *));
+		if (!envp)
+			ft_error(DYNAMIC);
+		i = 0;
+		get_envp(env->root, &envp, &i);
 		fd_ctrl(cmd, pipe_chk, fd);
 		close(fd[0]);
-		execve(cmd->path, cmd->av, env);
+		execve(cmd->path, cmd->av, envp);
 	}
 }
 
-void	exec(t_cmd **cmds, int cmd_num, t_env **env)
+void	waiting()
+{
+	int	status;
+	
+	while (waitpid(-1, &status, 0) > 0)
+		g_exit_code = status >> 8;
+}
+
+void	exec(t_cmd **cmds, int cmd_num, t_tree *env)
 {
 	int	fd[2];
 	int	builtin_no;
@@ -68,5 +99,5 @@ void	exec(t_cmd **cmds, int cmd_num, t_env **env)
 		if (pipe_chk)
 			pipex(fd, STDIN_FILENO);
 	}
-	
+	waiting();
 }

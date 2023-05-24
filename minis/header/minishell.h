@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 23:39:03 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/19 11:02:22 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/24 17:17:25 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,16 @@ typedef struct s_env {
 	char			*val;
 }	t_env;
 
+typedef struct s_tree {
+	t_env	*root;
+	size_t	size;
+}	t_tree;
+
 // exec.c
-void	exec(t_cmd **cmds, int cmd_num, t_env **env);
+void	exec(t_cmd **cmds, int cmd_num, t_tree *env);
 
 // builtin.c
-void	builtin(int builtin_no, t_cmd *cmd, t_env **env);
+void	builtin(int builtin_no, t_cmd *cmd, t_tree *env);
 
 // fd_ctrl.c
 void	fd_ctrl(t_cmd *cmd, int pipe_chk, int *fd);
@@ -78,12 +83,16 @@ void	fd_ctrl(t_cmd *cmd, int pipe_chk, int *fd);
 void	in_redir(t_cmd *cmd);
 void	out_redir(t_cmd *cmd);
 
-// tree.c
-void	insert(t_env **root, char *key, char *val);
+// tree1.c
+void	insert(t_tree *tree, char *key, char *val);
+
+// tree2.c
 char	*search(t_env *node, char *key);
+void	delete_(t_tree *tree, char *key);
 
 // tree_order.c
-void	inorder(t_env *node);
+void	inorder(t_env *node, void (*visit)(t_env *), int builtin_no);
+void	get_envp(t_env *node, char ***envp, int *idx);
 
 // error.c
 void	ft_error(int e_no);
@@ -97,5 +106,8 @@ char	*ft_strrchr(const char *s, int c);
 char	*ft_strjoin(char const *s1, char const *s2);
 void	*ft_memset(void *b, int c, size_t len);
 void    *ft_calloc(size_t count, size_t size);
+char    *ft_strchr(const char *s, int c);
+
+extern int	g_exit_code;
 
 #endif

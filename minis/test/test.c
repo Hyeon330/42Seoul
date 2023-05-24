@@ -1,9 +1,39 @@
 #include "../header/minishell.h"
 
-typedef struct s_list {
-	int				num;
-	struct s_list	*next;
-}	t_list;
+int test() {
+    int i;
+    int num_processes = 5; // 예제에서 생성할 자식 프로세스의 수
+    
+    for (i = 0; i < num_processes; i++) {
+        pid_t pid = fork();
+        
+        if (pid == 0) {
+            // 자식 프로세스가 할 일
+            printf("자식 프로세스 %d 시작\n", getpid());
+            sleep(i + 1); // 자식 프로세스마다 다른 시간 동안 대기
+            printf("자식 프로세스 %d 종료\n", getpid());
+            exit(123);
+        } else if (pid < 0) {
+            // fork() 호출 실패
+            fprintf(stderr, "fork() 실패\n");
+            return 1;
+        }
+    }
+    
+    // 각 자식 프로세스가 종료될 때까지 기다림
+    int	status;
+    pid_t child_pid;
+    while ((child_pid = waitpid(-1, &status, 0)) > 0) {
+        if (WIFEXITED(status)) {
+            printf("자식 프로세스 %d 정상 종료\n", child_pid);
+        } else {
+            printf("자식 프로세스 %d 비정상 종료\n", child_pid);
+        }
+		printf("pid: %d, status: %d\n", child_pid, status >> 8);
+    }
+    
+    return 0;
+}
 
 int main(int ac, char **av, char **env)
 {
@@ -46,15 +76,6 @@ int main(int ac, char **av, char **env)
 	// waitpid(pid, &chk, 0);
 	// printf("%d\n", chk >> 8);
 
-	// (void)ac;
-	// (void)av;
-
-	// while (*env)
-	// 	printf("%s\n", *env++);
-
-	// printf("%d\n", ft_strncmp("hello", "hello", 6));
-
-	t_list *lst;
-
-	
+	test();
 }
+
