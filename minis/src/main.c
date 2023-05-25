@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 23:14:32 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/21 22:14:04 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/25 20:09:48 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ void	set_env(t_tree *tree, char **env)
 	}
 }
 
+void	exit_clear(t_cmd **cmds, t_tree env, char *str)
+{
+	
+}
+
 int	main(int ac, char **av, char **env)
 {
 	char	*str;
@@ -48,8 +53,8 @@ int	main(int ac, char **av, char **env)
 		str = readline("minishell$ ");
 		if (!str)
 			ft_error(DYNAMIC);
-		if (!ft_strncmp(str, "exit", 5))
-			break ;
+		if (!cmds[1] && !ft_strncmp(cmds[0]->av[0], "exit", 5))
+			exit_clear(cmds, env_, str);
 		else
 			exec(cmds, 0, &env_);
 		add_history(str);

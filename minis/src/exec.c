@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 03:43:59 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/24 23:31:17 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/25 14:51:04 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,26 +56,20 @@ int	execution(t_cmd *cmd, char **env)
 {
 	char	**paths;
 	char	*real_path;
-	int		ret;
 	int		i;
 
 	paths = ft_split(search(env, "PATH"), ":");
 	if (!paths)
 		ft_error(DYNAMIC);
-	i = -2;
+	execve(cmd->cmd, cmd->av, env);
+	i = -1;
 	while (paths[++i])
 	{
-		if (i < 0)
-			ret = execve(cmd->cmd, cmd->av, env);
-		else
-		{
-			real_path = get_real_path(paths[i], cmd->cmd);
-			if (!real_path)
-				ft_error(DYNAMIC);
-			ret = execve(real_path, cmd->av, env);
-		}
+		real_path = get_real_path(paths[i], cmd->cmd);
+		if (!real_path)
+			ft_error(DYNAMIC);
+		execve(real_path, cmd->av, env);
 	}
-	return (ret);
 }
 
 void	child_proc(t_cmd *cmd, int pipe_chk, int *fd, t_tree *env)

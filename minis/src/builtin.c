@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 11:14:53 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/21 22:23:02 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/25 19:51:47 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,10 @@ void	pwd()
 
 void	print_export(t_env *node)
 {
-	printf("declare -x %s=\"%s\"\n", node->key, node->val);
+	printf("declare -x %s", node->key);
+	if (node->val)
+		printf("=\"%s\"", node->val);
+	printf("\n");
 }
 
 void	export(t_cmd *cmd, t_tree *env)
@@ -103,7 +106,8 @@ void	unset(t_cmd *cmd, t_tree *env)
 
 void	print_env(t_env *node)
 {
-	printf("%s=%s\n", node->key, node->val);
+	if (node->val)
+		printf("%s=%s\n", node->key, node->val);
 }
 
 void	env(t_env **envp)
