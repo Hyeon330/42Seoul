@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 03:43:59 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/25 14:51:04 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/28 11:31:32 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	exec(t_cmd **cmds, int cmd_num, t_tree *env)
 		if (builtin_no)
 		{
 			fd_ctrl(cmds[i], pipe_chk, fd);
-			builtin(builtin_no, cmds[i], env);
+			g_exit_code = builtin(builtin_no, cmds[i], env);
 		}
 		else
 			child_proc(cmds[i], pipe_chk, fd, env);

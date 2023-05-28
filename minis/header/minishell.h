@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 23:39:03 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/24 23:14:18 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/28 12:01:35 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ typedef struct s_tree {
 void	exec(t_cmd **cmds, int cmd_num, t_tree *env);
 
 // builtin.c
-void	builtin(int builtin_no, t_cmd *cmd, t_tree *env);
+int		builtin(int builtin_no, t_cmd *cmd, t_tree *env);
 
 // fd_ctrl.c
 void	fd_ctrl(t_cmd *cmd, int pipe_chk, int *fd);
@@ -95,7 +95,7 @@ void	inorder(t_env *node, void (*visit)(t_env *), int builtin_no);
 void	get_envp(t_env *node, char ***envp, int *idx);
 
 // error.c
-void	ft_error(int e_no);
+int	ft_error(int e_no);
 
 // libft.a
 char	*get_next_line(int fd);

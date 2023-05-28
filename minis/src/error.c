@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 03:22:49 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/15 09:11:27 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/28 11:59:48 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 // 	return (NULL);
 // }
 
-void	ft_error(int e_no)
+int	ft_error(int e_no)
 {
 	char	*msg;
 
@@ -47,6 +47,7 @@ void	ft_error(int e_no)
 	}
 	else
 		perror("minish");
+	return (1);
 }
 
 // cd fdsa
