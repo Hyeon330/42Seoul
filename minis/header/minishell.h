@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 23:39:03 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/28 12:01:35 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/29 21:41:47 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@
 
 enum e_err {
 	DYNAMIC = 0,
-	CHDIR_PATH,
-	CHDIR_ARG,
+	OLDPWD,
 	SYSTEM = 32
 };
 
@@ -75,6 +74,15 @@ void	exec(t_cmd **cmds, int cmd_num, t_tree *env);
 
 // builtin.c
 int		builtin(int builtin_no, t_cmd *cmd, t_tree *env);
+int		isbuiltin(char *cmd);
+
+// builtin/cmds
+int		echo(t_cmd *cmd);
+int		cd(t_cmd *cmd, t_tree *env);
+int		pwd(t_env *root);
+int		export(t_cmd *cmd, t_tree *env);
+int		unset(t_cmd *cmd, t_tree *env);
+int		env(t_env **envp);
 
 // fd_ctrl.c
 void	fd_ctrl(t_cmd *cmd, int pipe_chk, int *fd);

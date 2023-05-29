@@ -6,28 +6,11 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 03:43:59 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/28 11:31:32 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/29 20:45:07 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	isbuiltin(char *cmd)
-{
-	if (!ft_strncmp(cmd, "echo", 5))
-		return (ECHO);
-	if (!ft_strncmp(cmd, "cd", 3))
-		return (CD);
-	if (!ft_strncmp(cmd, "pwd", 4))
-		return (PWD);
-	if (!ft_strncmp(cmd, "export", 7))
-		return (EXPORT);
-	if (!ft_strncmp(cmd, "unset", 6))
-		return (UNSET);
-	if (!ft_strncmp(cmd, "env", 4))
-		return (ENV);
-	return (0);
-}
 
 char	*get_real_path(char *path, char *cmd)
 {
@@ -87,9 +70,9 @@ void	child_proc(t_cmd *cmd, int pipe_chk, int *fd, t_tree *env)
 		if (!envp)
 			ft_error(DYNAMIC);
 		i = 0;
-		get_envp(env->root, &envp, &i);
 		fd_ctrl(cmd, pipe_chk, fd);
 		close(fd[0]);
+		get_envp(env->root, &envp, &i);
 		execution(cmd, envp);
 		exit(127);
 	}

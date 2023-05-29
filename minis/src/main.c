@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 23:14:32 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/25 20:09:48 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/29 20:38:28 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	main(int ac, char **av, char **env)
 	char	*str;
 	t_cmd	**cmds;
 	t_tree	env_;
+	int		cmd_num;
 
 	(void)ac;
 	(void)av;
@@ -56,7 +57,7 @@ int	main(int ac, char **av, char **env)
 		if (!cmds[1] && !ft_strncmp(cmds[0]->av[0], "exit", 5))
 			exit_clear(cmds, env_, str);
 		else
-			exec(cmds, 0, &env_);
+			exec(cmds, cmd_num, &env_);
 		add_history(str);
 		free(str);
 	}

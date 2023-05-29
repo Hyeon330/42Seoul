@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/06 03:22:49 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/29 21:44:44 by hyeonsul         ###   ########.fr       */
+/*   Created: 2023/05/29 19:30:57 by hyeonsul          #+#    #+#             */
+/*   Updated: 2023/05/29 19:31:10 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_error(int e_no)
+int	echo(t_cmd *cmd)
 {
-	char	*msg;
-
-	write(2, "minish: ", 8);
-	if (e_no < SYSTEM)
+	int	opt;
+	int	i;
+	
+	opt = !ft_strncmp(cmd->av[1], "-n", 3);
+	i = 0 | opt;
+	while (++i < cmd->ac)
 	{
-		if (e_no == DYNAMIC)
-			msg = "Dynamic allocation error\n";
-		if (e_no == OLDPWD)
-			msg = "cd: OLDPWD not set\n";
-		while (*msg)
-			write(2, msg++, 1);
+		printf("%s", cmd->av[i]);
+		if (i != cmd->ac - 1)
+			printf(" ");
 	}
-	else
-		perror("minish");
-	return (1);
+	if (!opt)
+		printf("\n");
+	return (0);
 }

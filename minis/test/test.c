@@ -1,13 +1,13 @@
 #include "../header/minishell.h"
 
-void	handle_signal(int signum)
-{
-	(void) signum;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-    rl_redisplay();
-}
+// void	handle_signal(int signum)
+// {
+// 	(void) signum;
+// 	printf("\n");
+// 	rl_on_new_line();
+// 	rl_replace_line("", 0);
+//     rl_redisplay();
+// }
 
 int main(int ac, char **av, char **env)
 {
@@ -52,16 +52,21 @@ int main(int ac, char **av, char **env)
 
 	// test();
 
-	char *str;
+	// char *str;
 
-	signal(SIGINT, handle_signal);
-	signal(SIGQUIT, handle_signal);
-	while (1)
-	{
-		str = readline("minishell$ ");
-		printf("%s\n", str);
-		add_history(str);
-		free(str);
-	}
+	// signal(SIGINT, handle_signal);
+	// signal(SIGQUIT, handle_signal);
+	// while (1)
+	// {
+	// 	str = readline("minishell$ ");
+	// 	printf("%s\n", str);
+	// 	add_history(str);
+	// 	free(str);
+	// }
+
+	// char **av = {"", "world", NULL};
+	// int i = execve("/bin/ps", NULL, NULL);
+	printf("%d\n", strncmp(NULL, "hello", 6));
+
 }
 
