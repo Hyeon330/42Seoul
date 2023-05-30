@@ -6,25 +6,25 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 23:39:03 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/29 21:41:47 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/30 22:23:03 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <unistd.h>
 # include <stdio.h>
+# include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
 # include <fcntl.h>
 # include <errno.h>
 # include <dirent.h>
 # include <signal.h>
+# include "readline/readline.h"
+# include "readline/history.h"
 
-# define PATH_LEN 1024
+# define PROMPT "\033[95mMiniShell$ \033[39m"
 
 enum e_err {
 	DYNAMIC = 0,

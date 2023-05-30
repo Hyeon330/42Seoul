@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 23:14:32 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/29 20:38:28 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/05/30 22:24:34 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,41 @@ void	set_env(t_tree *tree, char **env)
 	}
 }
 
-void	exit_clear(t_cmd **cmds, t_tree env, char *str)
+void	free_cmds(t_cmd **cmds)
 {
 	
 }
 
-int	main(int ac, char **av, char **env)
+void	exit_clear(t_cmd **cmds, t_tree env)
+{
+	
+}
+
+void	proc(t_tree env)
 {
 	char	*str;
 	t_cmd	**cmds;
+	int		cmds_cnt;
+
+	str = readline(PROMPT);
+	if (!str)
+		exit_clear(cmds, env);
+	add_history(str);
+	str = pre_parse(str);
+	parse(&cmds, &cmds_cnt, str);
+	if (!str)
+		ft_error(DYNAMIC);
+	free(str);
+	if (!cmds[1] && !ft_strncmp(cmds[0]->av[0], "exit", 5))
+		exit_clear(cmds, env);
+	else
+		exec(cmds, cmds_cnt, &env);
+	free_cmds(cmds);
+}
+
+int	main(int ac, char** av, char **env)
+{
 	t_tree	env_;
-	int		cmd_num;
 
 	(void)ac;
 	(void)av;
@@ -50,16 +74,5 @@ int	main(int ac, char **av, char **env)
 	g_exit_code = 0;
 	set_env(&env_, env);
 	while (1)
-	{
-		str = readline("minishell$ ");
-		if (!str)
-			ft_error(DYNAMIC);
-		if (!cmds[1] && !ft_strncmp(cmds[0]->av[0], "exit", 5))
-			exit_clear(cmds, env_, str);
-		else
-			exec(cmds, cmd_num, &env_);
-		add_history(str);
-		free(str);
-	}
-	free(str);
+		proc(env_);
 }
