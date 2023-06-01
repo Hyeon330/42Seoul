@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 17:06:13 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/03/25 16:30:06 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/01 18:05:50 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ int	main(int ac, char **av, char **env)
 		close(fd[0]);
 		close(fd[1]);
 	}
-	if (args.here_doc)
-		unlink(".here_doc");
 	while (wait(0) != -1)
 		;
 }
