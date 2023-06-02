@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 08:51:20 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/24 23:24:28 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/02 03:13:19 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,29 +46,40 @@ void	envp_visit(t_env *node, char ***envp, int idx)
 	if (!(*envp)[idx])
 	{
 		clear_ppc(envp);
-		ft_error(DYNAMIC);
+		ft_error(DYNAMIC, NULL);
 	}
 	(*envp)[idx][s_key] = '=';
 	(*envp)[idx][s_tot] = 0;
 	i = -1;
 	while (++i < s_key)
-		(*envp)[idx][i] = node->key++;
+		(*envp)[idx][i] = *node->key++;
 	while (++i < s_tot)
-		(*envp)[idx][i] = node->val++;
+		(*envp)[idx][i] = *node->val++;
+	node->key -= s_key;
+	node->val -= s_val;
 }
 
 void	get_envp(t_env *node, char ***envp, int *idx)
 {
-	int	i;
-	int	s_key;
-	int	s_val;
-
 	if (!node)
 	{
 		--(*idx);
 		return ;
 	}
 	envp_visit(node, envp, *idx);
-	get_envp(node->left, envp, ++(*idx));
-	get_envp(node->right, envp, ++(*idx));
+	++(*idx);
+	get_envp(node->left, envp, idx);
+	++(*idx);
+	get_envp(node->right, envp, idx);
+}
+
+void	free_env(t_env *node)
+{
+	if (!node)
+		return ;
+	free_env(node->left);
+	free_env(node->right);
+	free(node->key);
+	free(node->val);
+	free(node);
 }

@@ -6,74 +6,39 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 03:43:59 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/30 22:48:45 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/02 18:02:55 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_real_path(char *path, char *cmd)
-{
-	char	*path;
-	int		s_path;
-	int		s_cmd;
-	int		s_tot;
-	int		i;
-
-	s_path = ft_strlen(path);
-	s_cmd = ft_strlen(cmd);
-	s_tot = s_path + s_cmd + 1;
-	path = (char *)malloc(sizeof(char) * (s_tot + 1));
-	if (!path)
-		ft_error(DYNAMIC);
-	path[s_path] = '/';
-	path[s_tot] = 0;
-	i = -1;
-	while (++i < s_path)
-		path[i] = path++;
-	while (++i < s_tot)
-		path[i] = cmd++;
-}
-
-int	execution(t_cmd *cmd, char **env)
-{
-	char	**paths;
-	char	*real_path;
-	int		i;
-
-	paths = ft_split(search(env, "PATH"), ":");
-	if (!paths)
-		ft_error(DYNAMIC);
-	execve(cmd->cmd, cmd->av, env);
-	i = -1;
-	while (paths[++i])
-	{
-		real_path = get_real_path(paths[i], cmd->cmd);
-		if (!real_path)
-			ft_error(DYNAMIC);
-		execve(real_path, cmd->av, env);
-	}
-}
-
-void	child_proc(t_cmd *cmd, int pipe_chk, int *fd, t_tree *env)
+void	child_proc(t_cmd *cmd, int pipe_chk, int *fd, t_vars *vars)
 {
 	char	**envp;
 	pid_t	pid;
+	int		builtin_no;
 	int		i;
 
+	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == -1)
-		ft_error(SYSTEM);
+		ft_error(FORK, NULL);
 	if (!pid)
 	{
-		envp = (char **)ft_calloc(env->size + 1, sizeof(char *));
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		if (fd_ctrl(cmd, pipe_chk, fd))
+			exit(1);
+		envp = (char **)ft_calloc(vars->env.size + 1, sizeof(char *));
 		if (!envp)
-			ft_error(DYNAMIC);
+			ft_error(DYNAMIC, NULL);
 		i = 0;
-		fd_ctrl(cmd, pipe_chk, fd);
-		close(fd[0]);
-		get_envp(env->root, &envp, &i);
-		execution(cmd, envp);
+		get_envp(vars->env.root, &envp, &i);
+		builtin_no = isbuiltin(cmd->cmd);
+		if (builtin_no)
+			exit(builtin(builtin_no, cmd, vars));
+		else
+			execute(cmd, vars, envp);
 		exit(127);
 	}
 }
@@ -81,32 +46,32 @@ void	child_proc(t_cmd *cmd, int pipe_chk, int *fd, t_tree *env)
 void	waiting()
 {
 	int	status;
-	
+
 	while (waitpid(-1, &status, 0) > 0)
 		g_exit_code = status >> 8;
 }
 
-void	exec(t_cmd **cmds, int cmd_num, t_tree *env)
+void	exec(t_vars *vars)
 {
 	int	fd[2];
-	int	builtin_no;
 	int	pipe_chk;
+	int	builtin_no;
 	int	i;
 
 	i = -1;
-	while (++i < cmd_num)
+	while (++i < vars->cmds_cnt)
 	{
-		pipe_chk = i + 1 < cmd_num;
+		pipe_chk = i + 1 < vars->cmds_cnt;
 		if (pipe_chk && pipe(fd) == -1)
-			ft_error(SYSTEM);
-		builtin_no = isbuiltin(cmds[i]->cmd);
-		if (builtin_no)
 		{
-			fd_ctrl(cmds[i], pipe_chk, fd);
-			g_exit_code = builtin(builtin_no, cmds[i], env);
+			g_exit_code = ft_error(PIPE, NULL);
+			continue ;
 		}
+		builtin_no = isbuiltin(vars->cmds[i]->cmd);
+		if (vars->cmds_cnt == 1 && builtin_no)
+			g_exit_code = builtin(builtin_no, vars->cmds[i], vars);
 		else
-			child_proc(cmds[i], pipe_chk, fd, env);
+			child_proc(vars->cmds[i], pipe_chk, fd, vars);
 		if (pipe_chk)
 			pipex(fd, STDIN_FILENO);
 	}

@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 03:38:09 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/21 22:08:46 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/02 08:03:07 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	insert3(t_env **node, t_env **parent, t_env *new, int chk)
 {
 	if (*node)
 	{
+		free((*node)->val);
 		(*node)->val = new->val;
 		free(new->key);
 		free(new);
@@ -37,7 +38,7 @@ void	insert2(t_tree *tree, t_env *new)
 	node = tree->root;
 	while (node)
 	{
-		chk = ft_strncmp(node->key, new->key, ft_strlen(new->key));
+		chk = ft_strncmp(node->key, new->key, ft_strlen(new->key) + 1);
 		if (!chk)
 			break ;
 		parent = node;
@@ -56,7 +57,7 @@ void	insert(t_tree *tree, char *key, char *val)
 
 	new = (t_env *)ft_calloc(1, sizeof(t_env));
 	if (!new)
-		ft_error(DYNAMIC);
+		ft_error(DYNAMIC, NULL);
 	new->key = key;
 	new->val = val;
 	if (tree->root == NULL)

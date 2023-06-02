@@ -1,12 +1,18 @@
 NAME	= minishell
 
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror -g
 
-HEADER	= header readline/include
+HEADER	= header readline/include lib/header
 INC		= $(addprefix -I, $(HEADER))
 
-# FILES	= main error builtin
-FILES = test
+BUILTIN_DIR		= builtin/
+BUILTIN_FILES	= echo cd pwd export unset env exit
+
+FILES	=	main builtin error exec execution fd_ctrl redirection signal_handler tree1 tree2 tree_order \
+			$(addprefix $(BUILTIN_DIR), $(BUILTIN_FILES)) \
+			x_build_cmd_argv x_build_cmd_argv2 x_build_nodes x_free_utils x_lstcmd x_lstcmd2 x_ms_str x_ms_str2 \
+			x_parse x_pre_parse_env x_pre_parse x_split_pipe x_split_pipe2 x_split_tok x_split_tok2 x_ms_utils
+# FILES = test
 
 OBJ_DIR	= obj/
 SRC_DIR	= src/
@@ -29,6 +35,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c header/minishell.h
 
 $(OBJ_DIR):
 	mkdir $(OBJ_DIR)
+	mkdir $(OBJ_DIR)$(BUILTIN_DIR)
 
 $(LIB):
 	$(MAKE) -C $(LIB_DIR)

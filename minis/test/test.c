@@ -1,18 +1,39 @@
-#include <stdio.h>
+#include "../header/minishell.h"
 
-int main() {
+static int	get_code(char *str, unsigned char *code)
+{
+	int	sign;
 
-    // 커서 이동
-    tputs(tgoto(tgetstr("cm", NULL), 10, 5), 1, putchar);
+	*code = 0;
+	sign = 1;
+	while ((*str >= 9 && *str <= 13) || *str == 32)
+		str++;
+	if (*str == '+' || *str == '-')
+	{
+		if (*str == '-')
+			sign *= -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+		*code =  *code * 10 + (*str++ - '0') * sign;
+    if (*str)
+        return (0);
+	return (1);
+}
 
-    // 텍스트 출력
-    tputs(tgetstr("md", NULL), 1, putchar);  // 강조 효과 적용
-    tputs("Hello, World!", 1, putchar);
-    tputs(tgetstr("me", NULL), 1, putchar);  // 강조 효과 해제
+int main(int ac, char **av, char **env)
+{
+	char path[1024];
 
-    refresh();  // 화면 갱신
+	getcwd(path, 1024);
+	printf("%s\n", path);
+    printf("%d\n", chdir("/Users/hyeonsul"));
+	getcwd(path, 1024);
+	printf("%s\n", path);
 
-    getch();  // 사용자 입력 대기
+	char *str[2];
 
-    return 0;
+	str[0] = "ls";
+	str[1] = NULL;
+	execve("/bin/ls", str, NULL);
 }

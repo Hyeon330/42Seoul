@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 19:35:10 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/29 19:35:56 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/01 19:52:24 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	print_env(t_env *node)
 		printf("%s=%s\n", node->key, node->val);
 }
 
-int	env(t_env **envp)
+int	env(t_env *envp)
 {
-	inorder(*envp, print_env, ENV);
+	inorder(envp, print_env, ENV);
 	return (0);
 }

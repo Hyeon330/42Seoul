@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 17:11:06 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/30 21:22:53 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/02 03:27:05 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,10 @@
 void	handle_signal(int signum)
 {
 	(void) signum;
+	printf("\n");
 	rl_on_new_line();
-    rl_redisplay();
-	printf("  \n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-    rl_redisplay();
+	// rl_replace_line("", 0);
+    // rl_redisplay();
 }
 
 int main()
@@ -28,11 +26,14 @@ int main()
 	char *str;
 
 	signal(SIGINT, handle_signal);
-	signal(SIGQUIT, handle_signal);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		str = readline("minishell$ ");
-		printf("%s\n", str);
+		if (!str)
+			printf("%s\n", "hello");
+		else
+			printf("%s\n", str);
 		add_history(str);
 		free(str);
 	}
