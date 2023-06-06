@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 18:09:56 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/22 09:26:50 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/06 18:17:06 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,18 @@
 typedef struct s_vars {
 	pthread_mutex_t	mutex;
 	int				*fork;
-	int				nop;
-	int				ttd;	// time_to_die;
-	int				tte;	// time_to_eat;
-	int				tts;	// time_to_sleep;
-	int				notepme;
+	int				nop;		// number_of_philosophrs
+	int				ttd;		// time_to_die;
+	int				tte;		// time_to_eat;
+	int				tts;		// time_to_sleep;
+	int				notepme;	// [number_of_times_each_philosopher_must_eat]
+	int				died;
 }	t_vars;
 
 typedef struct s_philo {
 	pthread_t	thread;
 	t_vars		*vars;
-	int			no;
-	int			eat_count;
+	int			num;
 }	t_philo;
 
 #endif

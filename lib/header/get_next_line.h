@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 14:35:18 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/04/12 20:30:26 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/03 17:21:29 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,6 @@ typedef struct s_buflst {
 	char			*buf;
 	int				fd;
 }	t_buflst;
-
-// get_next_line.c
-char		*get_next_line(int fd);
 
 // get_next_line_utils.c
 void		s_join(char **dst, char *src, ssize_t dst_len, ssize_t src_len);

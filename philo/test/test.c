@@ -7,7 +7,7 @@ void    test1()
 	while (1)
 	{
 		gettimeofday(&tm, NULL);
-		printf("%ld %ld\n", tm.tv_sec, tm.tv_usec);
+		printf("%ld %d\n", tm.tv_sec, tm.tv_usec);
 	}
 }
 
@@ -69,6 +69,16 @@ typedef struct s_aa {
 	int count;
 }	t_aa;
 
+int     ft_putstr_fd(char *s, int fd)
+{
+	int	cnt;
+
+	cnt = -1;
+	while (s[++cnt])
+		write(fd, s + cnt, 1);
+	return (cnt);
+}
+
 void *increment_count(void *arg) {
 	t_aa *aa;
 	pthread_t tid;
@@ -77,14 +87,15 @@ void *increment_count(void *arg) {
 	aa = (t_aa *)arg;
 	tid = pthread_self();
     for (i = 0; i < 100; i++) {
-        // 뮤텍스 잠금
+		// 뮤텍스 잠금
 		pthread_mutex_lock(&aa->mutex);
 
         // 전역 변수 증가
 		printf("tid: %x, count: %d\n", (unsigned int)tid, ++aa->count);
 
-        // 뮤텍스 해제
-		pthread_mutex_unlock(&aa->mutex);
+		// 뮤텍스 해제
+ 		pthread_mutex_unlock(&aa->mutex);
+
     }
     return NULL;
 }
@@ -123,11 +134,5 @@ typedef struct s_abc {
 
 int main()
 {
-	t_abc *abc;
-
-	abc = (t_abc *)malloc(sizeof(t_abc) * 4);
-	abc[0].a = 1;
-	abc[0].b = 2;
-	abc[0].c = 3;
-	printf("%d, %d, %d\n", abc[0].a, abc[0].b, abc[0].c);
+	
 }

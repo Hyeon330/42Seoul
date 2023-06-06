@@ -6,7 +6,7 @@
 /*   By: hyeonsul <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:28:25 by hyeonsul          #+#    #+#             */
-/*   Updated: 2022/11/30 22:40:12 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/03 17:36:58 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ typedef struct s_list {
 	void			*content;
 	struct s_list	*next;
 }	t_list;
+
+// get_next_line.c
+char	*get_next_line(int fd);
+
+// ft_printf.c
+int	ft_printf(const char *format, ...);
 
 // Part1
 int		ft_isalpha(int c);
