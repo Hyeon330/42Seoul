@@ -3,11 +3,15 @@
 void    test1()
 {
 	struct timeval    tm;
+	long long	time;
 
 	while (1)
 	{
 		gettimeofday(&tm, NULL);
-		printf("%ld %d\n", tm.tv_sec, tm.tv_usec);
+		time = tm.tv_sec * 1000000 + tm.tv_usec;
+		printf("%lld\n", time);
+		if (tm.tv_usec == 11)
+			break ;
 	}
 }
 
@@ -111,7 +115,9 @@ int	test3()
     // 두 개의 스레드 생성
     pthread_t thread1, thread2;
     pthread_create(&thread1, NULL, increment_count, (void *)&aa);
+	// pthread_detach(thread1);
     pthread_create(&thread2, NULL, increment_count, (void *)&aa);
+	// pthread_detach(thread2);
 
     // 두 스레드가 종료될 때까지 대기
     pthread_join(thread1, NULL);
@@ -132,7 +138,19 @@ typedef struct s_abc {
 	int c;
 }	t_abc;
 
+int	a()
+{
+	printf("true\n");
+	return (1);
+}
+
+int	b()
+{
+	printf("false\n");
+	return (0);
+}
+
 int main()
 {
-	
+	test1();
 }
