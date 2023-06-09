@@ -132,6 +132,15 @@ int	test3()
     return 0;
 }
 
+long long	get_time()
+{
+	struct timeval	tm;
+	long long		time_stamp;
+
+	gettimeofday(&tm, NULL);
+	return (tm.tv_sec * 1000000 + tm.tv_usec);
+}
+
 typedef struct s_abc {
 	int	a;
 	int	b;
@@ -150,7 +159,23 @@ int	b()
 	return (0);
 }
 
+void	ft_usleep(long long num)
+{
+	long long start;
+
+	start = get_time();
+	while (1)
+	{
+		if (get_time() - start >= num)
+			break ;
+	}
+}
+
 int main()
 {
-	test1();
+	printf("%lld\n", get_time());
+	ft_usleep(300);
+	printf("%lld\n", get_time());
+	usleep(300);
+	printf("%lld\n", get_time());
 }

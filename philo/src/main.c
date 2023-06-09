@@ -6,15 +6,15 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 20:36:16 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/06/08 17:58:30 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/09 21:29:44 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	print_stat(int ms, int id, int stat)
+void	print_stat(t_philo *philo, int ms, int stat)
 {
-	printf("%dms %d ", ms, id);
+	printf("%dms %d ", ms, philo->id);
 	if (stat == FORK)
 		printf("has taken a fork\n");
 	if (stat == EAT)
@@ -24,7 +24,7 @@ void	print_stat(int ms, int id, int stat)
 	if (stat == THINK)
 		printf("is thinking\n");
 	if (stat == DIE)
-		printf("died");
+		printf("died\n");
 }
 
 int	set_num(int *var, char *agmt)
@@ -41,21 +41,21 @@ int	set_num(int *var, char *agmt)
 
 int	set_vars(t_vars *vars, char **av)
 {
-	vars->notepme = -1;
+	vars->notpme = -1;
 	vars->died = 0;
+	if (pthread_mutex_init(&vars->print, NULL))
+		return (1);
 	return (set_num(&vars->nop, av[1]) || set_num(&vars->ttd, av[2]) || \
 			set_num(&vars->tte, av[3]) || set_num(&vars->tts, av[4]) || \
-			(av[5] && set_num(&vars->notepme, av[5])));
+			(av[5] && set_num(&vars->notpme, av[5])));
 }
 
 int	set_philo_fork(t_vars *vars, t_philo **philo)
 {
-	int	i;
-
 	*philo = (t_philo *)malloc(sizeof(t_philo) * vars->nop);
 	if (!*philo)
 		return (0);
-	vars->fork = (int *)malloc(sizeof(pthread_mutex_t) * vars->nop);
+	vars->fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * vars->nop);
 	if (!vars->fork)
 	{
 		free(*philo);
@@ -68,82 +68,132 @@ int	set_philo_fork(t_vars *vars, t_philo **philo)
 long long	get_time()
 {
 	struct timeval	tm;
-	long long		time_stamp;
 
 	gettimeofday(&tm, NULL);
-	return (tm.tv_sec * 1000000 + tm.tv_usec);
+	return (tm.tv_sec * 1000 + tm.tv_usec / 1000);
 }
 
-void	take_fork(t_vars *vars, int *fork, int id)
+int	eat_check(t_philo *philo)
 {
-	pthread_mutex_lock(&vars->fork[fork[0]]);
-	pthread_mutex_lock(&vars->fork[fork[1]]);
-	print_stat(get_time() - vars->start_time, id, FORK);
+	if (philo->eat_cnt == philo->vars->notpme)
+		philo->vars->full_cnt++;
+	if (philo->vars->full_cnt >= philo->vars->nop)
+		return (1);
+	return (0);
 }
 
-void	eating(t_vars *vars, int *fork, int id)
+int	ft_usleep(t_philo *philo, long long start, int stat)
 {
-	print_stat(get_time() - vars->start_time, id, EAT);
-	usleep(vars->tte);
-	pthread_mutex_unlock(&vars->fork[fork[0]]);
-	pthread_mutex_unlock(&vars->fork[fork[1]]);
+	long long	time;
+
+	while (1)
+	{
+		time = get_time();
+		if (!philo->vars->died && (time - philo->last_eat_time >= philo->vars->ttd))
+		{
+			print_stat(philo, time - philo->vars->start_time, DIE);
+			philo->vars->died = 1;
+		}
+		if (philo->vars->died)
+			return (1);
+		if (stat == EAT && time - start >= philo->vars->tte)
+			return (0);
+		if (stat == SLEEP && time - start >= philo->vars->tts)
+			return (0);
+	}
 }
 
-void	sleeping(t_vars *vars, int *fork, int id)
+void	take_fork(t_philo *philo)
 {
-	print_stat(get_time() - vars->start_time, id, SLEEP);
-	usleep(vars->tts);
+	if (philo->id % 2 == 0)
+	{
+		pthread_mutex_lock(&philo->vars->fork[philo->fork[0]]);
+		pthread_mutex_lock(&philo->vars->fork[philo->fork[1]]);
+	}
+	else
+	{
+		pthread_mutex_lock(&philo->vars->fork[philo->fork[1]]);
+		pthread_mutex_lock(&philo->vars->fork[philo->fork[0]]);
+	}
+
+	pthread_mutex_lock(&philo->vars->print);
+	print_stat(philo, get_time() - philo->vars->start_time, FORK);
+	pthread_mutex_unlock(&philo->vars->print);
 }
 
-void	thinking(t_vars *vars, int *fork, int id)
+int	eating(t_philo *philo)
 {
-	print_stat(get_time() - vars->start_time, id, THINK);
+	pthread_mutex_lock(&philo->vars->print);
+	print_stat(philo, get_time() - philo->vars->start_time, EAT);
+	pthread_mutex_unlock(&philo->vars->print);
+
+	philo->eat_cnt++;
+	philo->last_eat_time = get_time();
+	if (!ft_usleep(philo, get_time(), EAT))
+		return (0);
+	if (philo->id % 2 == 0)
+	{
+		pthread_mutex_unlock(&philo->vars->fork[philo->fork[0]]);
+		pthread_mutex_unlock(&philo->vars->fork[philo->fork[1]]);
+	}
+	else
+	{
+		pthread_mutex_unlock(&philo->vars->fork[philo->fork[1]]);
+		pthread_mutex_unlock(&philo->vars->fork[philo->fork[0]]);
+	}
+	return (eat_check(philo));
+}
+
+int	sleeping(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->vars->print);
+	print_stat(philo, get_time() - philo->vars->start_time, SLEEP);
+	pthread_mutex_unlock(&philo->vars->print);
+	return (ft_usleep(philo, get_time(), SLEEP));
+}
+
+void	thinking(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->vars->print);
+	print_stat(philo, get_time() - philo->vars->start_time, THINK);
+	pthread_mutex_unlock(&philo->vars->print);
 }
 
 void	*thread(void *arg)
 {
-	t_philo			*philo;
-	t_vars			*vars;
-	int				fork[2];
-	long long		prev_tm;
+	t_philo	*philo;
+	t_vars	*vars;
 
 	philo = (t_philo *)arg;
 	vars = philo->vars;
-	// printf("num: %d, nop: %d, notepme: %d\n", philo->id, vars->nop, vars->notepme);
-	// 먹고->자고->생각하고 처리
-	if (!(philo->id % 2))
-	{
-		thinking(vars, fork, philo->id);
-		usleep(vars->tte);
-	}
-	fork[0] = philo->id - 1;
-	fork[1] = philo->id % vars->nop;
+	philo->last_eat_time = vars->start_time;
+	philo->fork[0] = philo->id - 1;
+	philo->fork[1] = philo->id % vars->nop;
 	while (!vars->died)
 	{
-		take_fork(vars, fork, philo->id);
-		eating(vars, fork, philo->id);
-		sleeping(vars, fork, philo->id);
-		thinking(vars, fork, philo->id);
+		take_fork(philo);
+		if (eating(philo))
+			break ;
+		if (sleeping(philo))
+			break ;
+		thinking(philo);
 	}
 	return (NULL);
-}
-
-void	*dying_moniter(void *arg)
-{
-	
 }
 
 int	philo_init(t_vars *vars, t_philo **philo, char **av)
 {
 	int	i;
 
-	if (set_vars(vars, av) || !set_philo_fork(vars, *philo))
+	if (set_vars(vars, av) || !set_philo_fork(vars, philo))
 		return (1);
 	i = -1;
 	while (++i < vars->nop)
 	{
 		(*philo)[i].id = i + 1;
 		(*philo)[i].vars = vars;
+		(*philo)[i].eat_cnt = 0;
+		(*philo)[i].last_eat_time = 0;
 		if (pthread_mutex_init(&vars->fork[i], NULL))
 			return (1);
 	}
@@ -170,13 +220,13 @@ void	philo_end(t_vars *vars, t_philo *philo)
 		pthread_join(philo[i].thread, NULL);
 		pthread_mutex_destroy(&vars->fork[i]);
 	}
+	pthread_mutex_destroy(&vars->print);
 }
 
 int	main(int ac, char **av)
 {
 	t_vars	vars;
 	t_philo	*philo;
-	int		i;
 
 	philo = NULL;
 	if (ac < 5 || ac > 6 || philo_init(&vars, &philo, av))
