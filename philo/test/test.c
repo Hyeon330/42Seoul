@@ -99,6 +99,7 @@ void *increment_count(void *arg) {
 
 		// 뮤텍스 해제
  		pthread_mutex_unlock(&aa->mutex);
+		usleep(100);
 
     }
     return NULL;
@@ -120,8 +121,18 @@ int	test3()
 	// pthread_detach(thread2);
 
     // 두 스레드가 종료될 때까지 대기
-    pthread_join(thread1, NULL);
-    pthread_join(thread2, NULL);
+    // pthread_join(thread1, NULL);
+    // pthread_join(thread2, NULL);
+	pthread_detach(thread1);
+	pthread_detach(thread2);
+
+	pthread_mutex_lock(&aa.mutex);
+	while (aa.count != 30)
+	{
+		pthread_mutex_unlock(&aa.mutex);
+		pthread_mutex_lock(&aa.mutex);
+	}
+	pthread_mutex_unlock(&aa.mutex);
 
     // 결과 출력
     printf("count: %d\n", aa.count);
@@ -159,23 +170,24 @@ int	b()
 	return (0);
 }
 
-void	ft_usleep(long long num)
-{
-	long long start;
+// void	ft_usleep(long long num)
+// {
+// 	long long start;
 
-	start = get_time();
-	while (1)
-	{
-		if (get_time() - start >= num)
-			break ;
-	}
-}
+// 	start = get_time();
+// 	while (1)
+// 	{
+// 		if (get_time() - start >= num)
+// 			break ;
+// 	}
+// }
 
 int main()
 {
-	printf("%lld\n", get_time());
-	ft_usleep(300);
-	printf("%lld\n", get_time());
-	usleep(300);
-	printf("%lld\n", get_time());
+	// printf("%lld\n", get_time());
+	// ft_usleep(300);
+	// printf("%lld\n", get_time());
+	// usleep(300);
+	// printf("%lld\n", get_time());
+	test3();
 }
