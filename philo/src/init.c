@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 16:35:21 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/06/19 22:32:32 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/20 15:52:17 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@ int	set_num(int *var, char *agmt)
 
 int	set_vars(t_vars *vars, char **av)
 {
-	vars->full_cnt = 0;
 	vars->notpme = -1;
-	// vars->died = 0;
-	if (pthread_mutex_init(&vars->print, NULL)/* || pthread_mutex_init(&vars->died_st, NULL)*/)
+	vars->full_cnt = 0;
+	vars->dead = 0;
+	if (pthread_mutex_init(&vars->print, NULL) || \
+		pthread_mutex_init(&vars->m_dead, NULL))
 		return (1);
 	return (set_num(&vars->nop, av[1]) || set_num(&vars->ttd, av[2]) || \
 			set_num(&vars->tte, av[3]) || set_num(&vars->tts, av[4]) || \
@@ -62,10 +63,10 @@ int	philo_init(t_vars *vars, t_philo **philo, char **av)
 	{
 		(*philo)[i].id = i + 1;
 		(*philo)[i].vars = vars;
-		(*philo)[i].stat = 0;
 		(*philo)[i].eat_cnt = 0;
 		(*philo)[i].last_eat_time = 0;
-		if (pthread_mutex_init(&vars->fork[i], NULL))
+		if (pthread_mutex_init(&vars->fork[i], NULL) || \
+			pthread_mutex_init(&(*philo)[i].m_eat_time, NULL))
 			return (1);
 	}
 	return (0);

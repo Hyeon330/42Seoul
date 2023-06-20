@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 18:09:56 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/06/19 23:06:31 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/20 18:40:20 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,23 @@
 typedef struct s_vars {
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	print;
+	pthread_mutex_t	m_dead;
 	int				nop;		// number_of_philosophrs
 	int				ttd;		// time_to_die;
 	int				tte;		// time_to_eat;
 	int				tts;		// time_to_sleep;
 	int				notpme;		// [number_of_times_each_philosopher_must_eat]
 	int				full_cnt;
+	int				dead;
 	long long		start_time;
 }	t_vars;
 
 typedef struct s_philo {
 	pthread_t		thread;
-	pthread_mutex_t	m_stat;
+	pthread_mutex_t	m_eat_time;
 	t_vars			*vars;
 	int				fork[2];
 	int				id;
-	int				stat;
 	int				eat_cnt;
 	long long		last_eat_time;
 }	t_philo;
@@ -55,7 +56,7 @@ enum e_stat {
 int			philo_init(t_vars *vars, t_philo **philo, char **av);
 
 // util.c
-int			isdead(t_philo *philo);
+int			isdead(t_vars *vars);
 long long	get_time();
 long long	print_stat(t_philo *philo, int stat);
 int			iseat(t_philo *philo);

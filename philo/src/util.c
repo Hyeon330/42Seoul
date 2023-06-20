@@ -6,22 +6,20 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 16:33:48 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/06/19 23:05:13 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/20 19:31:26 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	isdead(t_philo *philo)
+int	isdead(t_vars *vars)
 {
-	pthread_mutex_lock(&philo->m_stat);
-	if (philo->stat == DIE)
-	{
-		pthread_mutex_unlock(&philo->m_stat);
-		return (1);
-	}
-	pthread_mutex_unlock(&philo->m_stat);
-	return (0);
+	int	ret;
+
+	pthread_mutex_lock(&vars->m_dead);
+	ret = vars->dead;
+	pthread_mutex_unlock(&vars->m_dead);
+	return (ret);
 }
 
 long long	get_time()
@@ -36,6 +34,9 @@ long long	print_stat(t_philo *philo, int stat)
 {
 	long long	time;
 
+	if (isdead(philo->vars))
+		return (0);
+	usleep(2);
 	pthread_mutex_lock(&philo->vars->print);
 	time = get_time();
 	printf("%lld %d ", time - philo->vars->start_time, philo->id);
@@ -65,12 +66,14 @@ void	ft_usleep(t_philo *philo, long long start, int stat)
 {
 	long long	time;
 
-	while (!isdead(philo))
+	if (!start)
+		return ;
+	while (!isdead(philo->vars))
 	{
 		time = get_time();
 		if ((stat == EAT && time - start >= philo->vars->tte) || \
 			(stat == SLEEP && time - start >= philo->vars->tts))
 			return ;
-		usleep(100);
+		usleep(500);
 	}
 }
