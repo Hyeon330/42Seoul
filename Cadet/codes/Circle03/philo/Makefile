@@ -1,7 +1,9 @@
 NAME	= philo
 
 CFLAGS	= -Wall -Wextra -Werror
-INC		= -Iheader
+
+HEAD	= includes
+INC		= -I$(HEAD)
 
 SRC		= main init util check act
 
@@ -16,7 +18,7 @@ all: $(NAME)
 $(NAME): $(OBJ_DIR) $(LIB) $(OBJS)
 	$(CC) $(OBJS) -o $(NAME)
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEAD)/philo.h
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(OBJ_DIR):
