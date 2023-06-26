@@ -3,7 +3,7 @@ NAME	= philo
 CFLAGS	= -Wall -Wextra -Werror -g
 INC		= -Iheader
 
-SRC		= main init util act
+SRC		= main init util check act
 
 OBJ_DIR	= obj/
 SRC_DIR	= src/

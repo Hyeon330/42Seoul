@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 16:35:21 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/06/20 15:52:17 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/26 16:50:30 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ int	set_vars(t_vars *vars, char **av)
 	vars->notpme = -1;
 	vars->full_cnt = 0;
 	vars->dead = 0;
-	if (pthread_mutex_init(&vars->print, NULL) || \
-		pthread_mutex_init(&vars->m_dead, NULL))
+	if (pthread_mutex_init(&vars->m_time, NULL) || \
+		pthread_mutex_init(&vars->m_dead, NULL) || \
+		pthread_mutex_init(&vars->m_full, NULL))
 		return (1);
 	return (set_num(&vars->nop, av[1]) || set_num(&vars->ttd, av[2]) || \
 			set_num(&vars->tte, av[3]) || set_num(&vars->tts, av[4]) || \

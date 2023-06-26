@@ -6,23 +6,13 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 16:33:48 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/06/20 19:31:26 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/26 17:01:58 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	isdead(t_vars *vars)
-{
-	int	ret;
-
-	pthread_mutex_lock(&vars->m_dead);
-	ret = vars->dead;
-	pthread_mutex_unlock(&vars->m_dead);
-	return (ret);
-}
-
-long long	get_time()
+long long	get_time(void)
 {
 	struct timeval	tm;
 
@@ -37,7 +27,7 @@ long long	print_stat(t_philo *philo, int stat)
 	if (isdead(philo->vars))
 		return (0);
 	usleep(2);
-	pthread_mutex_lock(&philo->vars->print);
+	pthread_mutex_lock(&philo->vars->m_time);
 	time = get_time();
 	printf("%lld %d ", time - philo->vars->start_time, philo->id);
 	if (stat == FORK)
@@ -48,18 +38,8 @@ long long	print_stat(t_philo *philo, int stat)
 		printf("is sleeping\n");
 	if (stat == THINK)
 		printf("is thinking\n");
-	pthread_mutex_unlock(&philo->vars->print);
+	pthread_mutex_unlock(&philo->vars->m_time);
 	return (time);
-}
-
-int	iseat(t_philo *philo)
-{
-	if (philo->eat_cnt == philo->vars->notpme)
-	{
-		philo->vars->full_cnt++;
-		return (1);
-	}
-	return (0);
 }
 
 void	ft_usleep(t_philo *philo, long long start, int stat)
@@ -74,6 +54,6 @@ void	ft_usleep(t_philo *philo, long long start, int stat)
 		if ((stat == EAT && time - start >= philo->vars->tte) || \
 			(stat == SLEEP && time - start >= philo->vars->tts))
 			return ;
-		usleep(500);
+		usleep(100);
 	}
 }

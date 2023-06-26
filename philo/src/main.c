@@ -6,35 +6,11 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 20:36:16 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/06/20 19:27:27 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/26 17:21:03 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	chk_philos(t_philo *philo, t_vars *vars)
-{
-	int	i;
-
-	i = -1;
-	while (++i < vars->nop)
-	{
-		pthread_mutex_lock(&philo[i].m_eat_time);
-		pthread_mutex_lock(&philo->vars->print);
-		if (philo[i].last_eat_time && get_time() - philo[i].last_eat_time >= vars->ttd)
-		{
-			pthread_mutex_unlock(&philo[i].m_eat_time);
-			pthread_mutex_unlock(&philo->vars->print);
-			pthread_mutex_lock(&vars->m_dead);
-			vars->dead = philo[i].id;
-			pthread_mutex_unlock(&vars->m_dead);
-			break ;
-		}
-		pthread_mutex_unlock(&philo[i].m_eat_time);
-		pthread_mutex_unlock(&philo->vars->print);
-	}
-	return (vars->dead);
-}
 
 void	moniter(t_philo *philo, t_vars *vars)
 {
@@ -42,11 +18,12 @@ void	moniter(t_philo *philo, t_vars *vars)
 	{
 		if (chk_philos(philo, vars))
 			break ;
-		if (vars->full_cnt == vars->notpme)
+		if (is_all_full(philo->vars))
 			return ;
 	}
 	usleep(100);
-	printf("%lld %d is died\n", get_time() - vars->start_time, philo->vars->dead);
+	printf("%lld %d is died\n", \
+		get_time() - vars->start_time, philo->vars->dead);
 }
 
 void	*thread(void *arg)
@@ -59,10 +36,8 @@ void	*thread(void *arg)
 	philo->last_eat_time = vars->start_time;
 	philo->fork[0] = philo->id - 1;
 	philo->fork[1] = philo->id % vars->nop;
-
 	if (philo->id % 2 == 1)
 		usleep(vars->tte);
-
 	while (!isdead(vars))
 	{
 		if (take_fork(philo) || eating(philo) || \
@@ -98,8 +73,9 @@ void	philo_end(t_vars *vars, t_philo *philo)
 		pthread_mutex_destroy(&vars->fork[i]);
 		pthread_mutex_destroy(&philo[i].m_eat_time);
 	}
-	pthread_mutex_destroy(&vars->print);
+	pthread_mutex_destroy(&vars->m_time);
 	pthread_mutex_destroy(&vars->m_dead);
+	pthread_mutex_destroy(&vars->m_full);
 }
 
 int	main(int ac, char **av)
@@ -108,9 +84,9 @@ int	main(int ac, char **av)
 	t_philo	*philo;
 
 	philo = NULL;
-	if (ac < 5 || ac > 6 || philo_init(&vars, &philo, av))
+	if (ac < 5 || ac > 6 || philo_init(&vars, &philo, av) || !vars.nop)
 	{
-		write(2, "Error\n", 15);
+		write(2, "Error\n", 6);
 		return (0);
 	}
 	philo_start(&vars, philo);
