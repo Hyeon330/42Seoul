@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:23:39 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/06/26 17:23:28 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/26 18:28:18 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,15 @@ int	chk_philos(t_philo *philo, t_vars *vars)
 		if (philo[i].last_eat_time && \
 			get_time() - philo[i].last_eat_time >= vars->ttd)
 		{
-			pthread_mutex_unlock(&philo[i].m_eat_time);
 			pthread_mutex_unlock(&philo->vars->m_time);
+			pthread_mutex_unlock(&philo[i].m_eat_time);
 			pthread_mutex_lock(&vars->m_dead);
 			vars->dead = philo[i].id;
 			pthread_mutex_unlock(&vars->m_dead);
-			break ;
+			return (0);
 		}
-		pthread_mutex_unlock(&philo[i].m_eat_time);
 		pthread_mutex_unlock(&philo->vars->m_time);
+		pthread_mutex_unlock(&philo[i].m_eat_time);
 	}
-	return (vars->dead);
+	return (1);
 }

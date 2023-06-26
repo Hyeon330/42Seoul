@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 20:36:16 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/06/26 17:21:03 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/26 19:41:59 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 void	moniter(t_philo *philo, t_vars *vars)
 {
-	while (1)
+	while (chk_philos(philo, vars))
 	{
-		if (chk_philos(philo, vars))
-			break ;
 		if (is_all_full(philo->vars))
 			return ;
 	}
@@ -33,7 +31,9 @@ void	*thread(void *arg)
 
 	philo = (t_philo *)arg;
 	vars = philo->vars;
+	pthread_mutex_lock(&philo->m_eat_time);
 	philo->last_eat_time = vars->start_time;
+	pthread_mutex_unlock(&philo->m_eat_time);
 	philo->fork[0] = philo->id - 1;
 	philo->fork[1] = philo->id % vars->nop;
 	if (philo->id % 2 == 1)
@@ -69,13 +69,15 @@ void	philo_end(t_vars *vars, t_philo *philo)
 	i = -1;
 	while (++i < vars->nop)
 	{
-		pthread_detach(philo[i].thread);
+		pthread_join(philo[i].thread, NULL);
 		pthread_mutex_destroy(&vars->fork[i]);
 		pthread_mutex_destroy(&philo[i].m_eat_time);
 	}
 	pthread_mutex_destroy(&vars->m_time);
 	pthread_mutex_destroy(&vars->m_dead);
 	pthread_mutex_destroy(&vars->m_full);
+	free(philo);
+	free(vars->fork);
 }
 
 int	main(int ac, char **av)
@@ -91,7 +93,5 @@ int	main(int ac, char **av)
 	}
 	philo_start(&vars, philo);
 	philo_end(&vars, philo);
-	free(philo);
-	free(vars.fork);
 	return (0);
 }

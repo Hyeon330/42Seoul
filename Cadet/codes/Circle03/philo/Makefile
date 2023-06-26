@@ -1,6 +1,6 @@
 NAME	= philo
 
-CFLAGS	= -Wall -Wextra -Werror -g
+CFLAGS	= -Wall -Wextra -Werror
 INC		= -Iheader
 
 SRC		= main init util check act
