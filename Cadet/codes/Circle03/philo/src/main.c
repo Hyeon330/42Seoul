@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 20:36:16 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/06/27 16:38:40 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/27 17:04:24 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	*thread(void *arg)
 	pthread_mutex_unlock(&philo->m_eat_time);
 	philo->fork[0] = philo->id - 1;
 	philo->fork[1] = philo->id % vars->nop;
-	if (philo->id % 2 == 1)
-		usleep(vars->tte);
+	if (philo->vars->nop != 1 && philo->id % 2 == 1)
+		usleep(vars->tte * 900);
 	while (!isdead(vars))
 	{
 		if (take_fork(philo) || eating(philo) || \
