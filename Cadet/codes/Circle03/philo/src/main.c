@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 20:36:16 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/06/26 19:41:59 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/27 16:38:40 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	philo_end(t_vars *vars, t_philo *philo)
 	i = -1;
 	while (++i < vars->nop)
 	{
-		pthread_join(philo[i].thread, NULL);
+		pthread_detach(philo[i].thread);
 		pthread_mutex_destroy(&vars->fork[i]);
 		pthread_mutex_destroy(&philo[i].m_eat_time);
 	}
