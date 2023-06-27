@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 20:36:16 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/06/27 17:04:24 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/27 17:28:19 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	moniter(t_philo *philo, t_vars *vars)
 		if (is_all_full(philo->vars))
 			return ;
 	}
+	while (mutex_all_unlock(vars))
+		;
 	usleep(100);
 	printf("%lld %d is died\n", \
 		get_time() - vars->start_time, philo->vars->dead);
@@ -37,7 +39,7 @@ void	*thread(void *arg)
 	philo->fork[0] = philo->id - 1;
 	philo->fork[1] = philo->id % vars->nop;
 	if (philo->vars->nop != 1 && philo->id % 2 == 1)
-		usleep(vars->tte * 900);
+		usleep(vars->tte * 1000);
 	while (!isdead(vars))
 	{
 		if (take_fork(philo) || eating(philo) || \
@@ -69,7 +71,7 @@ void	philo_end(t_vars *vars, t_philo *philo)
 	i = -1;
 	while (++i < vars->nop)
 	{
-		pthread_detach(philo[i].thread);
+		pthread_join(philo[i].thread, NULL);
 		pthread_mutex_destroy(&vars->fork[i]);
 		pthread_mutex_destroy(&philo[i].m_eat_time);
 	}

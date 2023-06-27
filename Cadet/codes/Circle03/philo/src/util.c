@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 16:33:48 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/06/26 17:01:58 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/27 17:27:13 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,16 @@ void	ft_usleep(t_philo *philo, long long start, int stat)
 			return ;
 		usleep(100);
 	}
+}
+
+int	mutex_all_unlock(t_vars *vars)
+{
+	int	ret;
+	int	i;
+
+	ret = 0;
+	i = -1;
+	while (++i < vars->nop)
+		ret = ret || pthread_mutex_unlock(&vars->fork[i]);
+	return (ret);
 }

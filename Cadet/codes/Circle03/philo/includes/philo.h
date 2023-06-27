@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 18:09:56 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/06/26 20:01:13 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/27 17:22:35 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,6 @@ enum e_stat {
 // init.c
 int			philo_init(t_vars *vars, t_philo **philo, char **av);
 
-// util.c
-long long	get_time(void);
-long long	print_stat(t_philo *philo, int stat);
-void		ft_usleep(t_philo *philo, long long start, int stat);
-
 // check.c
 int			isdead(t_vars *vars);
 int			isfull(t_philo *philo);
@@ -72,5 +67,11 @@ int			take_fork(t_philo *philo);
 int			eating(t_philo *philo);
 int			sleeping(t_philo *philo);
 int			thinking(t_philo *philo);
+
+// util.c
+long long	get_time(void);
+long long	print_stat(t_philo *philo, int stat);
+void		ft_usleep(t_philo *philo, long long start, int stat);
+int			mutex_all_unlock(t_vars *vars);
 
 #endif

@@ -1,6 +1,7 @@
 NAME	= philo
 
 CFLAGS	= -Wall -Wextra -Werror
+DATA_RACE = -fsanitize=thread
 
 HEAD	= includes
 INC		= -I$(HEAD)
