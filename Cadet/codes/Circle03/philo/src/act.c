@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 16:30:24 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/06/26 19:40:12 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/02 22:03:30 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,7 @@ int	sleeping(t_philo *philo)
 int	thinking(t_philo *philo)
 {
 	print_stat(philo, THINK);
+	if (philo->vars->nop % 2 == 1 && philo->id % 2 == 0)
+		usleep(1000);
 	return (isdead(philo->vars));
 }
