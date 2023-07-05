@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 20:54:14 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/04 21:17:57 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/05 18:08:23 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ t_node_env	*create_node(char *key, char *val)
 	t_node_env	*node;
 
 	node = (t_node_env *)ft_calloc(1, sizeof(t_node_env));
-	// if (!node)
-	// 	exit(ft_error(DYNAMIC, NULL));
+	if (!node)
+		exit(ft_env_error(ENV_DYNAMIC));
 	node->key = key;
 	node->val = val;
 	node->left = NULL;
@@ -26,7 +26,7 @@ t_node_env	*create_node(char *key, char *val)
 	return (node);
 }
 
-void	change_val(t_node_env *node, char *val)
+static void	change_val(t_node_env *node, char *val)
 {
 	free(node->val);
 	if (val)
@@ -35,7 +35,7 @@ void	change_val(t_node_env *node, char *val)
 		node->val = NULL;
 }
 
-void	insert_loop(t_env *env, char *key, char *val)
+static void	insert_loop(t_env *env, char *key, char *val)
 {
 	t_node_env	*node;
 	t_node_env	*parent;

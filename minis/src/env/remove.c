@@ -6,13 +6,13 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 21:02:13 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/04 21:15:39 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/05 18:09:04 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_node_env	*find_min_key(t_node_env *root)
+static t_node_env	*find_min_key(t_node_env *root)
 {
 	t_node_env	*node;
 
@@ -22,7 +22,7 @@ t_node_env	*find_min_key(t_node_env *root)
 	return (node);
 }
 
-t_node_env	*find_end(t_node_env *node)
+static t_node_env	*find_end(t_node_env *node)
 {
 	t_node_env	*tmp;
 
@@ -36,7 +36,7 @@ t_node_env	*find_end(t_node_env *node)
 	return (tmp);
 }
 
-t_node_env	*recursive_del(t_node_env **node, char *key, int *chk_del)
+static t_node_env	*recursive_del(t_node_env **node, char *key, int *chk_del)
 {
 	t_node_env	*tmp;
 	int			chk;
@@ -73,4 +73,3 @@ void	remove_env(t_env *env, char *key)
 	if (chk)
 		env->size--;
 }
-
