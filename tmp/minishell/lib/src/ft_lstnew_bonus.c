@@ -1,35 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/03 23:40:28 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/05 15:25:18 by hyeonsul         ###   ########.fr       */
+/*   Created: 2022/11/15 15:49:55 by hyeonsul          #+#    #+#             */
+/*   Updated: 2023/04/12 20:47:16 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int ac, char **av, char **env)
+t_list	*ft_lstnew(void *content)
 {
-	t_vars	vars;
-	char	*str;
+	t_list	*lst;
 
-	(void)ac;
-	(void)av;
-	(void)env;
-	str = NULL;
-	vars_init();
-	while (1)
-	{
-		str = readline(PROMPT);
-		if (!str)
-			return (0);
-		add_history(str);
-		parse(vars, str);
-		exec(vars);
-		free(str);
-	}
+	lst = (t_list *)malloc(sizeof(t_list));
+	if (!lst)
+		return (NULL);
+	lst->content = content;
+	lst->next = NULL;
+	return (lst);
 }

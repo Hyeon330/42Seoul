@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/03 23:40:28 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/05 15:25:18 by hyeonsul         ###   ########.fr       */
+/*   Created: 2022/11/07 17:59:49 by hyeonsul          #+#    #+#             */
+/*   Updated: 2023/04/12 20:54:07 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int ac, char **av, char **env)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	t_vars	vars;
-	char	*str;
+	unsigned char	*_s1;
+	unsigned char	*_s2;
+	size_t			i;
 
-	(void)ac;
-	(void)av;
-	(void)env;
-	str = NULL;
-	vars_init();
-	while (1)
+	_s1 = (unsigned char *)s1;
+	_s2 = (unsigned char *)s2;
+	i = -1;
+	while (++i < n)
 	{
-		str = readline(PROMPT);
-		if (!str)
-			return (0);
-		add_history(str);
-		parse(vars, str);
-		exec(vars);
-		free(str);
+		if (!_s1[i] || !_s2[i] || _s1[i] != _s2[i])
+			return (_s1[i] - _s2[i]);
 	}
+	return (0);
 }

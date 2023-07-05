@@ -1,35 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/03 23:40:28 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/05 15:25:18 by hyeonsul         ###   ########.fr       */
+/*   Created: 2022/11/11 23:07:23 by hyeonsul          #+#    #+#             */
+/*   Updated: 2023/04/12 20:53:30 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int ac, char **av, char **env)
+int	ft_putstr_fd(char *s, int fd)
 {
-	t_vars	vars;
-	char	*str;
+	int	cnt;
 
-	(void)ac;
-	(void)av;
-	(void)env;
-	str = NULL;
-	vars_init();
-	while (1)
-	{
-		str = readline(PROMPT);
-		if (!str)
-			return (0);
-		add_history(str);
-		parse(vars, str);
-		exec(vars);
-		free(str);
-	}
+	cnt = -1;
+	while (s[++cnt])
+		write(fd, s + cnt, 1);
+	return (cnt);
 }

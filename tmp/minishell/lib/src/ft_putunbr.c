@@ -1,35 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putunbr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/03 23:40:28 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/05 15:25:18 by hyeonsul         ###   ########.fr       */
+/*   Created: 2022/11/30 21:55:45 by hyeonsul          #+#    #+#             */
+/*   Updated: 2023/04/12 20:53:25 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int ac, char **av, char **env)
+static void	print_num(unsigned int n, int *cnt)
 {
-	t_vars	vars;
-	char	*str;
+	if (n >= 10)
+		print_num(n / 10, cnt);
+	*cnt += ft_putchar_fd(n % 10 + '0', 1);
+}
 
-	(void)ac;
-	(void)av;
-	(void)env;
-	str = NULL;
-	vars_init();
-	while (1)
-	{
-		str = readline(PROMPT);
-		if (!str)
-			return (0);
-		add_history(str);
-		parse(vars, str);
-		exec(vars);
-		free(str);
-	}
+int	ft_putunbr(unsigned int n)
+{
+	int	cnt;
+
+	cnt = 0;
+	if (!n)
+		return (ft_putchar_fd('0', 1));
+	print_num(n, &cnt);
+	return (cnt);
 }

@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/03 23:40:28 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/05 15:25:18 by hyeonsul         ###   ########.fr       */
+/*   Created: 2023/05/29 19:35:10 by hyeonsul          #+#    #+#             */
+/*   Updated: 2023/06/03 19:22:27 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int ac, char **av, char **env)
+void	print_env(t_env *node)
 {
-	t_vars	vars;
-	char	*str;
-
-	(void)ac;
-	(void)av;
-	(void)env;
-	str = NULL;
-	vars_init();
-	while (1)
+	if (node->val)
 	{
-		str = readline(PROMPT);
-		if (!str)
-			return (0);
-		add_history(str);
-		parse(vars, str);
-		exec(vars);
-		free(str);
+		ft_putstr_fd(node->key, STDOUT_FILENO);
+		ft_putstr_fd("=", STDOUT_FILENO);
+		ft_putstr_fd(node->val, STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 	}
+}
+
+int	env(t_env *envp)
+{
+	inorder(envp, print_env, ENV);
+	return (0);
 }

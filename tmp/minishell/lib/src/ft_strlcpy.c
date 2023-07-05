@@ -1,35 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/03 23:40:28 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/05 15:25:18 by hyeonsul         ###   ########.fr       */
+/*   Created: 2022/11/09 17:27:01 by hyeonsul          #+#    #+#             */
+/*   Updated: 2023/04/12 20:53:52 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int ac, char **av, char **env)
+size_t	ft_strlcpy(char *dest, const char *src, size_t dstsize)
 {
-	t_vars	vars;
-	char	*str;
+	size_t	i;
 
-	(void)ac;
-	(void)av;
-	(void)env;
-	str = NULL;
-	vars_init();
-	while (1)
+	i = 0;
+	while (i < dstsize && *(src + i))
 	{
-		str = readline(PROMPT);
-		if (!str)
-			return (0);
-		add_history(str);
-		parse(vars, str);
-		exec(vars);
-		free(str);
+		*(dest + i) = *(src + i);
+		i++;
 	}
+	if (dstsize)
+	{
+		if (i == dstsize)
+			*(dest + dstsize - 1) = 0;
+		else
+			*(dest + i) = 0;
+	}
+	return (ft_strlen(src));
 }

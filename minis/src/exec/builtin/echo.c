@@ -1,35 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/03 23:40:28 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/05 15:25:18 by hyeonsul         ###   ########.fr       */
+/*   Created: 2023/05/29 19:30:57 by hyeonsul          #+#    #+#             */
+/*   Updated: 2023/06/03 19:25:48 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int ac, char **av, char **env)
+int	echo(t_cmd *cmd)
 {
-	t_vars	vars;
-	char	*str;
+	int	opt;
+	int	i;
 
-	(void)ac;
-	(void)av;
-	(void)env;
-	str = NULL;
-	vars_init();
-	while (1)
+	if (!cmd->av[1])
+		return (0);
+	opt = !ft_strncmp(cmd->av[1], "-n", 3);
+	i = 0 | opt;
+	while (++i < cmd->ac)
 	{
-		str = readline(PROMPT);
-		if (!str)
-			return (0);
-		add_history(str);
-		parse(vars, str);
-		exec(vars);
-		free(str);
+		ft_putstr_fd(cmd->av[i], STDOUT_FILENO);
+		if (i != cmd->ac - 1)
+			ft_putstr_fd(" ", STDOUT_FILENO);
 	}
+	if (!opt)
+		ft_putstr_fd("\n", STDOUT_FILENO);
+	return (0);
 }

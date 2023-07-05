@@ -1,35 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/03 23:40:28 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/05 15:25:18 by hyeonsul         ###   ########.fr       */
+/*   Created: 2022/11/09 18:19:35 by hyeonsul          #+#    #+#             */
+/*   Updated: 2023/06/02 02:18:55 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int ac, char **av, char **env)
+char	*ft_strdup(const char *src)
 {
-	t_vars	vars;
-	char	*str;
+	char	*pc;
+	int		i;
 
-	(void)ac;
-	(void)av;
-	(void)env;
-	str = NULL;
-	vars_init();
-	while (1)
+	i = 0;
+	while (src[i])
+		i++;
+	pc = (char *)malloc(sizeof(char) * (i + 1));
+	if (pc == NULL)
+		return (NULL);
+	i = 0;
+	while (src[i])
 	{
-		str = readline(PROMPT);
-		if (!str)
-			return (0);
-		add_history(str);
-		parse(vars, str);
-		exec(vars);
-		free(str);
+		pc[i] = src[i];
+		i++;
 	}
+	pc[i] = 0;
+	return (pc);
 }
