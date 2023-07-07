@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   insert.c                                           :+:      :+:    :+:   */
+/*   tree1.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/04 20:54:14 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/08 02:08:08 by hyeonsul         ###   ########.fr       */
+/*   Created: 2023/05/19 03:38:09 by hyeonsul          #+#    #+#             */
+/*   Updated: 2023/06/03 18:27:55 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_node_env	*create_node(char *key, char *val)
+t_env	*create_node(char *key, char *val)
 {
-	t_node_env	*node;
+	t_env	*node;
 
-	node = (t_node_env *)ft_calloc(1, sizeof(t_node_env));
+	node = (t_env *)ft_calloc(1, sizeof(t_env));
 	if (!node)
-		exit(ft_env_error(ENV_DYNAMIC));
+		exit(ft_error(DYNAMIC, NULL));
 	node->key = key;
 	node->val = val;
 	node->left = NULL;
@@ -26,29 +26,28 @@ t_node_env	*create_node(char *key, char *val)
 	return (node);
 }
 
-static void	change_val(t_node_env *node, char *val)
+void	change_val(t_env *node, char *val)
 {
 	free(node->val);
 	if (val)
-		node->val = ft_strdup(val);
+		node->val = strdup(val);
 	else
 		node->val = NULL;
 }
 
-static void	insert_loop(t_env *env, char *key, char *val)
+void	insert_loop(t_tree *tree, char *key, char *val)
 {
-	t_node_env	*node;
-	t_node_env	*parent;
-	int			cmp;
+	t_env	*node;
+	t_env	*parent;
+	int		cmp;
 
-	node = env->root;
+	node = tree->root;
 	while (node)
 	{
 		cmp = ft_strncmp(node->key, key, ft_strlen(key) + 1);
 		parent = node;
 		if (!cmp)
 		{
-			free(key);
 			change_val(node, val);
 			return ;
 		}
@@ -61,16 +60,16 @@ static void	insert_loop(t_env *env, char *key, char *val)
 		parent->left = create_node(key, val);
 	else
 		parent->right = create_node(key, val);
-	env->size++;
+	tree->size++;
 }
 
-void	insert_env(t_env *env, char *key, char *val)
+void	insert(t_tree *tree, char *key, char *val)
 {
-	if (!env->root)
+	if (!tree->root)
 	{
-		env->root = create_node(key, val);
-		env->size = 1;
+		tree->root = create_node(key, val);
+		tree->size = 1;
 		return ;
 	}
-	insert_loop(env, key, val);
+	insert_loop(tree, key, val);
 }

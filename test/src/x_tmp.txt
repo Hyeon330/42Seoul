@@ -1,0 +1,33 @@
+/***** word len working *****/
+
+int	split_tok_get_wordlen2(char *s)
+{
+	int	i;
+
+	i = -1;
+	while (s[++i] && s[i] != ' ')
+	{
+		if (s[i] == '\'')
+			return (split_tok_get_wordlen_qt(s, &i, '\''));
+		else if (s[i] == '"')
+			return (split_tok_get_wordlen_qt(s, &i, '"'));
+		else if (s[i] == '<')
+			return (split_tok_get_wordlen_rdr(s, &i, '<'));
+		else if (s[i] == '>')
+			return (split_tok_get_wordlen_rdr(s, &i, '>'));
+		else
+		{
+			while (s[i] && s[i] != ' ' && s[i] != '<' && s[i] != '>')
+			{
+				if (s[i] == '\'')
+					split_tok_get_wordlen_qt2(s, &i, '\'');
+				else if (s[i] == '"')
+					split_tok_get_wordlen_qt2(s, &i, '"');
+				else
+					i++;
+			}
+			return (i);
+		}
+	}
+	return (0);
+}

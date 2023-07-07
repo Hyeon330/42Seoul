@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 21:26:36 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/05 22:48:50 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/07 17:44:06 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ int	fd_ctrl(t_cmd *cmd, int *fd)
 	{
 		if (red->type & IN_REDIR && in_redir(red) || \
 			red->type & (OUT_REDIR | APPEND) && out_redir(red))
-			return (1);
+			return (0);
 		red = red->next;
 	}
-	return (0);
+	return (1);
 }

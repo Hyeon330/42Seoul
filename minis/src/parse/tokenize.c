@@ -1,102 +1,103 @@
 #include "minishell.h"
 
-int	get_token_size(char *str)
+void	tokenize_redir(t_cmd *cmd, char *redir, char *file)
 {
-	int	pipe_cnt;
-	int	i;
+	t_redir	*temp;
 
-	pipe_cnt = 0;
-	i = 0;
-	while (str[i])
+	temp = cmd->red;
+	while (temp != NULL)
 	{
-		if (str[i] == '|')
-			pipe_cnt++;
-		i++;
+		temp = temp->next;
 	}
-	return (pipe_cnt + 1);
+	temp = init_redir();
+	temp->type = check_redirection(redir);
+	temp->file = file;
 }
 
-t_token	init_token(char *str)
+/*void	tokenize_file(t_cmd *cmd, char *str)
 {
-	t_token	token;
+	t_redir	*temp;
 
-	/*token = (t_token *)malloc(sizeof(t_token) * 1);
-	if (!token)
-		error("malloc error");//에러 처리 물어보기*/
-	token.cmd = (t_cmd *)malloc(sizeof(t_cmd));
-	if (!token.cmd)
-		error("malloc error");
-	token.cmd->next = NULL;
-	token.cmd->red = (t_redir *)malloc(sizeof(t_redir));
-	if (!token.cmd->red)
-		error("malloc error");
-	token.cmd->red = NULL;
-	token.size = get_token_size(str);
-	return (token);
-}//다른 항목도 필요하면 초기화 해주기
-
-int		check_redirection(char *str)
-{
-	if (strncmp(str, '<<' , ft_strlen(str)) != 0 && \
-	strncmp(str, '>>' , ft_strlen(str)) != 0 && \
-	strncmp(str, '<' , ft_strlen(str)) != 0 && \
-	strncmp(str, '>' , ft_strlen(str)) != 0)
-		return (-1);
-	return (1);
-}
-
-void	add_redirection(t_token *token, char *str)
-{
-	while (token->cmd->next != NULL)
+	temp = cmd->red;
+	while (temp->file != NULL)
 	{
-		token->cmd = token->cmd->next;
+		temp = temp->next;
 	}
-	
+	temp->file = str;
+}*///tokenize_redir와 합침
+
+void	tokenize_cmd(t_cmd *cmd, char *str, char *option)
+{
+	char	*blank_add_str;
+	char	*joined_str;
+	char	**argv;
+
+	if (cmd == NULL)
+		cmd = init_cmd();
+	if (option != NULL)
+	{
+		blank_add_str = ft_strjoin(cmd->cmd, ' ');
+		joined_str = ft_strjoin(blank_add_str, str);
+		free(blank_add_str);
+		free(str);
+		argv = ft_split(joined_str, ' ');
+		cmd->av = argv;
+		cmd->ac = 2;
+	}
+	else
+	{
+		argv = (char *)malloc(sizeof(argv) * 2);
+		if (!argv)
+			error("malloc error");
+		argv[1] = NULL;
+		ft_strcpy(argv[0], str);
+		cmd->ac = 1;
+	}
 }
 
-void	add_redir_file(t_token *token, char *str)
+void	tokenize(t_cmd *cmd, char **splited, int i)
 {
-
-}
-
-void	add_cmd(t_token *token, char *str)
-{
-
-}
-
-void	tokenize(t_token *token, char *str)
-{
-	char	**splited;
 	int		i;
 
-	splited = split_token(str);
 	while (splited[i])
 	{
 		if (check_redirection(splited[i]) == 1)
 		{
-			add_redirection(token, str);
-			i++;
-			add_redir_file(token, str);
+			tokenize_redir(cmd, splited[i], splited[i + 1]);
+			i += 2;
 		}
 		else
-			add_cmd(token, str);
-		i++;
+		{
+			if (splited[i + 1] && check_redirection(splited[i + 1] == -1))
+			{
+				tokenize_cmd(cmd, splited[i], splited[i + 1]);
+				i++;;
+			}
+			else
+				tokenize_cmd(cmd, splited[i], NULL);
+			i++;//굳이 else가 필요한가?
+		}
 	}
 }
 
 void	tokenize_main(t_vars *vars, char *str)
 {
-	//t_token	*token;
+	t_cmd	*cmd;
 	char	**splited_pipe;
-	int			i;
+	char	**splited_cmd;
+	int		i;
 
-	//token = init_token(str);
+	cmd = &(vars->token.cmd);
+	cmd = init_cmd();
 	splited_pipe = ft_split(str, '|');
 	i = 0;
 	while (splited_pipe[i])
 	{
-		tokenize(&(vars->token), splited_pipe[i]);
+		splited_cmd = split_token(splited_pipe[i]);
+		syntax_check(splited_cmd, i);
+		tokenize(cmd, splited_cmd, i);
+		cmd->next = init_cmd();
+		cmd = cmd->next;
 		i++;
 	}
-
 }

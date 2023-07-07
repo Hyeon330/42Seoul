@@ -53,7 +53,8 @@ enum e_env_err {
 };
 
 enum e_exec_err {
-	EXEC_PIPE = 0,
+	EXEC_DYNAMIC = 0,
+	EXEC_PIPE = 32,
 	EXEC_OPEN
 };
 
@@ -95,8 +96,9 @@ typedef struct s_vars {
 }	t_vars;
 
 // env
-// set_env.c
+// env.c
 void	set_env(t_env *env, char **p_env);
+void	print_env(t_node_env *node, void (*visit)(t_env *), int builtin_no);
 // insert.c
 void	insert_env(t_env *env, char *key, char *val);
 // remove.c
@@ -107,10 +109,30 @@ char	*search_env(t_node_env *node, char *key);
 int		ft_env_error(int e_no);
 
 // exec
+// exec.c
+void	exec(t_vars *vars);
+// fd_ctrl.c
+int		fd_ctrl(t_cmd *cmd, int *fd);
+// util.c
+int		isdir(char	*path);
+int		get_pair(char **pair, char *str);
+// error.c
+int		ft_exec_err(int e_no, char *cmd, char *str);
+
 // exec/builtin
 // builtin.c
 int		isbuiltin(char *cmd);
-int		builtin(t_vars *vars, int builtin_no);
+void	builtin(t_vars *vars, t_cmd *cmd, int builtin_no);
+// echo.c
+int		echo(t_cmd *cmd);
+// cd.c
+int		cd(t_cmd *cmd, t_env *env);
+// pwd.c
+int		pwd(t_node_env *root);
+// export.c
+int		export(t_cmd *cmd, t_env *env);
+// unset.c
+int		unset(t_cmd *cmd, t_env *env);
 
 void	rl_replace_line(const char *, int);
 

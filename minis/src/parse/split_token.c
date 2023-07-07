@@ -1,124 +1,76 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   split_token.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/04 21:10:54 by eoh               #+#    #+#             */
-/*   Updated: 2023/07/04 22:04:38 by eoh              ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
-int	count_quote(char *str)
+char	**free_result(char **s)
 {
-	char	quote;
+	size_t	j;
 
-	quote = *str;
-	while (*str)
+	j = 0;
+	while (s[j])
 	{
-		if (*str == quote)
-			return (1);
-		str++;
+		free((s[j]));
+		j++;
 	}
-	error("wrong quote");
-	return (-1);
+	free(s);
+	error("splite error");
 }
 
-int	count_redirection(char *str)
+char	*when_redir(char **s)
 {
-	char	redir;
+	char	*redir;
 
-	redir = *str;
-	if (*(str + 1) == '<' || *(str + 1) == '>')
-	{
-		if (*(str + 1) != redir)
-			error("no words after redirection");
-		str++;
-		return (1);
-	}
-	else if(*(str + 1) == '|')
-		error("no words aftr redirection");
-	else
-	{
-		str++;
-		return (1);
-	}
+	redir = *s;
+	if (*s + 1)
 }
 
-int	count_token(char *str)
-{
-	char	*temp;
-	int	i;
-	int	cnt;
-
-	i = 0;
-	cnt = 0;
-
-	while (*temp)
-	{
-		if (*temp == 34 || *temp == 39)
-			cnt += count_quote(temp);
-		if (*temp != ' ' && (*(temp + 1) == ' ' || *(temp + 1) == '\0'))//*temp + 1맞는 방법인지 확인하기
-			cnt++;
-		if (*temp == '<' || *temp == '>')
-			cnt += count_redirection(temp);
-		temp++;
-	}
-	return (cnt);
-}
-
-char	*split_quote(char *s)
-{
-	char	*result;
-	int		end;
-
-	end = 1;
-	while (s[end] != s[0])
-	{
-		end++;
-	}
-	result = ft_substr(s, 1, end - 1);
-	s += end +1;
-	return (result);
-}//맞는지 확인하기
-
-char	*split_redirection(char *s)
-{
-	char	*result;
-
-	if (*(s + 1) == *s)
-	{
-		result = ft_substr(s, 0, 1);
-		s += 2;
-	}
-	else
-	{
-		result[0] = *s;
-		result[1] = '\0';
-		s++;
-	}
-	return (result);
-}
-
-char	*split_blank(char *s)
+char	*when_charset(char **s, char c)
 {
 	char	*tmp;
 	char	*result;
 
 	tmp = *s;
-	while (*s && *s != ' ')
+	while (**s && **s != c)
 		*s += 1;
-	result = (char *)malloc(sizeof(char) * (s - tmp + 1));
+	result = (char *)malloc(sizeof(char) * (*s - tmp + 1));
 	if (!result)
 		return (0);
-	ft_strlcpy(result, tmp, s - tmp + 1);
+	ft_strlcpy(result, tmp, *s - tmp + 1);
 	return (result);
 }
 
-char	**split_token(char **splited, char *s, int cnt)
+char	*splite_quote(char *s)
+{
+	char	*result;
+	char	quote;
+	int		end;
+
+	quote = s[0];
+	end = 1;
+	while (s[end != quote])
+	{
+		end++;
+	}
+	result = ft_substr(s, 1, end - 1);
+	return (result);
+}
+
+char	*when_quote(char **s)
+{
+	char	*quote;
+	char	*result;
+
+	quote = splite_quote(*s);
+	result = (char *)malloc(sizeof(char) * (ft_strlen(quote) + 1));
+	if (!result)
+		error("malloc error");
+	ft_strlcpy(result, quote, ft_strlen(quote) + 1);
+	if (!result)
+		free_result(result);
+	*s += (ft_strlen(quote) + 2);
+	free(quote);
+	return (result);
+}
+
+char	**do_splited(char *s, char **splited, char c)
 {
 	int	i;
 
@@ -126,26 +78,30 @@ char	**split_token(char **splited, char *s, int cnt)
 	while (*s)
 	{
 		if (*s == 34 || *s == 39)
-			splited[i++] = split_quote(s);
-		else if (*s == '<' || *s == '>')
-			splited[i++] = split_redirection(s);
-		else if (*s != ' ')
-			splited[i++] = split_blank(s);
+			result[i++] = when_quote(&s);
+			continue ;
+		else if (*s == '>' || *s == '<')
+			result[i++] = when_redir(&s);
+			continue;
+		else if (*s != c)
+			result[i++] = when_charset(&s, c);
 		else
 			s++;
 	}
+	return (result);
 }
 
 char	**split_token_main(char *str)
 {
+	int		i;
 	int		cnt;
 	char	**splited;
 
-	cnt = count_token(str);
-	splited = (char *)malloc(sizeof(char) * (cnt + 1));
+	i = 0;
+	cnt = count_token(str, ' ');
+	splited = (char **)malloc(sizeof(char *) * cnt + 1);
 	if (!splited)
 		error("malloc error");
 	splited[cnt] = NULL;
-	split_token(splited, str, cnt);
-	return (splited);
+	splited = do_split(str, splited, ' ');
 }

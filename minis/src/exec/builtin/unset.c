@@ -6,18 +6,18 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 19:33:54 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/06/03 12:32:49 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/07 22:03:09 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	unset(t_cmd *cmd, t_tree *env)
+int	unset(t_cmd *cmd, t_env *env)
 {
 	int	i;
 
 	i = 0;
 	while (cmd->av[++i])
-		delete_(env, cmd->av[i]);
+		remove_env(env, cmd->av[i]);
 	return (0);
 }

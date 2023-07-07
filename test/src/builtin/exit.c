@@ -3,34 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: juwkoh <juwkoh@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 05:30:29 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/08 04:56:14 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/03 23:58:44 by juwkoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-enum e_exit_err {
-	EXIT_TOO_MANY = 0,
-	EXIT_NUM
-};
-
-int	exit_error(int e_no, char *str)
-{
-	write(2, "minish: exit: ", 14);
-	if (str)
-	{
-		write(2, str, ft_strlen(str));
-		write(2, ": ", 2);
-	}
-	if (e_no == EXIT_TOO_MANY)
-		write(2, "too many arguments\n", 19);
-	if (e_no == EXIT_NUM)
-		write(2, "numeric argument required\n", 26);
-	return (1);
-}
 
 static int	get_code(char *str, unsigned char *code)
 {
@@ -53,12 +33,12 @@ static int	get_code(char *str, unsigned char *code)
 	return (1);
 }
 
-int	exit_clear(t_vars *vars, t_cmd *cmd)
+int	exit_clear(t_cmd *cmd, t_vars *vars)
 {
 	unsigned char	exit_code;
 	int				chk_code;
 
-	if (vars->token.size < 2)
+	if (vars->cmds_cnt < 2)
 		ft_putstr_fd("exit\n", STDOUT_FILENO);
 	exit_code = 0;
 	if (cmd && cmd->av[1])
@@ -72,9 +52,9 @@ int	exit_clear(t_vars *vars, t_cmd *cmd)
 		if (chk_code && cmd->ac > 2)
 			return (exit_error(EXIT_TOO_MANY, NULL));
 	}
-	if (vars->token.size < 2)
+	if (vars->cmds_cnt < 2)
 	{
-		if (vars->token.cmd)
+		if (vars->cmds)
 			free_cmds(vars);
 		free_env(vars->env.root);
 		exit(exit_code);

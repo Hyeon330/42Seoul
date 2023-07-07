@@ -1,30 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/29 19:35:10 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/08 02:16:33 by hyeonsul         ###   ########.fr       */
+/*   Created: 2023/05/31 18:13:45 by hyeonsul          #+#    #+#             */
+/*   Updated: 2023/06/03 19:25:15 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print(t_node_env *node)
+void	sigint_handler(int signum)
 {
-	if (node->val)
-	{
-		ft_putstr_fd(node->key, STDOUT_FILENO);
-		ft_putstr_fd("=", STDOUT_FILENO);
-		ft_putstr_fd(node->val, STDOUT_FILENO);
-		ft_putstr_fd("\n", STDOUT_FILENO);
-	}
-}
-
-int	env(t_env *envp)
-{
-	print_env(envp, print, ENV);
-	return (0);
+	(void) signum;
+	ft_putstr_fd("\n", STDOUT_FILENO);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }

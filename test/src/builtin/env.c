@@ -6,13 +6,13 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 19:35:10 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/08 02:16:33 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/06/03 19:22:27 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print(t_node_env *node)
+void	print_env(t_env *node)
 {
 	if (node->val)
 	{
@@ -25,6 +25,6 @@ static void	print(t_node_env *node)
 
 int	env(t_env *envp)
 {
-	print_env(envp, print, ENV);
+	inorder(envp, print_env, ENV);
 	return (0);
 }

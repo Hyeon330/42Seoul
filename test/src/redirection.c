@@ -1,30 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/29 19:35:10 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/08 02:16:33 by hyeonsul         ###   ########.fr       */
+/*   Created: 2023/05/10 21:41:09 by hyeonsul          #+#    #+#             */
+/*   Updated: 2023/06/03 19:06:24 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print(t_node_env *node)
+int	in_redir(t_cmd *cmd)
 {
-	if (node->val)
-	{
-		ft_putstr_fd(node->key, STDOUT_FILENO);
-		ft_putstr_fd("=", STDOUT_FILENO);
-		ft_putstr_fd(node->val, STDOUT_FILENO);
-		ft_putstr_fd("\n", STDOUT_FILENO);
-	}
+	int	fd;
+
+	fd = open(cmd->cmd, O_RDONLY);
+	if (fd < 0)
+		return (ft_error(OPEN, cmd->cmd));
+	dup2(fd, STDIN_FILENO);
+	close(fd);
+	return (0);
 }
 
-int	env(t_env *envp)
+int	out_redir(t_cmd *cmd)
 {
-	print_env(envp, print, ENV);
+	int	fd;
+
+	fd = open(cmd->cmd, O_WRONLY | O_CREAT | O_APPEND | \
+		(O_TRUNC ^ (cmd->type >> 4 & 1) * O_TRUNC), 0644);
+	if (fd < 0)
+		return (ft_error(OPEN, cmd->cmd));
+	dup2(fd, STDOUT_FILENO);
+	close(fd);
 	return (0);
 }
