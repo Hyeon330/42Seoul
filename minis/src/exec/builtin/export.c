@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 19:33:24 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/08 03:38:04 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/12 19:20:12 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	print(t_node_env *node)
 
 int	export(t_cmd *cmd, t_env *env)
 {
-	char	*pair[2];
+	char	**pair;
 	int		i;
 
 	if (!cmd->av[1])
@@ -40,9 +40,11 @@ int	export(t_cmd *cmd, t_env *env)
 	i = 0;
 	while (cmd->av[++i])
 	{
-		if (!get_pair(pair, cmd->av[i]))
+		pair = get_pair(cmd->av[1]);
+		if (!pair)
 			return (ft_exec_err(EXEC_DYNAMIC, cmd->av[0], NULL));
 		insert_env(env, pair[0], pair[1]);
+		free(pair);
 	}
 	return (0);
 }

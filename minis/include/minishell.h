@@ -35,7 +35,8 @@
 enum e_redir_type {
 	IN_REDIR = 1,
 	OUT_REDIR = 2,
-	APPEND = 4
+	APPEND = 4,
+	HEREDOC = 8
 };
 
 enum e_builtin {
@@ -52,10 +53,19 @@ enum e_env_err {
 	ENV_DYNAMIC = 0
 };
 
+enum e_exec_err_type {
+	E_COMMON = 0,
+	E_FILE = 32,
+	E_CRITICAL = 64
+};
+
 enum e_exec_err {
-	EXEC_DYNAMIC = 0,
-	EXEC_PIPE = 32,
-	EXEC_OPEN
+	EXEC_DYNAMIC = E_COMMON,
+	EXEC_CNF,
+	EXEC_ISDIR = E_FILE,
+	EXEC_PIPE = E_CRITICAL,
+	EXEC_OPEN,
+	EXEC_FORK
 };
 
 typedef struct s_redir {
@@ -67,7 +77,6 @@ typedef struct s_redir {
 typedef struct s_cmd {
 	struct s_cmd	*next;
 	t_redir			*red;
-	char			*cmd;
 	char			**av;
 	int				ac;
 }	t_cmd;
@@ -95,10 +104,20 @@ typedef struct s_vars {
 	int		exit_code;
 }	t_vars;
 
+// std_ioe.c
+void	std_ioe_backup(void);
+void	std_ioe_back(void);
+// clear.c
+void	clear_token(t_token *token);
+void	clear_ppc(char ***ppc);
+
 // env
-// env.c
+// util_1.c
 void	set_env(t_env *env, char **p_env);
 void	print_env(t_node_env *node, void (*visit)(t_env *), int builtin_no);
+void	clear_env(t_node_env *node);
+// util_2.c
+char	**get_env(t_env *env);
 // insert.c
 void	insert_env(t_env *env, char *key, char *val);
 // remove.c
@@ -111,18 +130,22 @@ int		ft_env_error(int e_no);
 // exec
 // exec.c
 void	exec(t_vars *vars);
+// child.c
+int		child_proc(t_vars *vars, t_cmd *cmd, int *fd, int builtin_no);
 // fd_ctrl.c
+void	pipex(int *fd, int INOUT);
 int		fd_ctrl(t_cmd *cmd, int *fd);
 // util.c
 int		isdir(char	*path);
-int		get_pair(char **pair, char *str);
+char	**get_pair(char *str);
+char	*strjoin_between_char(char *str1, char *str2, char c);
 // error.c
 int		ft_exec_err(int e_no, char *cmd, char *str);
 
 // exec/builtin
 // builtin.c
 int		isbuiltin(char *cmd);
-void	builtin(t_vars *vars, t_cmd *cmd, int builtin_no);
+int		builtin(t_vars *vars, t_cmd *cmd, int builtin_no);
 // echo.c
 int		echo(t_cmd *cmd);
 // cd.c

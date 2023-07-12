@@ -1,16 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   util_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 16:49:40 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/08 03:00:31 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/12 19:20:51 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	clear_env(t_node_env *node)
+{
+	if (!node)
+		return ;
+	free_env(node->left);
+	free_env(node->right);
+	free(node->key);
+	free(node->val);
+	free(node);
+}
 
 static int	other_case(char **pair, int oldpwd)
 {
@@ -31,16 +42,18 @@ static int	other_case(char **pair, int oldpwd)
 
 void	set_env(t_env *env, char **p_env)
 {
-	char	*pair[2];
+	char	**pair;
 	char	*tmp;
 
 	while (*p_env)
 	{
-		if (get_pair(pair, *p_env))
+		pair = get_pair(*p_env);
+		if (!pair)
 			exit(ft_env_error(ENV_DYNAMIC));
 		if (!other_case(pair, !ft_strncmp(pair[0], "OLDPWD", 7)))
 			exit(ft_env_error(ENV_DYNAMIC));
 		insert_env(env, pair[0], pair[1]);
+		free(pair);
 		p_env++;
 	}
 }

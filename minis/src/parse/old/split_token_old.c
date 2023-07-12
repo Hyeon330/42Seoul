@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split_token.c                                      :+:      :+:    :+:   */
+/*   split_token_old.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 21:10:54 by eoh               #+#    #+#             */
-/*   Updated: 2023/07/06 18:04:09 by eoh              ###   ########.fr       */
+/*   Updated: 2023/07/09 18:25:44 by eoh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,3 +149,38 @@ char	**split_token_main(char *str)
 	split_token(splited, str, cnt);
 	return (splited);
 }
+
+/*
+char	*splite_quote(char *s)
+{
+	char	*result;
+	char	quote;
+	int		end;
+
+	quote = s[0];
+	end = 1;
+	while (s[end != quote])
+	{
+		end++;
+	}
+	result = ft_substr(s, 1, end - 1);
+	return (result);
+}
+
+char	*when_quote(char **s)
+{
+	char	*quote;
+	char	*result;
+
+	quote = splite_quote(*s);
+	result = (char *)malloc(sizeof(char) * (ft_strlen(quote) + 1));
+	if (!result)
+		error("malloc error");
+	ft_strlcpy(result, quote, ft_strlen(quote) + 1);
+	if (!result)
+		free_splited_token(result);
+	*s += (ft_strlen(quote) + 2);
+	free(quote);
+	return (result);
+}
+*/

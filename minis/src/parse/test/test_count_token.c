@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <errno.h>
-#include <stdlib.h>
+#include "test.h"
 
 void	error(char *msg)
 {
@@ -66,17 +64,18 @@ int	count_token(char *s, char c)
 			cnt++;
 			continue;
 		}
-		if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0'))
+		if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0' || s[i + 1] == '>' || s[i + 1] == '<'))
 			cnt++;
 		i++;
 	}
 	return (cnt);
 }
-
+/*
 int main()
 {
-	char	*str = "ls -al 'hello' >a";
+	char	*str = "infile   -ls -al>> hello    < > >>hi<   ls";
 	int		cnt = count_token(str, ' ');
 
 	printf ("%d\n", cnt);
 }
+*/

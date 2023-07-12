@@ -62,7 +62,7 @@ int	count_token(char *s, char c)
 			cnt++;
 			continue;
 		}
-		if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0'))
+		if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0' || s[i + 1] == '>' || s[i + 1] == '<'))
 			cnt++;
 		i++;
 	}

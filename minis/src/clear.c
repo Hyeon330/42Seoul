@@ -1,30 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   search.c                                           :+:      :+:    :+:   */
+/*   clear.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/04 21:01:53 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/12 14:19:05 by hyeonsul         ###   ########.fr       */
+/*   Created: 2023/07/12 13:33:49 by hyeonsul          #+#    #+#             */
+/*   Updated: 2023/07/12 19:39:42 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*search_env(t_node_env *node, char *key)
+void	clear_ppc(char ***ppc)
 {
-	int	chk;
+	int	i;
 
-	while (node)
+	i = -1;
+	while ((*ppc)[++i])
+		free((*ppc)[i]);
+	free(*ppc);
+}
+
+void	clear_redir(t_redir *red)
+{
+	t_redir	*tmp;
+
+	while (red)
 	{
-		chk = ft_strncmp(node->key, key, ft_strlen(key));
-		if (!chk)
-			return (node->val);
-		if (chk < 0)
-			node = node->right;
-		else
-			node = node->left;
+		tmp = red;
+		red = red->next;
+		free(tmp);
 	}
-	return (NULL);
+}
+
+void	clear_token(t_token *token)
+{
+	t_cmd	*cmd;
+	t_cmd	*tmp;
+
+	if (!token)
+		return ;
+	cmd = token->cmd;
+	while (cmd)
+	{
+		tmp = cmd;
+		cmd = cmd->next;
+		clear_redir(tmp->red);
+		clear_ppc(&tmp->av);
+		free(tmp);
+	}
 }

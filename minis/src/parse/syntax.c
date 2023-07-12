@@ -6,7 +6,7 @@
 /*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 19:01:55 by eoh               #+#    #+#             */
-/*   Updated: 2023/07/05 22:25:49 by eoh              ###   ########.fr       */
+/*   Updated: 2023/07/10 01:42:45 by eoh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	syntax_check(char **splited, int order)
 
 	i = 0;
 	if (order != 0 && check_redirection(splited[0]) != -1)
-			error("syntax error");//| 뒤에 redirection이 오는 것 방지
+			error("redirection after pipe");//pipe 뒤에 redirection이 오는 것 방지
 	if (check_redirection(splited[i]) == 1)
 		syntax_redirection(splited, ++i);
 	else

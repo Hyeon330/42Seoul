@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 20:40:05 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/07 18:17:51 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/12 16:48:05 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,21 @@ int	isbuiltin(char *cmd)
 	return (0);
 }
 
-void	builtin(t_vars *vars, t_cmd *cmd, int builtin_no)
+int	builtin(t_vars *vars, t_cmd *cmd, int builtin_no)
 {
 	if (builtin_no == ECHO)
-		vars->exit_code = echo(cmd);
+		return (echo(cmd));
 	if (builtin_no == CD)
-		vars->exit_code = cd(cmd, &vars->env);
+		return (cd(cmd, &vars->env));
 	if (builtin_no == PWD)
-		vars->exit_code = pwd(vars->env.root);
+		return (pwd(vars->env.root));
 	if (builtin_no == EXPORT)
-		vars->exit_code = export(cmd, &vars->env);
+		return (export(cmd, &vars->env));
 	if (builtin_no == UNSET)
-		vars->exit_code = unset(cmd, &vars->env);
+		return (unset(cmd, &vars->env));
 	if (builtin_no == ENV)
-		vars->exit_code = env(vars->env.root);
+		return (env(vars->env.root));
 	if (builtin_no == EXIT)
-		vars->exit_code = exit_clear(cmd, vars);
+		return (exit_clear(cmd, vars));
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 05:30:29 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/08 04:56:14 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/12 15:10:41 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,26 +58,21 @@ int	exit_clear(t_vars *vars, t_cmd *cmd)
 	unsigned char	exit_code;
 	int				chk_code;
 
-	if (vars->token.size < 2)
-		ft_putstr_fd("exit\n", STDOUT_FILENO);
 	exit_code = 0;
-	if (cmd && cmd->av[1])
+	if (cmd->av[1])
 	{
 		chk_code = get_code(cmd->av[1], &exit_code);
 		if (!chk_code)
 		{
-			exit_code = 255;
 			exit_error(EXIT_NUM, cmd->av[1]);
+			exit(255);
 		}
-		if (chk_code && cmd->ac > 2)
+		if (cmd->ac > 2)
 			return (exit_error(EXIT_TOO_MANY, NULL));
-	}
-	if (vars->token.size < 2)
-	{
-		if (vars->token.cmd)
-			free_cmds(vars);
-		free_env(vars->env.root);
 		exit(exit_code);
 	}
-	return (exit_code);
+	ft_putstr_fd("exit\n", STDOUT_FILENO);
+	clear_token(&vars->token);
+	clear_env(vars->env.root);
+	exit(0);
 }

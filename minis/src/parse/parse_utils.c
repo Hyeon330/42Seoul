@@ -19,14 +19,18 @@ int	get_token_size(char *str)
 int	check_redirection(char *str)
 {
 	enum e_redir_type	redir_type;
+	int					flag;
 
-	if (strncmp(str, '<' , ft_strlen(str)) != 0)
+	flag = 1;
+	if (ft_strncmp(str, "<" , ft_strlen(str)) == 0)
 		redir_type = IN_REDIR;
-	else if (strncmp(str, '>' , ft_strlen(str)) != 0)
+	else if (ft_strncmp(str, ">" , ft_strlen(str)) == 0)
 		redir_type = OUT_REDIR;
-	else if (strncmp(str, '<<' , ft_strlen(str)) != 0 || \
-	strncmp(str, '>>' , ft_strlen(str)) != 0)
+	else if (ft_strncmp(str, ">>" , ft_strlen(str)) == 0)
 		redir_type = APPEND;
+	else if (ft_strncmp(str, ">>" , ft_strlen(str)) == 0)
+		redir_type = HEREDOC;
 	else
-		return (-1);
+		flag = -1;
+	return (flag);
 }

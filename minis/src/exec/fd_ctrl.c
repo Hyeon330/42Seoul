@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 21:26:36 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/07 17:44:06 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/12 15:46:34 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	out_redir(t_redir *red)
 	return (0);
 }
 
-static void	pipex(int *fd, int INOUT)
+void	pipex(int *fd, int INOUT)
 {
 	if (INOUT)
 		dup2(fd[1], INOUT);

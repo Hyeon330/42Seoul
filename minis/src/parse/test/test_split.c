@@ -87,6 +87,7 @@ char	**ft_split(char const *s, char c)
 	return (ppc);
 }
 
+/*
 int main()
 {
 	char	*str = "< infile ls -al | wc -w > outfile";
@@ -97,4 +98,4 @@ int main()
 	{
 		printf("%s\n", splited[i]);
 	}
-}
+}*/

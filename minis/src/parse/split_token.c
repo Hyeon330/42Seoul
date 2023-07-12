@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	**free_result(char **s)
+void	free_splited_token(char **s)
 {
 	size_t	j;
 
@@ -16,28 +16,49 @@ char	**free_result(char **s)
 
 char	*when_redir(char **s)
 {
-	char	*redir;
+	char	*result;
+	char	redir;
+	int		len;
 
-	redir = *s;
-	if (*s + 1)
+	char	*temp;
+	temp = *s;
+	redir = temp[0];
+	len = 1;
+	if (temp[0] == temp[1])
+		len++;
+	result = (char *)malloc(sizeof(char *) * len);
+	if (!result)
+		error("malloc error");
+	ft_strlcpy(result, temp, len + 1);
+	if (!result)
+		free_splited_token(&result);
+	*s += len;
+	return (result);
 }
 
-char	*when_charset(char **s, char c)
+char	*when_charset(char **s, char c, t_vars vars)
 {
 	char	*tmp;
 	char	*result;
+	char	*old_result;
 
 	tmp = *s;
-	while (**s && **s != c)
+	while (**s && **s != c && **s != '<' && **s != '>')
 		*s += 1;
 	result = (char *)malloc(sizeof(char) * (*s - tmp + 1));
 	if (!result)
 		return (0);
 	ft_strlcpy(result, tmp, *s - tmp + 1);
+	if (count_replace(result) != -1)
+	{
+		old_result = result;
+		result = replace_character(s, vars, count_replace(result));
+		free(old_result);
+	}
 	return (result);
 }
 
-char	*splite_quote(char *s)
+char	*split_quote(char *s)
 {
 	char	*result;
 	char	quote;
@@ -45,7 +66,7 @@ char	*splite_quote(char *s)
 
 	quote = s[0];
 	end = 1;
-	while (s[end != quote])
+	while (s[end] != quote)
 	{
 		end++;
 	}
@@ -53,24 +74,25 @@ char	*splite_quote(char *s)
 	return (result);
 }
 
-char	*when_quote(char **s)
+char	*when_quote(char	**s)
 {
 	char	*quote;
 	char	*result;
 
-	quote = splite_quote(*s);
+	quote = split_quote(*s);
 	result = (char *)malloc(sizeof(char) * (ft_strlen(quote) + 1));
 	if (!result)
-		error("malloc error");
+	{
+		free(result);
+		return (0);
+	}
 	ft_strlcpy(result, quote, ft_strlen(quote) + 1);
-	if (!result)
-		free_result(result);
 	*s += (ft_strlen(quote) + 2);
 	free(quote);
 	return (result);
 }
 
-char	**do_splited(char *s, char **splited, char c)
+char	**do_split_token(char *s, char **splited, char c, t_vars vars)
 {
 	int	i;
 
@@ -78,20 +100,18 @@ char	**do_splited(char *s, char **splited, char c)
 	while (*s)
 	{
 		if (*s == 34 || *s == 39)
-			result[i++] = when_quote(&s);
-			continue ;
+			splited[i++] = when_quote(&s);
 		else if (*s == '>' || *s == '<')
-			result[i++] = when_redir(&s);
-			continue;
+			splited[i++] = when_redir(&s);
 		else if (*s != c)
-			result[i++] = when_charset(&s, c);
+			splited[i++] = when_charset(&s, c, vars);
 		else
 			s++;
 	}
-	return (result);
+	return (splited);
 }
 
-char	**split_token_main(char *str)
+char	**split_token_main(char *str, t_vars vars)
 {
 	int		i;
 	int		cnt;
@@ -103,5 +123,6 @@ char	**split_token_main(char *str)
 	if (!splited)
 		error("malloc error");
 	splited[cnt] = NULL;
-	splited = do_split(str, splited, ' ');
+	splited = do_split_token(str, splited, ' ', vars);
+	return (splited);
 }

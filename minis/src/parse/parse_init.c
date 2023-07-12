@@ -10,8 +10,8 @@ t_cmd	*init_cmd()
 	cmd->next = NULL;
 	cmd->red = NULL;
 	cmd->cmd = NULL;
-	cmd->ac = -1;
-	//ac도 초기화 해줘야하나?
+	cmd->ac = -1;//ac도 초기화 해줘야하나?
+	return (cmd);
 }
 
 t_redir	*init_redir()
@@ -24,7 +24,7 @@ t_redir	*init_redir()
 	redir->next = NULL;
 	redir->file = NULL;
 	redir->type = -1;
-	//타입초기화 비어있는걸 표시하려고 해뒀지만 필요없을 수도?
+	return (redir);	//타입초기화 비어있는걸 표시하려고 해뒀지만 필요없을 수도?
 }
 
 /*t_token	init_token(char *str)
