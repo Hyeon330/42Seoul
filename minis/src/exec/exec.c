@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 20:46:35 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/12 19:44:08 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/14 20:07:55 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ void	exec(t_vars *vars)
 				child_proc(vars, cmd, fd, builtin_no))
 				break ;
 			else if (fd_ctrl(cmd, fd))
-				vars->exit_code = builtin(vars, cmd, builtin_no);
-			else
 				vars->exit_code = 1;
+			else
+				vars->exit_code = builtin(vars, cmd, builtin_no);
 		}
 		if (cmd->next)
 			pipex(fd, STDIN_FILENO);

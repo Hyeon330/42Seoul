@@ -17,7 +17,6 @@ char	*replace_wave(char *str, t_vars vars, int i)
 	free(old_result);
 	free(temp1);
 	free(temp2);
-	free(str);
 	return (result);
 }
 // **환경변수는 strdup를 이용해서 쓰기!!
@@ -31,14 +30,13 @@ char	*replace_exit_code(char *str, t_vars vars, int i)
 	
 	exit_code = ft_itoa(vars.exit_code);
 	temp1 = ft_substr(str, 0, i);
-	temp2 = ft_substr(str, i + 1, ft_strlen(str) - 1);
+	temp2 = ft_substr(str, i + 2, ft_strlen(str) - 1);
 	result = ft_strjoin(temp1, exit_code);
 	old_result = result;
 	result = ft_strjoin(result, temp2);
 	free(old_result);
 	free(temp1);
 	free(temp2);
-	free(str);
 	return (result);
 }
 

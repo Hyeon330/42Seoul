@@ -93,6 +93,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strdup(const char *src);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_itoa(int n);
+void	input_pc(char *pc, int n, int n_size, int sign);
 
 //test_syntax_check
 void	syntax_check(char **splited, int order);

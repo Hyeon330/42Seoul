@@ -68,6 +68,18 @@ enum e_exec_err {
 	EXEC_FORK
 };
 
+typedef struct s_node_env {
+	struct s_node_env	*left;
+	struct s_node_env	*right;
+	char				*key;
+	char				*val;
+}	t_node_env;
+
+typedef struct s_env {
+	t_node_env	*root;
+	int			size;
+}	t_env;
+
 typedef struct s_redir {
 	struct s_redir	*next;
 	char			*file;
@@ -86,21 +98,9 @@ typedef struct s_token {
 	int		size;
 }	t_token;
 
-typedef struct s_node_env {
-	struct s_node_env	*left;
-	struct s_node_env	*right;
-	char				*key;
-	char				*val;
-}	t_node_env;
-
-typedef struct s_env {
-	t_node_env	*root;
-	int			size;
-}	t_env;
-
 typedef struct s_vars {
-	t_token	token;
 	t_env	env;
+	t_token	token;
 	int		exit_code;
 }	t_vars;
 
@@ -114,7 +114,7 @@ void	clear_ppc(char ***ppc);
 // env
 // util_1.c
 void	set_env(t_env *env, char **p_env);
-void	print_env(t_node_env *node, void (*visit)(t_env *), int builtin_no);
+void	print_env(t_node_env *node, void (*visit)(t_node_env *), int builtin_no);
 void	clear_env(t_node_env *node);
 // util_2.c
 char	**get_env(t_env *env);
@@ -156,6 +156,10 @@ int		pwd(t_node_env *root);
 int		export(t_cmd *cmd, t_env *env);
 // unset.c
 int		unset(t_cmd *cmd, t_env *env);
+// env.c
+int		env(t_node_env *env);
+// exit.c
+int		exit_clear(t_vars *vars, t_cmd *cmd);
 
 void	rl_replace_line(const char *, int);
 

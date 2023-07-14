@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 19:32:04 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/08 04:20:14 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:33:23 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	meta_path(t_cmd *cmd, t_env *env, int *chk)
 	return (0);
 }
 
-int	set_pwd(t_cmd *cmd, t_env *env)
+static int	set_pwd(t_env *env)
 {
 	char	*pair[2];
 	char	path[5120];
@@ -102,8 +102,8 @@ int	cd(t_cmd *cmd, t_env *env)
 	key = ft_strdup("OLDPWD");
 	if (!key)
 		return (ft_exec_err(EXEC_DYNAMIC, cmd->av[0], cmd->av[1]));
-	insert_env(env, key, search(env->root, "PWD"));
-	if (!set_pwd(cmd, env))
+	insert_env(env, key, search_env(env->root, "PWD"));
+	if (!set_pwd(env))
 		return (ft_exec_err(EXEC_DYNAMIC, cmd->av[0], cmd->av[1]));
 	if (chk == HOME)
 		cmd->av[1] = NULL;

@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 05:30:29 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/12 15:10:41 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/14 20:15:53 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ enum e_exit_err {
 	EXIT_NUM
 };
 
-int	exit_error(int e_no, char *str)
+static int	exit_error(int e_no, char *str)
 {
 	write(2, "minish: exit: ", 14);
 	if (str)
@@ -59,7 +59,7 @@ int	exit_clear(t_vars *vars, t_cmd *cmd)
 	int				chk_code;
 
 	exit_code = 0;
-	if (cmd->av[1])
+	if (cmd && cmd->av[1])
 	{
 		chk_code = get_code(cmd->av[1], &exit_code);
 		if (!chk_code)
@@ -72,7 +72,8 @@ int	exit_clear(t_vars *vars, t_cmd *cmd)
 		exit(exit_code);
 	}
 	ft_putstr_fd("exit\n", STDOUT_FILENO);
-	clear_token(&vars->token);
+	if (cmd)
+		clear_token(&vars->token);
 	clear_env(vars->env.root);
 	exit(0);
 }

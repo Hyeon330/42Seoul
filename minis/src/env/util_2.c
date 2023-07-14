@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 17:04:36 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/12 19:41:08 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:25:29 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,18 @@ static void	recursive_env(t_node_env *node, char ***env, int *idx, int *chk)
 
 char	**get_env(t_env *env)
 {
-	char	**env;
+	char	**ret;
 	int		i;
 	int		chk;
 
-	env = (char **)malloc(sizeof(char *) * (env->size + 1));
-	if (!env)
+	ret = (char **)malloc(sizeof(char *) * (env->size + 1));
+	if (!ret)
 		return (NULL);
-	ft_memset(env, 0, sizeof(char *) * (env->size + 1));
+	ft_memset(ret, 0, sizeof(char *) * (env->size + 1));
 	i = 0;
 	chk = 0;
-	recursive_env(env->root, &env, &i, &chk);
+	recursive_env(env->root, &ret, &i, &chk);
 	if (chk)
 		return (NULL);
-	return (env);
+	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 15:11:49 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/12 19:36:05 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/14 20:04:06 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	not_path_cmd(t_vars *vars, t_cmd *cmd, char **env)
 	char	*real_path;
 	int		i;
 
-	paths = ft_split(search(vars->env.root, "PATH"), ':');
+	paths = ft_split(search_env(vars->env.root, "PATH"), ':');
 	if (!paths)
 		exit(ft_exec_err(EXEC_DYNAMIC, cmd->av[0], NULL));
 	i = -1;
@@ -52,7 +52,7 @@ static void	execute(t_vars *vars, t_cmd *cmd)
 	env = get_env(&vars->env);
 	if (!env)
 		exit(ft_exec_err(EXEC_DYNAMIC, cmd->av[0], NULL));
-	if (ft_strchr(cmd->av[0], '/') || !search(vars->env.root, "PATH"))
+	if (ft_strchr(cmd->av[0], '/') || !search_env(vars->env.root, "PATH"))
 		path_cmd(cmd, env);
 	else
 		not_path_cmd(vars, cmd, env);

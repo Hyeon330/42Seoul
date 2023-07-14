@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 20:40:05 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/12 16:48:05 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:30:10 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,6 @@ int	builtin(t_vars *vars, t_cmd *cmd, int builtin_no)
 	if (builtin_no == ENV)
 		return (env(vars->env.root));
 	if (builtin_no == EXIT)
-		return (exit_clear(cmd, vars));
+		return (exit_clear(vars, cmd));
 	return (1);
 }

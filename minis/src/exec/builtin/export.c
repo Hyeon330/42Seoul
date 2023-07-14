@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 19:33:24 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/12 19:20:12 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:09:37 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	export(t_cmd *cmd, t_env *env)
 
 	if (!cmd->av[1])
 	{
-		inorder_env(env->root, print, EXPORT);
+		print_env(env->root, print, EXPORT);
 		return (0);
 	}
 	i = 0;

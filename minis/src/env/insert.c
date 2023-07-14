@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 20:54:14 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/08 02:08:08 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:52:01 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_node_env	*create_node(char *key, char *val)
 {
 	t_node_env	*node;
 
-	node = (t_node_env *)ft_calloc(1, sizeof(t_node_env));
+	node = (t_node_env *)malloc(sizeof(t_node_env));
 	if (!node)
 		exit(ft_env_error(ENV_DYNAMIC));
 	node->key = key;

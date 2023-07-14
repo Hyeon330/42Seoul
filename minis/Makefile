@@ -12,25 +12,24 @@ INC		= $(addprefix -I, $(INC_DIR))
 READLINE	= -L$(HOME)/.brew/opt/readline/lib -lreadline
 
 ENV_DIR		=	env/
-ENV_FILES	=	insert remove search
 
 PARSE_DIR	=	parse/
-PARSE_FILES	=	
 
 EXEC_DIR	=	exec/
-# EXEC_FILES	=	builtin error exec execution \
-# 				fd_ctrl redirection signal_handler tree1 tree2 tree_order
-EXEC_FILES	=	
+EXEC_BUILTIN_DIR	=	$(EXEC_DIR)builtin/
 
-BUILTIN_DIR		=	$(EXEC_DIR)builtin/
-# BUILTIN_FILES	=	echo cd pwd export unset env exit
-BUILTIN_FILES	=	
+ENV_FILES	=	insert remove search util_1 util_2 error
 
-FILES	=	main \
+PARSE_FILES	=	
+
+EXEC_FILES	=	exec child fd_ctrl util error
+EXEC_BUILTIN_FILES	=	builtin echo cd pwd export unset env exit
+
+FILES	=	main std_ioe clear \
 			$(addprefix $(ENV_DIR), $(ENV_FILES)) \
 			$(addprefix $(PARSE_DIR), $(PARSE_FILES)) \
 			$(addprefix $(EXEC_DIR), $(EXEC_FILES)) \
-			$(addprefix $(BUILTIN_DIR), $(BUILTIN_FILES))
+			$(addprefix $(EXEC_BUILTIN_DIR), $(EXEC_BUILTIN_FILES))
 
 OBJ_DIR	= obj/
 SRC_DIR	= src/

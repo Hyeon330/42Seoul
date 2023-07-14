@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 21:26:36 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/12 15:46:34 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/14 19:59:49 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	in_redir(t_redir *red)
 
 	fd = open(red->file, O_RDONLY);
 	if (fd < 0)
-		return (ft_error(EXEC_OPEN, red->file));
+		return (ft_exec_err(EXEC_OPEN, NULL, red->file));
 	dup2(fd, STDIN_FILENO);
 	close(fd);
 	return (0);
@@ -31,7 +31,7 @@ static int	out_redir(t_redir *red)
 	fd = open(red->file, O_WRONLY | O_CREAT | O_APPEND | \
 		(O_TRUNC ^ (red->type >> 2 & 1) * O_TRUNC), 0644);
 	if (fd < 0)
-		return (ft_error(EXEC_OPEN, red->file));
+		return (ft_exec_err(EXEC_OPEN, NULL, red->file));
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
 	return (0);
@@ -56,10 +56,10 @@ int	fd_ctrl(t_cmd *cmd, int *fd)
 	red = cmd->red;
 	while (red)
 	{
-		if (red->type & IN_REDIR && in_redir(red) || \
-			red->type & (OUT_REDIR | APPEND) && out_redir(red))
-			return (0);
+		if ((red->type & (IN_REDIR | HEREDOC) && in_redir(red)) || \
+			(red->type & (OUT_REDIR | APPEND) && out_redir(red)))
+			return (1);
 		red = red->next;
 	}
-	return (1);
+	return (0);
 }
