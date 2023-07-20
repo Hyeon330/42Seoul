@@ -53,6 +53,7 @@ char	*when_charset(char **s, char c)
 	ft_strlcpy(result, tmp, *s - tmp + 1);
 	return (result);
 }
+
 char	*split_quote(char *s)
 {
 	char	*result;

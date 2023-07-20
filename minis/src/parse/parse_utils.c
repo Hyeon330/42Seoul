@@ -18,19 +18,38 @@ int	get_token_size(char *str)
 
 int	check_redirection(char *str)
 {
-	enum e_redir_type	redir_type;
-	int					flag;
+	int	flag;
 
 	flag = 1;
-	if (ft_strncmp(str, "<" , ft_strlen(str)) == 0)
-		redir_type = IN_REDIR;
-	else if (ft_strncmp(str, ">" , ft_strlen(str)) == 0)
-		redir_type = OUT_REDIR;
-	else if (ft_strncmp(str, ">>" , ft_strlen(str)) == 0)
-		redir_type = APPEND;
-	else if (ft_strncmp(str, ">>" , ft_strlen(str)) == 0)
-		redir_type = HEREDOC;
+	if (ft_strncmp(str, "<<" , ft_strlen("<<")) == 0)
+		flag = HEREDOC;
+	else if (ft_strncmp(str, ">>" , ft_strlen(">>")) == 0)
+		flag = APPEND;
+	else if (ft_strncmp(str, "<" , ft_strlen("<")) == 0)
+		flag = IN_REDIR;
+	else if (ft_strncmp(str, ">" , ft_strlen(">")) == 0)
+		flag = OUT_REDIR;
 	else
 		flag = -1;
 	return (flag);
+}
+
+int	check_only_whitespace(char *str)
+{
+	int	len;
+	int	cnt;
+	int	i;
+
+	len = ft_strlen(str);
+	cnt = 0;
+	i = 0;
+	while (str[i])
+	{
+		if ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
+			cnt++;
+		i++;
+	}
+	if (cnt == len)
+		return (1);
+	return (-1);
 }

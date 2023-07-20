@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 21:26:36 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/14 19:59:49 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/18 17:04:51 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ void	pipex(int *fd, int INOUT)
 		dup2(fd[1], INOUT);
 	else
 		dup2(fd[0], INOUT);
-	close(fd[1]);
 	close(fd[0]);
+	close(fd[1]);
 }
 
 int	fd_ctrl(t_cmd *cmd, int *fd)

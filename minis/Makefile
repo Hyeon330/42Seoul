@@ -11,6 +11,7 @@ INC		= $(addprefix -I, $(INC_DIR))
 
 READLINE	= -L$(HOME)/.brew/opt/readline/lib -lreadline
 
+# DIR
 ENV_DIR		=	env/
 
 PARSE_DIR	=	parse/
@@ -18,11 +19,13 @@ PARSE_DIR	=	parse/
 EXEC_DIR	=	exec/
 EXEC_BUILTIN_DIR	=	$(EXEC_DIR)builtin/
 
+# FILES
 ENV_FILES	=	insert remove search util_1 util_2 error
 
-PARSE_FILES	=	
+PARSE_FILES	=	error heredoc parse_init parse_utils parse replace signal \
+				split_token_count split_token split_token2 syntax tokenize
 
-EXEC_FILES	=	exec child fd_ctrl util error
+EXEC_FILES	=	exec child execute fd_ctrl util error
 EXEC_BUILTIN_FILES	=	builtin echo cd pwd export unset env exit
 
 FILES	=	main std_ioe clear \
@@ -53,7 +56,7 @@ $(OBJ_DIR):
 	$(OBJ_DIR)$(ENV_DIR) \
 	$(OBJ_DIR)$(PARSE_DIR) \
 	$(OBJ_DIR)$(EXEC_DIR) \
-	$(OBJ_DIR)$(BUILTIN_DIR)
+	$(OBJ_DIR)$(EXEC_BUILTIN_DIR) \
 
 $(LIB):
 	$(MAKE) -C $(LIB_DIR)

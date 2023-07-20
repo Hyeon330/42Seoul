@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include "get_next_line.h"
 
 enum e_redir_type {
 	IN_REDIR = 0,
@@ -23,7 +24,6 @@ typedef struct s_redir {
 typedef struct s_cmd {
 	struct s_cmd	*next;
 	t_redir			*red;
-	char			*cmd;
 	char			**av;
 	int				ac;
 }	t_cmd;
@@ -109,5 +109,9 @@ t_redir	*init_redir();
 t_cmd	*tokenize(t_cmd *cmd, char **splited);
 char	*tokenize_cmd(t_cmd *cmd, char *str);
 t_redir	*tokenize_redir(t_cmd *cmd, char *redir, char *file);
+
+//test_heredoc
+char	*heredoc_join_path(char *file_name);
+char	*get_heredoc_filename(void);
 
 #endif

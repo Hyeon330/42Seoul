@@ -1,5 +1,4 @@
 #include "test.h"
-
 void	parse(t_vars *vars, char *str)
 {
 	t_cmd	*cmd;
@@ -16,19 +15,21 @@ void	parse(t_vars *vars, char *str)
 	while (splited_pipe[i])
 	{
 		splited_cmd = split_token_main(splited_pipe[i]);
-		//syntax_check(splited_cmd, i);
+		syntax_check(splited_cmd, i);
 		cmd = tokenize(cmd, splited_cmd);
+		if (!splited_pipe[i + 1])
+			break ;
 		cmd->next = init_cmd();
 		cmd = cmd->next;
 		i++;
 	}
 	vars->token.cmd = temp;
-}
+}//코드가 좀 더러워지긴했지만 해결은 됨;;
 
 int main()
 {
 	t_vars	vars;
-	char	*str = " infile  -ls -al>> hello ls | grep 'hi'";
+	char	*str = " infile 'this is     quote' hi";
 	t_cmd	*cmd;
 	t_redir	*redir;
 
@@ -38,7 +39,6 @@ int main()
 	cmd = vars.token.cmd;
 	while (cmd != NULL)
 	{
-		printf("cmd : %s\n", cmd->cmd);
 		for(int i = 0; cmd->av[i]; i++)
 		{
 			printf("av[%d] : %s\n", i, cmd->av[i]);

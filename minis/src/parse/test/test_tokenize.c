@@ -38,11 +38,15 @@ t_redir	*init_redir()
 t_redir	*tokenize_redir(t_cmd *cmd, char *redir, char *file)
 {
 	t_redir	*temp;
-	temp = cmd->red;
-	if (temp == NULL)
-		temp = init_redir();
+
+	if (cmd->red == NULL)//cmd == NULL일수도없지. cmd는 init돼서 tokenize로 들어오니까
+	{
+		cmd->red = init_redir();
+		temp = cmd->red;
+	}
 	else
 	{
+		temp = cmd->red;
 		while (temp->next != NULL)
 		{
 			temp = temp->next;
@@ -52,16 +56,13 @@ t_redir	*tokenize_redir(t_cmd *cmd, char *redir, char *file)
 	}
 	temp->type = check_redirection(redir);
 	if (temp->type == HEREDOC)
-	{
-		//heredoc(file);
 		temp->file = "heredoc_temp";
-	}
 	else
 		temp->file = file;
 	return (cmd->red);
 }//이렇게 하면 릭이 나진 않을까?->새로 malloc하는건 새로 생긴 것 밖에 없으니 괜찮을듯
 
-char	*tokenize_cmd(t_cmd *cmd, char *str)
+/*char	*tokenize_cmd(t_cmd *cmd, char *str)
 {
 	char	*old_cmd;
 
@@ -75,31 +76,60 @@ char	*tokenize_cmd(t_cmd *cmd, char *str)
 		old_cmd = cmd->cmd;
 		cmd->cmd = ft_strjoin(cmd->cmd, str);
 		free(old_cmd);
-	}
+	}//여기서 바로 넣어야됨!
 	return (cmd->cmd);
+}*/
+
+char	**tokenize_av(int cnt, char **splited)
+{
+	char	**av;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	av = (char **)malloc(sizeof(char *) * (cnt + 1));
+	if (!av)
+		error("malloc_error");
+	av[cnt] = NULL;
+	while (splited[j])
+	{
+		if (check_redirection(splited[j]) != -1)
+			j++;
+		else
+		{
+			av[i] = ft_strdup(splited[j]);
+			i++;
+		}
+		j++;
+	}
+	return (av);
 }
 
 t_cmd	*tokenize(t_cmd *cmd, char **splited)
 {
 	int	i;
+	int	av_cnt;
 
 	i = 0;
+	av_cnt = 0;
 	while (splited[i])
 	{
-		if (check_redirection(splited[i]) == 1)
+		if (check_redirection(splited[i]) != -1)
 		{
 			cmd->red = tokenize_redir(cmd, splited[i], splited[i + 1]);
 			i++;
 		}
 		else
-			cmd->cmd = tokenize_cmd(cmd, splited[i]);
+			av_cnt++;
+			//cmd->cmd = tokenize_cmd(cmd, splited[i]);//옛날코드
 		i++;
 	}
-	cmd->av = ft_split(cmd->cmd, ' ');
-	free(cmd->cmd);
-	cmd->cmd = ft_strdup(cmd->av[0]);
+	cmd->av = tokenize_av(av_cnt, splited);
+	cmd->ac = av_cnt;
 	return (cmd);
-}
+}//줄수 너무김 ->while (splited[i++])로 고쳐보기
+//다하고나서 free_splited도 필요함
 
 /*
 int main()

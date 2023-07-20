@@ -8,7 +8,7 @@ char	*replace_wave(char *str, t_vars vars, int i)
 	char	*result;
 	char	*old_result;
 
-	home_path = ft_strdup(search_env(vars.env->root, "HOME"));//왜 밑줄?
+	home_path = ft_strdup(search_env(vars.env.root, "HOME"));//왜 밑줄?
 	temp1 = ft_substr(str, 0, i); //물결전까지 자름
 	temp2 = ft_substr(str, i + 1, ft_strlen(str) - 1);
 	result = ft_strjoin(temp1, home_path);

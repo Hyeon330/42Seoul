@@ -6,33 +6,37 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 20:40:05 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/14 16:30:10 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/20 19:42:25 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	isbuiltin(char *cmd)
+int	isbuiltin(t_cmd *cmd)
 {
-	if (!ft_strncmp(cmd, "echo", 5))
+	if (!cmd->ac)
+		return (NONE);
+	if (!ft_strncmp(cmd->av[0], "echo", 5))
 		return (ECHO);
-	if (!ft_strncmp(cmd, "cd", 3))
+	if (!ft_strncmp(cmd->av[0], "cd", 3))
 		return (CD);
-	if (!ft_strncmp(cmd, "pwd", 4))
+	if (!ft_strncmp(cmd->av[0], "pwd", 4))
 		return (PWD);
-	if (!ft_strncmp(cmd, "export", 7))
+	if (!ft_strncmp(cmd->av[0], "export", 7))
 		return (EXPORT);
-	if (!ft_strncmp(cmd, "unset", 6))
+	if (!ft_strncmp(cmd->av[0], "unset", 6))
 		return (UNSET);
-	if (!ft_strncmp(cmd, "env", 4))
+	if (!ft_strncmp(cmd->av[0], "env", 4))
 		return (ENV);
-	if (!ft_strncmp(cmd, "exit", 5))
+	if (!ft_strncmp(cmd->av[0], "exit", 5))
 		return (EXIT);
 	return (0);
 }
 
 int	builtin(t_vars *vars, t_cmd *cmd, int builtin_no)
 {
+	if (builtin_no == NONE)
+		return (0);
 	if (builtin_no == ECHO)
 		return (echo(cmd));
 	if (builtin_no == CD)

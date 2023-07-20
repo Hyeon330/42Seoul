@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 20:46:35 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/14 20:07:55 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/20 19:33:33 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,20 +41,22 @@ void	exec(t_vars *vars)
 	{
 		if (!(cmd->next && handle_pipe(vars, cmd, fd)))
 		{
-			builtin_no = isbuiltin(cmd->av[0]);
-			if ((!builtin_no || vars->token.size - 1) && \
-				child_proc(vars, cmd, fd, builtin_no))
-				break ;
-			else if (fd_ctrl(cmd, fd))
-				vars->exit_code = 1;
-			else
+			builtin_no = isbuiltin(cmd);
+			if (!builtin_no || vars->token.size - 1)
+			{
+				if (child_proc(vars, cmd, fd, builtin_no))
+					break ;
+			}
+			else if (!fd_ctrl(cmd, fd))
 				vars->exit_code = builtin(vars, cmd, builtin_no);
+			else
+				vars->exit_code = 1;
 		}
 		if (cmd->next)
 			pipex(fd, STDIN_FILENO);
 		cmd = cmd->next;
 	}
 	waiting(vars);
-	// signal(SIGINT, sigint_handler);
+	signal(SIGINT, handler);
 	std_ioe_back();
 }

@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 21:37:41 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/12 18:45:25 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/18 18:38:13 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,12 @@ int	ft_exec_err(int e_no, char *cmd, char *str)
 			write(2, "command not found\n", 18);
 		if (e_no == EXEC_ISDIR)
 			write(2, "is a directory\n", 15);
-		if (e_no >= E_FILE)
-			exit(126);
+		if (e_no == EXEC_PERM_DNI)
+			write(2, "Permission denied\n", 18);
 	}
 	else
 		perror(str);
+	if (e_no >= E_FILE && e_no < E_CRITICAL)
+		return (126);
 	return (1);
 }

@@ -9,8 +9,8 @@ t_cmd	*init_cmd()
 		error("malloc error");
 	cmd->next = NULL;
 	cmd->red = NULL;
-	cmd->cmd = NULL;
-	cmd->ac = -1;//ac도 초기화 해줘야하나?
+	cmd->av = NULL;
+	cmd->ac = 0;//ac도 초기화 해줘야하나?
 	return (cmd);
 }
 

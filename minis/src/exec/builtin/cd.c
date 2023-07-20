@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 19:32:04 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/14 16:33:23 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/20 21:23:00 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,51 +60,38 @@ static int	meta_path(t_cmd *cmd, t_env *env, int *chk)
 	return (0);
 }
 
-static int	set_pwd(t_env *env)
+static int	set_pwd(t_env *env, char *key, char *val)
 {
-	char	*pair[2];
-	char	path[5120];
-
-	if (getcwd(path, 5120))
+	if (!key || !val)
 	{
-		chdir(search_env(env->root, "PWD"));
-		pair[0] = ft_strdup("OLDPWD");
-		if (!pair[0])
-			return (0);
-		insert_env(env, ft_strdup("OLDPWD"), NULL);
-		return (0);
+		free(key);
+		return (1);
 	}
-	pair[0] = ft_strdup("PWD");
-	if (!pair[0])
-		return (0);
-	pair[1] = ft_strdup(path);
-	if (!pair[1])
-	{
-		free(pair[0]);
-		return (0);
-	}
-	insert_env(env, pair[0], pair[1]);
-	return (1);
+	insert_env(env, key, val);
+	return (0);
 }
 
 int	cd(t_cmd *cmd, t_env *env)
 {
 	char	*key;
 	int		chk;
+	int		dir;
 
 	chk = 0;
 	if (meta_path(cmd, env, &chk))
 		return (1);
-	if (!isdir(cmd->av[1]))
+	dir = isdir(cmd->av[1]);
+	if (!dir)
 		return (cd_error(CD_NADIR, cmd->av[1]));
-	if (chdir(cmd->av[1]) < 0)
+	if (dir == EXEC_OPEN)
 		return (ft_exec_err(EXEC_OPEN, cmd->av[0], cmd->av[1]));
-	key = ft_strdup("OLDPWD");
-	if (!key)
+	// 이 로직대로 하면 PWD에 상대경로로 들어갈 가능성이 있음
+	// reset후에 다시 작성해라
+	if (set_pwd(env, ft_strdup("OLDPWD"), \
+		ft_strdup(search_env(env->root, "PWD"))) || \
+		set_pwd(env, ft_strdup("PWD"), ft_strdup(cmd->av[1])))
 		return (ft_exec_err(EXEC_DYNAMIC, cmd->av[0], cmd->av[1]));
-	insert_env(env, key, search_env(env->root, "PWD"));
-	if (!set_pwd(env))
-		return (ft_exec_err(EXEC_DYNAMIC, cmd->av[0], cmd->av[1]));
+	chdir(cmd->av[1]);
 	if (chk == HOME)
 		cmd->av[1] = NULL;
 	if (chk == PREV)

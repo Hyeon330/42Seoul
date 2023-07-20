@@ -2,18 +2,17 @@
 
 int	check_redirection(char *str)
 {
-	enum e_redir_type	redir_type;
-	int					flag;
+	int	flag;
 
 	flag = 1;
-
-	if (ft_strncmp(str, "<" , ft_strlen(str)) == 0)
-		redir_type = IN_REDIR;
-	else if (ft_strncmp(str, ">" , ft_strlen(str)) == 0)
-		redir_type = OUT_REDIR;
-	else if (ft_strncmp(str, "<<" , ft_strlen(str)) == 0 || \
-	ft_strncmp(str, ">>" , ft_strlen(str)) == 0)
-		redir_type = APPEND;
+	if (ft_strncmp(str, "<<" , ft_strlen("<<")) == 0)
+		flag = HEREDOC;
+	else if (ft_strncmp(str, ">>" , ft_strlen(">>")) == 0)
+		flag = APPEND;
+	else if (ft_strncmp(str, "<" , ft_strlen("<")) == 0)
+		flag = IN_REDIR;
+	else if (ft_strncmp(str, ">" , ft_strlen(">")) == 0)
+		flag = OUT_REDIR;
 	else
 		flag = -1;
 	return (flag);
@@ -29,9 +28,9 @@ void	syntax_redirection(char **splited, int i)
 
 void	syntax_word(char **splited, int i)
 {
-	if (splited[i] != NULL)
+	if (splited[i] == NULL)
 		return ;
-	else if (check_redirection(splited[i]) == 1)
+	else if (check_redirection(splited[i]) != -1)
 		syntax_redirection(splited, ++i);
 	else
 		syntax_word(splited, ++i);
@@ -44,7 +43,7 @@ void	syntax_check(char **splited, int order)
 	i = 0;
 	if (order != 0 && check_redirection(splited[0]) != -1)
 			error("redirection after pipe");//pipe 뒤에 redirection이 오는 것 방지
-	if (check_redirection(splited[i]) == 1)
+	if (check_redirection(splited[i]) != -1)
 		syntax_redirection(splited, ++i);
 	else
 		syntax_word(splited, ++i);

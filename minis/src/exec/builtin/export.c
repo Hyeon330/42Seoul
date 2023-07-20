@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 19:33:24 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/14 16:09:37 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/20 20:17:52 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	export(t_cmd *cmd, t_env *env)
 	i = 0;
 	while (cmd->av[++i])
 	{
-		pair = get_pair(cmd->av[1]);
+		pair = get_pair(cmd->av[i]);
 		if (!pair)
 			return (ft_exec_err(EXEC_DYNAMIC, cmd->av[0], NULL));
 		insert_env(env, pair[0], pair[1]);

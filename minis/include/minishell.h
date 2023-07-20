@@ -46,7 +46,8 @@ enum e_builtin {
 	EXPORT,
 	UNSET,
 	ENV,
-	EXIT
+	EXIT,
+	NONE
 };
 
 enum e_env_err {
@@ -63,6 +64,7 @@ enum e_exec_err {
 	EXEC_DYNAMIC = E_COMMON,
 	EXEC_CNF,
 	EXEC_ISDIR = E_FILE,
+	EXEC_PERM_DNI,
 	EXEC_PIPE = E_CRITICAL,
 	EXEC_OPEN,
 	EXEC_FORK
@@ -132,6 +134,8 @@ int		ft_env_error(int e_no);
 void	exec(t_vars *vars);
 // child.c
 int		child_proc(t_vars *vars, t_cmd *cmd, int *fd, int builtin_no);
+// execute.c
+void	execute(t_vars *vars, t_cmd *cmd);
 // fd_ctrl.c
 void	pipex(int *fd, int INOUT);
 int		fd_ctrl(t_cmd *cmd, int *fd);
@@ -144,7 +148,7 @@ int		ft_exec_err(int e_no, char *cmd, char *str);
 
 // exec/builtin
 // builtin.c
-int		isbuiltin(char *cmd);
+int		isbuiltin(t_cmd *cmd);
 int		builtin(t_vars *vars, t_cmd *cmd, int builtin_no);
 // echo.c
 int		echo(t_cmd *cmd);
@@ -162,5 +166,62 @@ int		env(t_node_env *env);
 int		exit_clear(t_vars *vars, t_cmd *cmd);
 
 void	rl_replace_line(const char *, int);
+
+//signal.c
+void	signal_set(void);
+void	handler(int signum);
+
+//parse.c
+int	parse(t_vars *vars, char *str);
+
+//parse_utils.c
+int	get_token_size(char *str);
+int	check_redirection(char *str);
+int	check_only_whitespace(char *str);
+
+//parse_init.c
+t_cmd	*init_cmd();
+t_redir	*init_redir();
+
+//split_token.c
+void	free_splited_token(char **s);
+char	*split_quote(char *s);
+char	**do_split_token(char *s, char **splited, char c);
+char	**split_token_main(char *str);
+
+//split_token2.c
+char	*when_redir(char **s);
+char	*when_charset(char **s, char c);
+char	*when_quote(char	**s);
+
+//split_token_count.c
+int		count_redir(char *s, int i);
+int		count_quote(char *s, int i);
+int		count_token(char *s, char c);
+
+//replace.c
+char	*replace_wave(char *str, t_vars vars, int i);
+char	*replace_exit_code(char *str, t_vars vars, int i);
+int		count_replace(char *str);
+char	*replace_character(char	*str, t_vars vars, int cnt);
+
+//syntax.c
+void	syntax_redirection(char **splited, int i);
+void	syntax_word(char **splited, int i);
+void	syntax_check(char **splited, int order);
+
+//tokenize.c
+t_cmd	*tokenize(t_cmd *cmd, char **splited);
+t_redir	*tokenize_redir(t_cmd *cmd, char *redir, char *file);
+char	**tokenize_av(int cnt, char **splited);
+
+//heredoc.c
+void	write_heredoc(int fd, char *limiter);
+char	*heredoc_main(char *limiter);
+char	*get_heredoc_filename(void);
+char	*heredoc_join_path(char *file_name);
+
+//error.c
+void	error(char *msg); //임시에러처리파일입니다
 
 #endif

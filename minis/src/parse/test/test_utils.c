@@ -163,4 +163,3 @@ char	*ft_itoa(int n)
 	input_pc(pc, n, n_size, sign);
 	return (pc);
 }
-

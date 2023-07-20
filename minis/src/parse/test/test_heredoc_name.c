@@ -1,22 +1,4 @@
-#include "minishell.h"
-
-void	write_heredoc(int fd, char *limiter)
-{
-	char	*str;
-
-	while (1)
-	{
-		write(1, "> ", 2);
-		str = get_next_line(0);
-		if (!str || ft_strncmp(str, limiter, ft_strlen(limiter)) == 0)
-			break ;
-		write(fd, str, ft_strlen(str));
-		free(str);
-	}
-	free(limiter);
-	if (str)
-		free(str);
-}
+#include "test.h"
 
 char	*get_heredoc_filename(void)
 {
@@ -47,26 +29,23 @@ char	*heredoc_join_path(char *file_name)
 	char	*result;
 
 	result = ft_strjoin("/tmp/", file_name);
+	printf("%s\n", result);
 	free(file_name);
 	return (result);
 }
 
-char	*heredoc_main(char *limiter)
+int main()
 {
-	int		fd;
 	char	*file_name;
 
-	limiter = ft_strjoin(limiter, "\n");
 	file_name = get_heredoc_filename();
 	while (access(file_name, F_OK) == 0)
 	{
+		printf("try_agian\n");
 		free(file_name);
 		file_name = get_heredoc_filename();
 	}
-	fd = open(file_name, O_WRONLY|O_CREAT|O_EXCL|O_TRUNC, 0600);
-	if (fd == -1)
-		error("open error");
-	write_heredoc(fd, limiter);
-	close(fd);
-	return (file_name);
+	printf("file name : %s\n", file_name);
 }
+
+//gcc test_heredoc_name.c test_utils.c
