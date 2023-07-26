@@ -1,92 +1,109 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   replace.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/23 22:50:56 by eoh               #+#    #+#             */
+/*   Updated: 2023/07/24 20:04:47 by eoh              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*replace_wave(char *str, t_vars vars, int i)
 {
 	char	*home_path;
-	char	*temp1;
-	char	*temp2;
+	char	*front;
+	char	*back;
 	char	*result;
-	char	*old_result;
 
-	home_path = ft_strdup(search_env(vars.env.root, "HOME"));//왜 밑줄?
-	temp1 = ft_substr(str, 0, i); //물결전까지 자름
-	temp2 = ft_substr(str, i + 1, ft_strlen(str) - 1);
-	result = ft_strjoin(temp1, home_path);
-	old_result = result;
-	result = ft_strjoin(result, temp2);
-	free(old_result);
-	free(temp1);
-	free(temp2);
+	home_path = ft_strdup(search_env(vars.env.root, "HOME"));
+	front = ft_substr(str, 0, i);
+	back = ft_substr(str, i + 1, ft_strlen(str) - i + 1);
+	free(str);
+	result = ft_strjoin(front, home_path);
+	result = ft_strjoin(result, back);
+	if (home_path)
+		free(home_path);
+	if (front)
+		free(front);
+	if (back)
+		free(back);
 	return (result);
 }
-// **환경변수는 strdup를 이용해서 쓰기!!
+
+char	*replace_env(char *str, t_vars vars, int i)
+{
+	char	*env;
+	char	*front;
+	char	*back;
+	char	*result;
+
+	back = ft_substr(str, i + 1, ft_strlen(str) - i + 1);
+	if (search_env(vars.env.root, back) == NULL)
+		env = ft_strdup("");
+	else
+		env = ft_strdup(search_env(vars.env.root, back));
+	front = ft_substr(str, 0, i);
+	result = ft_strjoin(front, env);
+	if (front)
+		free(front);
+	if (back)
+		free(back);
+	if (env)
+		free(env);
+	return (result);
+}
+
 char	*replace_exit_code(char *str, t_vars vars, int i)
 {
 	char	*exit_code;
-	char	*temp1;
-	char	*temp2;
+	char	*front;
+	char	*back;
+	char	*temp;
 	char	*result;
-	char	*old_result;
-	
+
+	front = ft_substr(str, 0, i);
+	back = ft_substr(str, i + 2, ft_strlen(str) - i + 2);
 	exit_code = ft_itoa(vars.exit_code);
-	temp1 = ft_substr(str, 0, i);
-	temp2 = ft_substr(str, i + 2, ft_strlen(str) - 1);
-	result = ft_strjoin(temp1, exit_code);
-	old_result = result;
-	result = ft_strjoin(result, temp2);
-	free(old_result);
-	free(temp1);
-	free(temp2);
+	temp = ft_strjoin(front, exit_code);
+	result = ft_strjoin(temp, back);
+	free(temp);
+	if (front)
+		free(front);
+	if (back)
+		free(back);
+	free(exit_code);
 	return (result);
 }
 
-int	count_replace(char *str)
-{
-	int	i;
-	int	cnt;
-
-	i = 0;
-	cnt = 0;
-	while (str[i])
-	{
-		if (str[i] == '~')
-			cnt++;
-		else if (str[i] == '$' && str[i] == '?')
-		{
-			cnt++;
-			i++;
-		}
-		i++;
-	}
-	return (cnt);
-}
-
-char	*replace_character(char	*str, t_vars vars, int cnt)
+char	*replace_character(char *str, t_vars vars, int cnt)
 {
 	int		i;
 	int		j;
-	char	*old_str;
+	char	*new;
 
-	i = 0;
-	while (i < cnt)
+	i = -1;
+	new = str;
+	while (++i < cnt)
 	{
 		j = 0;
-		while (str[j])
+		while (new[j])
 		{
-			if (str[j] == '~' || (str[j] == '$' && str[j] == '?'))
+			if (check_wave(new, j) == 1 || check_env(new, j) != 0)
 			{
-				old_str = str;
-				if (str[j] == '~')
-					str = replace_wave(str, vars, j);
-				else
-					str = replace_exit_code(str, vars, j);
-				free(old_str);
-				break;
+				if (check_wave(new, j) == 1)
+					new = replace_wave(new, vars, j);
+				if (check_env(new, j) == 1)
+					new = replace_env(new, vars, j);
+				if (check_env(new, j) == 2)
+					new = replace_exit_code(new, vars, j);
+				break ;
 			}
 			j++;
 		}
-		i++;
 	}
-	return (str);
-}//환경변수와 exitno를 받아오는 방법과 substr어떻게 작동하는지 다시 보기
-//길이 딱 맞는듯?
+	return (new);
+}

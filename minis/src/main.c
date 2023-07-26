@@ -3,14 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 23:40:28 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/20 18:34:42 by eoh              ###   ########.fr       */
+/*   Updated: 2023/07/26 22:24:47 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+//void	leaks_out()
+//{
+//	system("leaks minishell");
+//}
 
 void	init_vars(t_vars *vars, char **p_env)
 {
@@ -25,6 +30,7 @@ int	main(int ac, char **av, char **env)
 	char	*str;
 	int		i;
 
+	//atexit(leaks_out);
 	(void)ac;
 	(void)av;
 	i = 0;
@@ -43,7 +49,6 @@ int	main(int ac, char **av, char **env)
 				exec(&vars);
 				clear_token(&vars.token);
 			}
-			// test(&vars, i++);
 		}
 		free(str);
 	}

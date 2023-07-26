@@ -6,28 +6,28 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 19:30:57 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/07 21:29:23 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/24 20:00:57 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 enum e_opt {
-	FLAG = 0b1,
-	N = 0b10
+	ECHO_FLAG = 0b1,
+	ECHO_N = 0b10
 };
 
 int	get_opt(char *opt)
 {
 	int	ret;
 
-	if (*opt++ != '-')
+	if (!opt || *opt++ != '-')
 		return (0);
-	ret = FLAG;
+	ret = ECHO_FLAG;
 	while (*opt)
 	{
 		if (*opt == 'n')
-			ret |= N;
+			ret |= ECHO_N;
 		else
 			return (0);
 		opt++;
@@ -37,20 +37,26 @@ int	get_opt(char *opt)
 
 int	echo(t_cmd *cmd)
 {
+	int	tmp;
 	int	opt;
 	int	i;
 
-	if (!cmd->av[1])
-		return (0);
-	opt = get_opt(cmd->av[1]);
-	i = opt & 1;
+	tmp = 1;
+	opt = 0;
+	i = 0;
+	while (tmp)
+	{
+		tmp = get_opt(cmd->av[i + 1]);
+		opt |= tmp;
+		i += tmp & ECHO_FLAG;
+	}
 	while (cmd->av[++i])
 	{
 		ft_putstr_fd(cmd->av[i], STDOUT_FILENO);
 		if (i != cmd->ac - 1)
 			ft_putstr_fd(" ", STDOUT_FILENO);
 	}
-	if (!(opt & N))
+	if (!(opt & ECHO_N))
 		ft_putstr_fd("\n", STDOUT_FILENO);
 	return (0);
 }

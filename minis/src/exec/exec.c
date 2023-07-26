@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 20:46:35 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/20 19:33:33 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/26 22:34:29 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ void	exec(t_vars *vars)
 			if (!builtin_no || vars->token.size - 1)
 			{
 				if (child_proc(vars, cmd, fd, builtin_no))
+				{
+					vars->exit_code = 1;
 					break ;
+				}
 			}
 			else if (!fd_ctrl(cmd, fd))
 				vars->exit_code = builtin(vars, cmd, builtin_no);

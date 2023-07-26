@@ -22,8 +22,8 @@ EXEC_BUILTIN_DIR	=	$(EXEC_DIR)builtin/
 # FILES
 ENV_FILES	=	insert remove search util_1 util_2 error
 
-PARSE_FILES	=	error heredoc parse_init parse_utils parse replace signal \
-				split_token_count split_token split_token2 syntax tokenize
+PARSE_FILES	=	error free_parse heredoc parse_init parse_utils parse replace replace_utils \
+				signal split_token_count split_token split_token2 syntax tokenize
 
 EXEC_FILES	=	exec child execute fd_ctrl util error
 EXEC_BUILTIN_FILES	=	builtin echo cd pwd export unset env exit

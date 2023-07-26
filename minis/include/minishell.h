@@ -22,6 +22,7 @@
 # include <dirent.h>
 # include <signal.h>
 # include <stdbool.h>
+//# include <termios.h>
 # include <sys/stat.h>
 # include "libft.h"
 # include "readline/readline.h"
@@ -167,61 +168,73 @@ int		exit_clear(t_vars *vars, t_cmd *cmd);
 
 void	rl_replace_line(const char *, int);
 
-//signal.c
-void	signal_set(void);
-void	handler(int signum);
+//parse
+
+//error.c
+void	error(char *msg);
+int		error_parse(int error, t_vars *vars);
+
+//free_parse.c
+void	free_two_dimen(char	**str);
+
+//heredoc.c
+void	write_heredoc(int fd, char *limiter);
+char	*get_heredoc_filename(void);
+char	*heredoc_join_path(char *file_name);
+char	*heredoc_main(char *limiter);
+
+//parse_init.c
+t_cmd	*init_cmd(void);
+t_redir	*init_redir(void);
+
+//parse_utils.c
+int		get_token_size(char *str);
+int		check_redirection(char *str);
+int		check_only_whitespace(char *str);
 
 //parse.c
 int	parse(t_vars *vars, char *str);
 
-//parse_utils.c
-int	get_token_size(char *str);
-int	check_redirection(char *str);
-int	check_only_whitespace(char *str);
+//replace_utils.c
+int		count_replace(char *str);
+int		check_wave(char *str, int i);
+int		check_env(char *str, int i);
 
-//parse_init.c
-t_cmd	*init_cmd();
-t_redir	*init_redir();
+//replace.c
+char	*replace_wave(char *str, t_vars vars, int i);
+char	*replace_env(char *str, t_vars vars, int i);
+char	*replace_exit_code(char *str, t_vars vars, int i);
+char	*replace_character(char	*str, t_vars vars, int cnt);
+
+//signal.c
+void	handler(int signum);
+void	signal_set(void);
+
+//split_token_count.c
+int		count_redir(char *s, int i);
+int		count_quote(char *s, int i, t_vars *vars);
+int		count_env(char *s);
+int		count_token(char *s, char c, t_vars *vars);
 
 //split_token.c
 void	free_splited_token(char **s);
 char	*split_quote(char *s);
-char	**do_split_token(char *s, char **splited, char c);
-char	**split_token_main(char *str);
+char	**do_split_token(char *s, char **splited, char c, t_vars vars);
+char	**split_token_main(char *str, t_vars *vars);
 
 //split_token2.c
 char	*when_redir(char **s);
-char	*when_charset(char **s, char c);
 char	*when_quote(char	**s);
-
-//split_token_count.c
-int		count_redir(char *s, int i);
-int		count_quote(char *s, int i);
-int		count_token(char *s, char c);
-
-//replace.c
-char	*replace_wave(char *str, t_vars vars, int i);
-char	*replace_exit_code(char *str, t_vars vars, int i);
-int		count_replace(char *str);
-char	*replace_character(char	*str, t_vars vars, int cnt);
+char	*when_charset(char **s, char c, t_vars vars);
 
 //syntax.c
-void	syntax_redirection(char **splited, int i);
-void	syntax_word(char **splited, int i);
-void	syntax_check(char **splited, int order);
+int		syntax_redirection(char **splited, int i, t_vars *vars);
+int		syntax_word(char **splited, int i, t_vars *vars);
+int		syntax_check(char **splited, int order, t_vars *vars);
 
 //tokenize.c
-t_cmd	*tokenize(t_cmd *cmd, char **splited);
 t_redir	*tokenize_redir(t_cmd *cmd, char *redir, char *file);
 char	**tokenize_av(int cnt, char **splited);
-
-//heredoc.c
-void	write_heredoc(int fd, char *limiter);
-char	*heredoc_main(char *limiter);
-char	*get_heredoc_filename(void);
-char	*heredoc_join_path(char *file_name);
-
-//error.c
-void	error(char *msg); //임시에러처리파일입니다
+t_cmd	*tokenize(t_cmd *cmd, char **splited);
 
 #endif

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/23 22:47:45 by eoh               #+#    #+#             */
+/*   Updated: 2023/07/23 22:48:57 by eoh              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	get_token_size(char *str)
@@ -21,13 +33,13 @@ int	check_redirection(char *str)
 	int	flag;
 
 	flag = 1;
-	if (ft_strncmp(str, "<<" , ft_strlen("<<")) == 0)
+	if (ft_strncmp(str, "<<", ft_strlen("<<")) == 0)
 		flag = HEREDOC;
-	else if (ft_strncmp(str, ">>" , ft_strlen(">>")) == 0)
+	else if (ft_strncmp(str, ">>", ft_strlen(">>")) == 0)
 		flag = APPEND;
-	else if (ft_strncmp(str, "<" , ft_strlen("<")) == 0)
+	else if (ft_strncmp(str, "<", ft_strlen("<")) == 0)
 		flag = IN_REDIR;
-	else if (ft_strncmp(str, ">" , ft_strlen(">")) == 0)
+	else if (ft_strncmp(str, ">", ft_strlen(">")) == 0)
 		flag = OUT_REDIR;
 	else
 		flag = -1;

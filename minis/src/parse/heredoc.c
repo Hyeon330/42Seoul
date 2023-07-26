@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/23 22:43:00 by eoh               #+#    #+#             */
+/*   Updated: 2023/07/23 22:46:46 by eoh              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	write_heredoc(int fd, char *limiter)
@@ -25,7 +37,6 @@ char	*get_heredoc_filename(void)
 	int				fd;
 	char			str[3];
 	char			*result;
-	char			*new_result;
 
 	i = 0;
 	num = 1;
@@ -38,8 +49,7 @@ char	*get_heredoc_filename(void)
 	}
 	close(fd);
 	result = ft_itoa(num);
-	new_result = heredoc_join_path(result);
-	return (new_result);
+	return (result);
 }
 
 char	*heredoc_join_path(char *file_name)
@@ -54,16 +64,18 @@ char	*heredoc_join_path(char *file_name)
 char	*heredoc_main(char *limiter)
 {
 	int		fd;
+	char	*temp;
 	char	*file_name;
 
 	limiter = ft_strjoin(limiter, "\n");
-	file_name = get_heredoc_filename();
+	temp = get_heredoc_filename();
+	file_name = heredoc_join_path(temp);
 	while (access(file_name, F_OK) == 0)
 	{
 		free(file_name);
 		file_name = get_heredoc_filename();
 	}
-	fd = open(file_name, O_WRONLY|O_CREAT|O_EXCL|O_TRUNC, 0600);
+	fd = open(file_name, O_WRONLY | O_CREAT | O_EXCL | O_TRUNC, 0600);
 	if (fd == -1)
 		error("open error");
 	write_heredoc(fd, limiter);

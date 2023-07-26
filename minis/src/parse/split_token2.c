@@ -1,14 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split_token2.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/24 00:20:39 by eoh               #+#    #+#             */
+/*   Updated: 2023/07/24 19:52:09 by eoh              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*when_redir(char **s)
 {
 	char	*result;
-	char	redir;
 	int		len;
-
 	char	*temp;
+
 	temp = *s;
-	redir = temp[0];
 	len = 1;
 	if (temp[0] == temp[1])
 		len++;
@@ -22,22 +32,50 @@ char	*when_redir(char **s)
 	return (result);
 }
 
-char	*when_charset(char **s, char c)
+char	*when_quote(char	**s)
+{
+	char	*quote;
+	char	*result;
+
+	quote = split_quote(*s);
+	result = (char *)malloc(sizeof(char) * (ft_strlen(quote) + 1));
+	if (!result)
+	{
+		free(result);
+		return (0);
+	}
+	ft_strlcpy(result, quote, ft_strlen(quote) + 1);
+	*s += (ft_strlen(quote) + 2);
+	free(quote);
+	return (result);
+}
+
+char	*when_charset(char **s, char c, t_vars vars)
 {
 	char	*tmp;
 	char	*result;
+	char	*replaced_result;
 
 	tmp = *s;
-	while (**s && **s != c && **s != '<' && **s != '>')
+	while (**s && **s != c && **s != '<' && **s != '>' \
+	&& **s != 34 && **s != 39)
 		*s += 1;
 	result = (char *)malloc(sizeof(char) * (*s - tmp + 1));
 	if (!result)
 		return (0);
 	ft_strlcpy(result, tmp, *s - tmp + 1);
+	if (count_replace(result) != 0)
+	{
+		replaced_result = \
+		replace_character(result, vars, count_replace(result));
+		if (result)
+			free(result);
+		return (replaced_result);
+	}
 	return (result);
 }
 
-char	*when_quote(char	**s)
+char	*when_single_quote(char	**s)
 {
 	char	*quote;
 	char	*result;

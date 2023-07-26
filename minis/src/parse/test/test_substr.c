@@ -65,9 +65,9 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 int main()
 {
-	char *str = "hell0~ this is substr test";
+	char *str = "this is substring test";
 	char *new;
 
-	new = ft_substr(str, 5 + 1, ft_strlen(str) - 1);
+	new = ft_substr(str, 5, 2);
 	printf("%s\n", new);
 }

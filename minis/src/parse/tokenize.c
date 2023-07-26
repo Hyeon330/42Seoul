@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenize.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/24 00:26:04 by eoh               #+#    #+#             */
+/*   Updated: 2023/07/24 00:26:13 by eoh              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_redir	*tokenize_redir(t_cmd *cmd, char *redir, char *file)
 {
 	t_redir	*temp;
 
-	if (cmd->red == NULL)//cmd == NULL일수도없지. cmd는 init돼서 tokenize로 들어오니까
+	if (cmd->red == NULL)
 	{
 		cmd->red = init_redir();
 		temp = cmd->red;

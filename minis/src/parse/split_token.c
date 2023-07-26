@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split_token.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/24 00:16:37 by eoh               #+#    #+#             */
+/*   Updated: 2023/07/24 14:36:53 by eoh              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	free_splited_token(char **s)
@@ -11,7 +23,6 @@ void	free_splited_token(char **s)
 		j++;
 	}
 	free(s);
-	error("splite error");
 }
 
 char	*split_quote(char *s)
@@ -30,37 +41,45 @@ char	*split_quote(char *s)
 	return (result);
 }
 
-char	**do_split_token(char *s, char **splited, char c)
+char	**do_split_token(char *s, char **splited, char c, t_vars vars)
 {
 	int	i;
 
 	i = 0;
 	while (*s)
 	{
-		if (*s == 34 || *s == 39)
+		if (*s == 34)
+		{
+			splited[i] = when_quote(&s);
+			if (count_env(splited[i]) != 0)
+				splited[i] = \
+				replace_character(splited[i], vars, count_env(splited[i]));
+			i++;
+		}
+		else if (*s == 39)
 			splited[i++] = when_quote(&s);
 		else if (*s == '>' || *s == '<')
 			splited[i++] = when_redir(&s);
 		else if (*s != c)
-			splited[i++] = when_charset(&s, c);
+			splited[i++] = when_charset(&s, c, vars);
 		else
 			s++;
 	}
 	return (splited);
 }
 
-char	**split_token_main(char *str)
+char	**split_token_main(char *str, t_vars *vars)
 {
-	int		i;
 	int		cnt;
 	char	**splited;
 
-	i = 0;
-	cnt = count_token(str, ' ');
+	cnt = count_token(str, ' ', vars);
+	if (cnt == -1)
+		return (0);
 	splited = (char **)malloc(sizeof(char *) * cnt + 1);
 	if (!splited)
 		error("malloc error");
 	splited[cnt] = NULL;
-	splited = do_split_token(str, splited, ' ');
+	splited = do_split_token(str, splited, ' ', *vars);
 	return (splited);
 }
