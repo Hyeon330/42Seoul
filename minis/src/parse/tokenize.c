@@ -1,24 +1,24 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tokenize.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/24 00:26:04 by eoh               #+#    #+#             */
-/*   Updated: 2023/07/24 00:26:13 by eoh              ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
-t_redir	*tokenize_redir(t_cmd *cmd, char *redir, char *file)
+t_redir	*tokenize_redir(char **splited_token, int i)
+{
+	t_redir	*redir;
+
+	redir = init_redir();
+	if (!redir)
+		error("malloc error");
+	redir->type = check_redirection(splited_token[i]);
+	redir->file = ft_strdup(splited_token[i + 1]);
+	return (redir);
+}
+
+void	tokenize_redir_main(char **splited_token, int i, t_cmd	*cmd)
 {
 	t_redir	*temp;
 
 	if (cmd->red == NULL)
 	{
-		cmd->red = init_redir();
+		cmd->red = tokenize_redir(splited_token, i);
 		temp = cmd->red;
 	}
 	else
@@ -28,62 +28,56 @@ t_redir	*tokenize_redir(t_cmd *cmd, char *redir, char *file)
 		{
 			temp = temp->next;
 		}
-		temp->next = init_redir();
-		temp = temp->next;
+		temp->next = tokenize_redir(splited_token, i);
 	}
-	temp->type = check_redirection(redir);
-	if (temp->type == HEREDOC)
-		temp->file = heredoc_main(file);
-	else
-		temp->file = file;
-	return (cmd->red);
 }
 
-char	**tokenize_av(int cnt, char **splited)
+void	tokenize_av(char **splited_token, t_cmd *cmd)
 {
-	char	**av;
+	int		cnt;
 	int		i;
 	int		j;
+	char	**av;
 
+	cnt = count_av(splited_token);
 	i = 0;
 	j = 0;
+
 	av = (char **)malloc(sizeof(char *) * (cnt + 1));
 	if (!av)
-		error("malloc_error");
+		error("malloc error");
 	av[cnt] = NULL;
-	while (splited[j])
+	while (splited_token[i])
 	{
-		if (check_redirection(splited[j]) != -1)
+		if (check_redirection(splited_token[i]) == -1)
+		{
+			av[j] = ft_strdup(splited_token[i]);
 			j++;
-		else
-		{
-			av[i] = ft_strdup(splited[j]);
-			i++;
-		}
-		j++;
-	}
-	return (av);
-}
-
-t_cmd	*tokenize(t_cmd *cmd, char **splited)
-{
-	int	i;
-	int	av_cnt;
-
-	i = 0;
-	av_cnt = 0;
-	while (splited[i])
-	{
-		if (check_redirection(splited[i]) != -1)
-		{
-			cmd->red = tokenize_redir(cmd, splited[i], splited[i + 1]);
-			i++;
 		}
 		else
-			av_cnt++;
+			i++;
 		i++;
 	}
-	cmd->av = tokenize_av(av_cnt, splited);
-	cmd->ac = av_cnt;
+	cmd->av = av;
+}
+
+t_cmd	*tokenize(char **splited_token)
+{
+	t_cmd	*cmd;
+	int		i;
+
+	cmd = init_cmd();
+	tokenize_av(splited_token, cmd);
+	cmd->ac = count_av(splited_token);
+	if (count_rd(splited_token) != 0)
+	{
+		i = 0;
+		while (splited_token[i])
+		{
+			if(check_redirection(splited_token[i]) != -1)
+				tokenize_redir_main(splited_token, i, cmd);
+			i++;
+		}
+	}
 	return (cmd);
 }

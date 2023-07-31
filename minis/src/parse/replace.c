@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   replace.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/23 22:50:56 by eoh               #+#    #+#             */
-/*   Updated: 2023/07/24 20:04:47 by eoh              ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 char	*replace_wave(char *str, t_vars vars, int i)
@@ -18,42 +6,36 @@ char	*replace_wave(char *str, t_vars vars, int i)
 	char	*front;
 	char	*back;
 	char	*result;
+	char	*temp;
 
 	home_path = ft_strdup(search_env(vars.env.root, "HOME"));
 	front = ft_substr(str, 0, i);
 	back = ft_substr(str, i + 1, ft_strlen(str) - i + 1);
-	free(str);
-	result = ft_strjoin(front, home_path);
+	temp = ft_strjoin(front, home_path);
 	result = ft_strjoin(result, back);
-	if (home_path)
-		free(home_path);
-	if (front)
-		free(front);
-	if (back)
-		free(back);
+	free_replace_wave(temp, home_path, front, back);
 	return (result);
-}
+}//str은 free 대상이 아님!
 
-char	*replace_env(char *str, t_vars vars, int i)
+char	*replace_env(char *str, t_vars vars, int i, int end)
 {
 	char	*env;
 	char	*front;
 	char	*back;
 	char	*result;
+	char	*temp;
 
-	back = ft_substr(str, i + 1, ft_strlen(str) - i + 1);
-	if (search_env(vars.env.root, back) == NULL)
+	front = ft_substr(str, 0, i);
+	temp = ft_substr(str, i + 1, end - i);
+	back = ft_substr(str, end + 1, ft_strlen(str) - end + 1);
+	if (search_env(vars.env.root, temp) == NULL)
 		env = ft_strdup("");
 	else
-		env = ft_strdup(search_env(vars.env.root, back));
-	front = ft_substr(str, 0, i);
-	result = ft_strjoin(front, env);
-	if (front)
-		free(front);
-	if (back)
-		free(back);
-	if (env)
-		free(env);
+		env = ft_strdup(search_env(vars.env.root, temp));
+	free(temp);
+	temp = ft_strjoin(front, env);
+	result = ft_strjoin(temp, back);
+	free_replace_env(front, back, env);
 	return (result);
 }
 
@@ -79,31 +61,35 @@ char	*replace_exit_code(char *str, t_vars vars, int i)
 	return (result);
 }
 
-char	*replace_character(char *str, t_vars vars, int cnt)
+char	*replace_env_main(char *str, t_vars *vars)
 {
 	int		i;
-	int		j;
+	char	*old;
 	char	*new;
 
-	i = -1;
-	new = str;
-	while (++i < cnt)
+	i = 0;
+	old = NULL;
+	new = NULL;
+	while (str[i])
 	{
-		j = 0;
-		while (new[j])
+		if (str[i] == 34 || str[i] == 39)
+			i = replace_index_quote(str, i);
+		if (str[i] == '$' && (str[i + 1] == '?' || (str[i + 1] != '\0' && is_white_space(str[i + 1]) != 1 && str[i + 1] != 34 && str[i + 1] != 39 && str[i + 1] != '$' && str[i + 1] != '~')))
 		{
-			if (check_wave(new, j) == 1 || check_env(new, j) != 0)
-			{
-				if (check_wave(new, j) == 1)
-					new = replace_wave(new, vars, j);
-				if (check_env(new, j) == 1)
-					new = replace_env(new, vars, j);
-				if (check_env(new, j) == 2)
-					new = replace_exit_code(new, vars, j);
-				break ;
-			}
-			j++;
+			if (old)
+				free(old);
+			old = new;
+			if (str[i + 1] == '?')
+				new = replace_exit_code(str, *vars, i);
+			else
+				new = replace_env(str, *vars, i, find_end_index_env(str, i));
+			str = new;
+			i = 0;
+			continue ;
 		}
+		i++;
 	}
-	return (new);
+	if (old)
+		free(old);
+	return (str);
 }

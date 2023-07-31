@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 05:30:29 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/24 19:53:32 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/31 20:05:07 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,11 @@ int	exit_clear(t_vars *vars, t_cmd *cmd)
 		if (cmd->ac > 2)
 			return (exit_error(EXIT_TOO_MANY, NULL));
 	}
-	ft_putstr_fd("exit\n", STDERR_FILENO);
+	if (vars->token.size <= 1)
+		ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (cmd)
 		clear_token(&vars->token);
 	clear_env(vars->env.root);
+	rl_clear_history();
 	exit(exit_code);
 }

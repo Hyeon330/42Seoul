@@ -1,6 +1,6 @@
 NAME	= minishell
 
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -g -Wall -Wextra -Werror
 
 MAKE_INC_DIR	= include/
 MAKE_INC		= minishell
@@ -22,8 +22,8 @@ EXEC_BUILTIN_DIR	=	$(EXEC_DIR)builtin/
 # FILES
 ENV_FILES	=	insert remove search util_1 util_2 error
 
-PARSE_FILES	=	error free_parse heredoc parse_init parse_utils parse replace replace_utils \
-				signal split_token_count split_token split_token2 syntax tokenize
+PARSE_FILES	=	check_readline parse_error parse_free parse_init parse_utils parse remove_quote replace_count replace_free \
+				replace_main replace_utils replace split_token tokenize_count tokenize signal
 
 EXEC_FILES	=	exec child execute fd_ctrl util error
 EXEC_BUILTIN_FILES	=	builtin echo cd pwd export unset env exit
@@ -46,7 +46,7 @@ LIB		= $(LIB_DIR)libft.a
 all: $(OBJ_DIR) $(NAME)
 
 $(NAME): $(LIB) $(OBJS)
-	$(CC) $(READLINE) $(OBJS) $(LIB) -o $(NAME)
+	$(CC) -g -fsanitize=address $(READLINE) $(OBJS) $(LIB) -o $(NAME)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(MAKE_HEADERS)
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@

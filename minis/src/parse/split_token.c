@@ -1,85 +1,79 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   split_token.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/24 00:16:37 by eoh               #+#    #+#             */
-/*   Updated: 2023/07/24 14:36:53 by eoh              ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
-void	free_splited_token(char **s)
+int	count_token(char *str)
 {
-	size_t	j;
-
-	j = 0;
-	while (s[j])
-	{
-		free((s[j]));
-		j++;
-	}
-	free(s);
-}
-
-char	*split_quote(char *s)
-{
-	char	*result;
-	char	quote;
-	int		end;
-
-	quote = s[0];
-	end = 1;
-	while (s[end] != quote)
-	{
-		end++;
-	}
-	result = ft_substr(s, 1, end - 1);
-	return (result);
-}
-
-char	**do_split_token(char *s, char **splited, char c, t_vars vars)
-{
-	int	i;
+	int		i;
+	int		cnt;
+	char	q;
 
 	i = 0;
-	while (*s)
+	cnt = 0;
+	q = 0;
+	while (str[i])
 	{
-		if (*s == 34)
+		if (str[i] == 34 || str[i] == 39)
+			i = replace_index_quote(str, i);
+		if (is_redir(str, i) != 0)
 		{
-			splited[i] = when_quote(&s);
-			if (count_env(splited[i]) != 0)
-				splited[i] = \
-				replace_character(splited[i], vars, count_env(splited[i]));
-			i++;
+			if (is_redir(str, i) == 3 || is_redir(str, i) == 4)
+				i++;
+			cnt++;
 		}
-		else if (*s == 39)
-			splited[i++] = when_quote(&s);
-		else if (*s == '>' || *s == '<')
-			splited[i++] = when_redir(&s);
-		else if (*s != c)
-			splited[i++] = when_charset(&s, c, vars);
-		else
-			s++;
+		else if (is_white_space(str[i]) != 1 && (str[i + 1] == '\0' \
+		|| is_redir(str, i + 1) != 0 || is_white_space(str[i + 1]) == 1))
+			cnt++;
+		i++;
 	}
-	return (splited);
+	return (cnt);
 }
 
-char	**split_token_main(char *str, t_vars *vars)
+char	**do_split_token(char *str, int cnt)
+{
+	char	**splited_token;
+	int		i;
+	int		j;
+	int		start;
+
+	splited_token = (char **)malloc(sizeof(char *) * (cnt + 1));
+	 if (!splited_token)
+	 	error("malloc error");
+	splited_token[cnt] = NULL;
+	i = 0;
+	j = 0;
+	start = -1;
+	while (str[i])
+	{
+		if (start == -1 && is_white_space(str[i]) != 1)
+			start = i;
+		if (str[i] == 34 || str[i] == 39)
+			i = replace_index_quote(str, i);
+		if (is_redir(str, i) != 0)
+		{
+			if (is_redir(str, i) == 3 || is_redir(str, i) == 4)
+				i++;
+			splited_token[j] = ft_substr(str, start, i - start + 1);
+			j++;
+			start = -1;
+		}
+		else if (is_white_space(str[i]) != 1 && (str[i + 1] == '\0' \
+		|| is_redir(str, i + 1) != 0 || is_white_space(str[i + 1]) == 1))
+		{
+			splited_token[j] = ft_substr(str, start, i - start + 1);
+			j++;
+			start = -1;
+		}
+		i++;
+	}
+	return (splited_token);
+}
+
+char	**split_token_main(char *splited_pipe)
 {
 	int		cnt;
-	char	**splited;
+	char	**splited_token;
 
-	cnt = count_token(str, ' ', vars);
-	if (cnt == -1)
-		return (0);
-	splited = (char **)malloc(sizeof(char *) * cnt + 1);
-	if (!splited)
-		error("malloc error");
-	splited[cnt] = NULL;
-	splited = do_split_token(str, splited, ' ', *vars);
-	return (splited);
+	cnt = count_token(splited_pipe);
+	splited_token = do_split_token(splited_pipe, cnt);
+	remove_quote_main(splited_token);
+	return (splited_token);
 }

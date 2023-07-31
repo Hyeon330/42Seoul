@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 20:46:35 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/26 22:34:29 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/31 15:00:30 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,31 +30,34 @@ static void	waiting(t_vars *vars)
 		vars->exit_code = status >> 8;
 }
 
+static int	built_child(t_vars *vars, t_cmd *cmd, int *fd)
+{
+	int	builtin_no;
+
+	builtin_no = isbuiltin(cmd);
+	if (!builtin_no || vars->token.size - 1)
+	{
+		if (child_proc(vars, cmd, fd, builtin_no))
+			return (-1);
+	}
+	else if (!fd_ctrl(cmd, fd))
+		vars->exit_code = builtin(vars, cmd, builtin_no);
+	else
+		vars->exit_code = 1;
+	return (builtin_no);
+}
+
 void	exec(t_vars *vars)
 {
 	t_cmd	*cmd;
 	int		fd[2];
-	int		builtin_no;
 
 	cmd = vars->token.cmd;
 	while (cmd)
 	{
-		if (!(cmd->next && handle_pipe(vars, cmd, fd)))
-		{
-			builtin_no = isbuiltin(cmd);
-			if (!builtin_no || vars->token.size - 1)
-			{
-				if (child_proc(vars, cmd, fd, builtin_no))
-				{
-					vars->exit_code = 1;
-					break ;
-				}
-			}
-			else if (!fd_ctrl(cmd, fd))
-				vars->exit_code = builtin(vars, cmd, builtin_no);
-			else
-				vars->exit_code = 1;
-		}
+		if (!(cmd->next && handle_pipe(vars, cmd, fd)) && \
+			built_child(vars, cmd, fd) < 0)
+			break ;
 		if (cmd->next)
 			pipex(fd, STDIN_FILENO);
 		cmd = cmd->next;

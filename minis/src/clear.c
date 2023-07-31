@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 13:33:49 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/12 19:39:42 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/31 18:58:53 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	clear_redir(t_redir *red)
 	{
 		tmp = red;
 		red = red->next;
+		if (tmp->type == HEREDOC)
+			unlink(tmp->file);
 		free(tmp);
 	}
 }

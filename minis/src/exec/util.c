@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 03:07:08 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/12 19:29:26 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/26 20:33:52 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	isdir(char *path)
 	return (EXEC_OPEN);
 }
 
-static int key_val(char *str, char ***pair, int key_val, int size)
+static int	key_val(char *str, char ***pair, int key_val, int size)
 {
 	int	i;
 
@@ -40,7 +40,7 @@ static int key_val(char *str, char ***pair, int key_val, int size)
 	i = -1;
 	while (++i < size)
 		(*pair)[key_val][i] = str[i];
-    return (1);
+	return (1);
 }
 
 char	**get_pair(char *str)
@@ -57,14 +57,14 @@ char	**get_pair(char *str)
 	while (str[key_size] && str[key_size] != '=')
 		key_size++;
 	if (!key_val(str, &pair, 0, key_size))
-        return (NULL);
+		return (NULL);
 	if (!str[key_size])
 		return (pair);
 	val_size = 0;
 	while (str[key_size + 1 + val_size])
 		val_size++;
 	if (!key_val(str + key_size + 1, &pair, 1, val_size))
-        return (NULL);
+		return (NULL);
 	return (pair);
 }
 

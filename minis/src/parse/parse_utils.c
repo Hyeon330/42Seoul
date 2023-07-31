@@ -1,48 +1,20 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_utils.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/23 22:47:45 by eoh               #+#    #+#             */
-/*   Updated: 2023/07/23 22:48:57 by eoh              ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
-
-int	get_token_size(char *str)
-{
-	int	pipe_cnt;
-	int	i;
-
-	pipe_cnt = 0;
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '|')
-			pipe_cnt++;
-		i++;
-	}
-	return (pipe_cnt + 1);
-}
 
 int	check_redirection(char *str)
 {
+	int	len;
 	int	flag;
 
-	flag = 1;
-	if (ft_strncmp(str, "<<", ft_strlen("<<")) == 0)
-		flag = HEREDOC;
-	else if (ft_strncmp(str, ">>", ft_strlen(">>")) == 0)
-		flag = APPEND;
-	else if (ft_strncmp(str, "<", ft_strlen("<")) == 0)
+	len = ft_strlen(str);
+	flag = -1;
+	if (len == 1 && str[0] == '<')
 		flag = IN_REDIR;
-	else if (ft_strncmp(str, ">", ft_strlen(">")) == 0)
+	if (len == 1 && str[0] == '>')
 		flag = OUT_REDIR;
-	else
-		flag = -1;
+	if (len == 2 && str[0] == '>' && str[1] == '>')
+		flag = APPEND;
+	if (len == 2 && str[0] == '<' && str[1] == '<')
+		flag = HEREDOC;
 	return (flag);
 }
 
@@ -64,4 +36,17 @@ int	check_only_whitespace(char *str)
 	if (cnt == len)
 		return (1);
 	return (-1);
+}
+
+int	is_redir(char *str, int i)
+{
+	if (str[i] == '<' && str[i + 1] != '<')
+		return (1);
+	if (str[i] == '>' && str[i + 1] != '>')
+		return (2);
+	if (str[i] == '>' && str[i + 1] == '>')
+		return (3);
+	if (str[i] == '<' && str[i + 1] == '<')
+		return (4);
+	return (0);
 }

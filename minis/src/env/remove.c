@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 21:02:13 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/25 16:46:59 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/31 20:04:59 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	remove_env(t_env *env, char *key)
 	int	chk;
 
 	chk = 0;
-	recursive_del(env->root, key, &chk);
+	env->root = recursive_del(env->root, key, &chk);
 	if (chk)
 		env->size--;
 }
