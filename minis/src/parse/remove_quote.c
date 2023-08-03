@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   remove_quote.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/02 13:38:25 by eoh               #+#    #+#             */
+/*   Updated: 2023/08/02 13:43:16 by eoh              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int	check_quote(char *str)
+int	check_quote(char	*str)
 {
 	int	i;
 	int	cnt;
@@ -12,36 +24,37 @@ int	check_quote(char *str)
 		if (str[i] == 34 || str[i] == 39)
 		{
 			cnt++;
-			//i = replace_index_quote(str, i);
+			i = replace_index_quote(str, i);
 		}
 		i++;
 	}
-	return (cnt);
+	return (cnt * 2);
 }
 
-char	*remove_quote(char *splited_token)
+char	*remove_quote(char *s, int len)
 {
-	int		cnt;
-	int		len;
 	int		i;
 	int		j;
 	char	*removed;
+	char	q;
 
-	cnt = check_quote(splited_token);
-	len = ft_strlen(splited_token) - cnt;
 	i = 0;
 	j = 0;
-	removed = (char *)malloc(sizeof(char) * (len + 1));
-	if (!removed)
-		error("malloc_error");
-	removed[len] = '\0';
-	while (splited_token[i])
+	q = 0;
+	removed = init_char(len);
+	while (s[i])
 	{
-		if (splited_token[i] != 34 && splited_token[i] != 39)
+		if ((s[i] == 34 || s[i] == 39) && (q == 0 || s[i] == q))
 		{
-			removed[j] = splited_token[i];
-			j++;
+			if (q == 0)
+				q = s[i];
+			else if (s[i] == q)
+				q = 0;
+			i++;
+			continue ;
 		}
+		removed[j] = s[i];
+		j++;
 		i++;
 	}
 	return (removed);
@@ -50,6 +63,7 @@ char	*remove_quote(char *splited_token)
 void	remove_quote_main(char **splited_token)
 {
 	int		i;
+	int		len;
 	char	*old;
 
 	i = 0;
@@ -58,8 +72,9 @@ void	remove_quote_main(char **splited_token)
 		if (check_quote(splited_token[i]) != 0)
 		{
 			old = splited_token[i];
-			splited_token[i] = remove_quote(splited_token[i]);
-			free(old); 
+			len = ft_strlen(splited_token[i]) - check_quote(splited_token[i]);
+			splited_token[i] = remove_quote(splited_token[i], len);
+			free(old);
 		}
 		i++;
 	}

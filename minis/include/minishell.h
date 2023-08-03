@@ -22,7 +22,6 @@
 # include <dirent.h>
 # include <signal.h>
 # include <stdbool.h>
-//# include <termios.h>
 # include <sys/stat.h>
 # include "libft.h"
 # include "readline/readline.h"
@@ -104,7 +103,6 @@ typedef struct s_token {
 typedef struct s_vars {
 	t_env	env;
 	t_token	token;
-	int		exit_code;
 }	t_vars;
 
 // std_ioe.c
@@ -112,12 +110,13 @@ void	std_ioe_backup(void);
 void	std_ioe_back(void);
 // clear.c
 void	clear_token(t_token *token);
-void	clear_ppc(char ***ppc);
+void	clear_ppc(char **ppc);
 
 // env
 // util_1.c
 void	set_env(t_env *env, char **p_env);
-void	print_env(t_node_env *node, void (*visit)(t_node_env *), int builtin_no);
+void	print_env(t_node_env *node, void (*visit)(t_node_env *), \
+		int builtin_no);
 void	clear_env(t_node_env *node);
 // util_2.c
 char	**get_env(t_env *env);
@@ -138,12 +137,13 @@ int		child_proc(t_vars *vars, t_cmd *cmd, int *fd, int builtin_no);
 // execute.c
 void	execute(t_vars *vars, t_cmd *cmd);
 // fd_ctrl.c
-void	pipex(int *fd, int INOUT);
+void	pipex(int *fd, int INOUT, t_cmd *cmd);
 int		fd_ctrl(t_cmd *cmd, int *fd);
 // util.c
 int		isdir(char	*path);
 char	**get_pair(char *str);
 char	*strjoin_between_char(char *str1, char *str2, char c);
+int		chk_pair(char *str1, char *str2);
 // error.c
 int		ft_exec_err(int e_no, char *cmd, char *str);
 
@@ -166,76 +166,90 @@ int		env(t_node_env *env);
 // exit.c
 int		exit_clear(t_vars *vars, t_cmd *cmd);
 
-void	rl_replace_line(const char *, int);
-
 //parse
 
 //check_readline.c
 int		check_valid_redir(char *s);
 int		check_valid_pipe(char *str);
 int		check_valid_quote(char *str);
-char	**check_readline(char *str);
+int		check_splited_pipe(char **splited_pipe);
+char	**check_readline(char *str, t_vars *vars);
+
+//heredoc.c
+void	write_heredoc(int fd, char *limiter);
+char	*get_heredoc_filename(void);
+char	*heredoc_join_path(char *file_name);
+char	*heredoc_main(char *limiter);
 
 //parse_error.c
-int		error_parse(int error, t_vars *vars);
+int		error_parse(int error);
 void	error(char *msg);
-
 //parse_free.c
 void	free_two_dimen(char	**str);
-
 //parse_init.c
 t_redir	*init_redir(void);
 t_cmd	*init_cmd(void);
-
+char	*init_char(int size);
+char	**init_two_dimension(int size);
 //parse_utils.c
 int		check_redirection(char *str);
 int		check_only_whitespace(char *str);
 int		is_redir(char *str, int i);
-
 //parse.c
 int		parse(t_vars *vars, char *str);
 void	do_parse(t_vars *vars, char **splited_pipe);
 
+//remove_env.c
+char	*remove_env_dollar(char *str, int len, int i, int j);
+int		count_dollar(char *str);
+void	remove_env_main(char **splited_token);
 //remove_quote.c
 int		check_quote(char *str);
-char	*remove_quote(char *splited_token);
+char	*remove_quote(char *splited_token, int len);
 void	remove_quote_main(char **splited_token);
 
+//replace_character_quote.c
+char	*replace_character_quote(char *str, t_vars *vars);
+char	*replace_quote2(char *str, int *i, t_vars *vars);
+char	*replace_quote_do(char *str, int i, t_vars *vars);
+char	*replace_env_quote(char *str, t_vars vars, int i, int end);
 //replace_count.c
+int		is_env_quote(char *str, int i);
 int		count_env_quote(char *str);
 int		count_wave(char *s);
 int		count_env(char *str);
-
+//replace_env_quote.c
+int		check_env_have_quote(char *env);
+char	*replace_env_have_quote(char *env, int i);
+char	*replace_env_have_quote_main(char *env);
+//replace_env.c
+char	*replace_exit_code(char *str, int i);
+char	*replace_env(char *str, t_vars vars, int i, int end);
+char	*replace_env_main(char *str, t_vars *vars, char *old, char *new);
 //replace_free.c
 void	free_replace_env(char *front, char *back, char *env);
 void	free_replace_wave(char *temp, char *home, char *front, char *back);
-
 //replace_main.c
-char	*replace_wave_main(char *str, t_vars *vars);
-char	*replace_character_quote(char *str, t_vars *vars);
 char	*replace_character(char *str, t_vars *vars);
 char	*replace_character_main(char *str, t_vars *vars);
-
 //replace_utils.c
-int	check_wave(char *str, int i);
-int	is_white_space(char c);
-int	replace_index_quote(char *str, int i);
-int	find_end_index_env(char	*str, int i);
-
-//replace.c
+int		check_wave(char *str, int i);
+int		is_white_space(char c);
+int		is_env(char *str, int i);
+int		replace_index_quote(char *str, int i);
+int		find_end_index_env(char	*str, int i);
+//replace_wave.c
 char	*replace_wave(char *str, t_vars vars, int i);
-char	*replace_env(char *str, t_vars vars, int i, int end);
-char	*replace_exit_code(char *str, t_vars vars, int i);
-char	*replace_env_main(char *str, t_vars *vars);
+char	*replace_wave_main(char *str, t_vars *vars);
 
 //split_token.c
-int	count_token(char *str);
+int		count_token(char *str);
 char	**do_split_token(char *str, int cnt);
 char	**split_token_main(char *splited_pipe);
 
 //tokenize_count.c
-int	count_av(char **splited_token);
-int	count_rd(char **splited_token);
+int		count_av(char **splited_token);
+int		count_rd(char **splited_token);
 
 //tokenize.c
 t_redir	*tokenize_redir(char **splited_token, int i);
@@ -246,5 +260,7 @@ t_cmd	*tokenize(char **splited_token);
 //signal.c
 void	handler(int signum);
 void	signal_set(void);
+
+int		g_exit_code;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 17:04:36 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/14 16:25:29 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/08/01 20:17:43 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	env_visit(t_node_env *node, char ***env, int idx, int *chk)
 	(*env)[idx] = strjoin_between_char(node->key, node->val, '=');
 	if (!(*env)[idx])
 	{
-		clear_ppc(env);
+		clear_ppc(*env);
 		*chk = 1;
 	}
 }

@@ -1,31 +1,28 @@
-#include "minishell.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <signal.h>
 
-void	handler(int signum)
-{
-	if (signum == SIGINT)//ctrl + c가 들어올 때
-	{
-		ft_putstr_fd("\n", STDOUT_FILENO);
-        ft_putstr_fd(PROMPT, STDOUT_FILENO);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}//^C가 계속나옴;오ㅐ지?->시그널 설정해줌
-	else
-		return ;
+void sigpipe_handler(int signum) {
+    if (signum == SIGPIPE) {
+        printf("SIGPIPE!!\n");
+    }
 }
 
-int main()
-{
-    char    *str;
+int main() {
+    signal(SIGPIPE, sigpipe_handler);  // SIGPIPE 시그널 핸들러 등록
 
-    while (1)
-    {
-        signal(SIGQUIT, SIG_IGN);
-        signal(SIGINT, handler);
-        ft_putstr_fd(PROMPT, STDOUT_FILENO);
-        str = get_next_line(STDIN_FILENO);
-        add_history(str);
-        printf("%s\n", str);
-        free(str);
+    int pipe_fd[2];
+    pipe(pipe_fd);
+
+    pid_t child_pid = fork();
+
+    if (!child_pid) {
+        // 자식 프로세스에서는 쓰기 작업만 수행
+        close(pipe_fd[0]); // 읽기 파이프 종료
+        write(pipe_fd[1], "hello\n", 6);
+        exit(0);
     }
+
+    return 0;
 }

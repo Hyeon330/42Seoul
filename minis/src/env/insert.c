@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 20:54:14 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/24 16:18:44 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/08/01 19:55:57 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	change_val(t_node_env *node, char *val)
 	if (val)
 	{
 		free(node->val);
-		node->val = ft_strdup(val);
+		node->val = val;
 	}
 }
 

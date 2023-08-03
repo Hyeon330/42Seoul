@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 19:04:23 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/25 17:22:41 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/08/01 20:17:51 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ static void	not_path_cmd(t_vars *vars, t_cmd *cmd, char **env)
 	if (!path)
 		ft_exec_err(EXEC_CNF, cmd->av[0], NULL);
 	execve(path, cmd->av, env);
+	free(path);
 }
 
 void	execute(t_vars *vars, t_cmd *cmd)
@@ -84,4 +85,5 @@ void	execute(t_vars *vars, t_cmd *cmd)
 		path_cmd(cmd, env);
 	else
 		not_path_cmd(vars, cmd, env);
+	clear_ppc(env);
 }

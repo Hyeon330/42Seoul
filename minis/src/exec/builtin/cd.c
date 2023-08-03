@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 19:32:04 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/24 17:48:06 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/31 20:39:34 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,6 @@ int	cd_error(int e_no, char *str)
 	if (e_no == CD_FAIL)
 		write(2, "Directory change failed\n", 24);
 	return (1);
-}
-
-static int	chk_pair(char *str1, char *str2)
-{
-	if (!str1 || !str2)
-	{
-		free(str1);
-		return (1);
-	}
-	return (0);
 }
 
 static int	meta_path(t_cmd *cmd, t_env *env, int *chk)

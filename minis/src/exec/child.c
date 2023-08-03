@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 15:11:49 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/31 16:43:27 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/08/03 20:20:58 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int	child_proc(t_vars *vars, t_cmd *cmd, int *fd, int builtin_no)
 			exit(builtin(vars, cmd, builtin_no));
 		else
 			execute(vars, cmd);
+		clear_token(&vars->token);
+		clear_env(vars->env.root);
 		exit(127);
 	}
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_readline.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 17:11:48 by eoh               #+#    #+#             */
-/*   Updated: 2023/07/31 17:11:49 by eoh              ###   ########.fr       */
+/*   Updated: 2023/08/02 17:37:41 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	check_valid_redir(char *s)
 			cnt++;
 			c = s[i];
 		}
-		else if ((s[i] < 9 || s[i] > 13) && s[i] != 32) 
+		else if ((s[i] < 9 || s[i] > 13) && s[i] != 32)
 		{
 			cnt = 0;
 			c = 0;
@@ -46,7 +46,7 @@ int	check_valid_pipe(char *str)
 	int	i;
 	int	cnt;
 	int	len;
-	
+
 	i = 0;
 	cnt = 0;
 	len = ft_strlen(str);
@@ -67,9 +67,9 @@ int	check_valid_pipe(char *str)
 
 int	check_valid_quote(char *str)
 {
-	int	i;
-	int	double_quote;
-	int	single_quote;
+	int		i;
+	int		double_quote;
+	int		single_quote;
 	char	q;
 
 	i = 0;
@@ -88,31 +88,52 @@ int	check_valid_quote(char *str)
 		i++;
 	}
 	if (q != 0)
-		return(-1);
+		return (-1);
 	return (1);
 }
 
-char	**check_readline(char *str)
+int	check_splited_pipe(char **splited_pipe)
+{
+	int	i;
+
+	i = 0;
+	while (splited_pipe[i])
+	{
+		if (check_only_whitespace(splited_pipe[i]) == 1 || \
+		check_valid_redir(splited_pipe[i]) == -1)
+		{
+			free_two_dimen(splited_pipe);
+			error_parse(258);
+			return (-1);
+		}
+		i++;
+	}
+	return (1);
+}
+
+char	**check_readline(char *str, t_vars *vars)
 {
 	char	**splited_pipe;
+	char	*replaced_str;
 	int		i;
 
 	i = 0;
 	if (check_only_whitespace(str) == 1)
 		return (NULL);
-	if (check_valid_quote(str) == -1)
-		return (NULL);
-	if (check_valid_pipe(str) == -1)
-		return (NULL);
-	splited_pipe = ft_split(str, '|');
-	while (splited_pipe[i])
+	if (check_valid_quote(str) == -1 || check_valid_pipe(str) == -1)
 	{
-		if (check_only_whitespace(splited_pipe[i]) == 1 || check_valid_redir(splited_pipe[i]) == -1)
-		{
-			free_two_dimen(splited_pipe);
-			return (NULL);
-		}
-		i++;
+		error_parse(258);
+		return (NULL);
 	}
+	replaced_str = replace_character_main(str, vars);
+	if (replaced_str != NULL)
+	{
+		splited_pipe = ft_split(replaced_str, '|');
+		free(replaced_str);
+	}
+	else
+		splited_pipe = ft_split(str, '|');
+	if (check_splited_pipe(splited_pipe) == -1)
+		return (NULL);
 	return (splited_pipe);
 }

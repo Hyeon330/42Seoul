@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 23:04:23 by eoh               #+#    #+#             */
-/*   Updated: 2023/07/23 23:07:50 by eoh              ###   ########.fr       */
+/*   Updated: 2023/08/03 16:43:42 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 
 void	handler(int signum)
 {
+	printf("%d\n", signum);
 	if (signum == SIGINT)
 	{
+		g_exit_code = 1;
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 1);

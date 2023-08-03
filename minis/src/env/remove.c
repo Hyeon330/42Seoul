@@ -6,17 +6,14 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 21:02:13 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/31 20:04:59 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/08/03 16:58:17 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_node_env	*find_min_key(t_node_env *root)
+static t_node_env	*find_min_key(t_node_env *node)
 {
-	t_node_env	*node;
-
-	node = root;
 	while (node && node->left != NULL)
 		node = node->left;
 	return (node);
@@ -36,6 +33,16 @@ static t_node_env	*find_end(t_node_env *node)
 	return (tmp);
 }
 
+static t_node_env	*recursive_del(t_node_env *node, char *key, int *chk_del);
+
+static void	diff_key(t_node_env *node, char *key, int *chk_del, int gap)
+{
+	if (gap > 0)
+		node->left = recursive_del(node->left, key, chk_del);
+	if (gap < 0)
+		node->right = recursive_del(node->right, key, chk_del);
+}
+
 static t_node_env	*recursive_del(t_node_env *node, char *key, int *chk_del)
 {
 	t_node_env	*tmp;
@@ -44,16 +51,16 @@ static t_node_env	*recursive_del(t_node_env *node, char *key, int *chk_del)
 	if (!node)
 		return (NULL);
 	chk = ft_strncmp(node->key, key, ft_strlen(key) + 1);
-	if (chk > 0)
-		node->left = recursive_del(node->left, key, chk_del);
-	if (chk < 0)
-		node->right = recursive_del(node->right, key, chk_del);
-	if (!chk)
+	if (chk)
+		diff_key(node, key, chk_del, chk);
+	else
 	{
 		*chk_del = 1;
 		if (node->left && node->right)
 		{
 			tmp = find_min_key(node->right);
+			free(node->key);
+			free(node->val);
 			node->key = ft_strdup(tmp->key);
 			if (tmp->val)
 				node->val = ft_strdup(tmp->val);

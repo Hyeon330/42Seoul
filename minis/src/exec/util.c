@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 03:07:08 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/26 20:33:52 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/31 20:39:49 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,16 @@ char	**get_pair(char *str)
 	if (!key_val(str + key_size + 1, &pair, 1, val_size))
 		return (NULL);
 	return (pair);
+}
+
+int	chk_pair(char *str1, char *str2)
+{
+	if (!str1 || !str2)
+	{
+		free(str1);
+		return (1);
+	}
+	return (0);
 }
 
 char	*strjoin_between_char(char *str1, char *str2, char c)

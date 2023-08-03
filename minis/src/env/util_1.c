@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 16:49:40 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/31 20:06:41 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/08/03 14:48:20 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,8 @@ static int	other_case(char ***pair, int oldpwd)
 void	set_env(t_env *env, char **p_env)
 {
 	char	**pair;
-	int		i;
 
-	i = -1;
-	while (*p_env && ++i < 5)
+	while (*p_env)
 	{
 		pair = get_pair(*p_env);
 		if (!pair)

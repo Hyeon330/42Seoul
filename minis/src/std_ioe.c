@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   std_ioe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 15:00:53 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/12 15:01:51 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/08/02 18:42:06 by eoh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,3 @@ void	std_ioe_back(void)
 	dup2(STDOUT_BACK, STDOUT_FILENO);
 	dup2(STDERR_BACK, STDERR_FILENO);
 }
-

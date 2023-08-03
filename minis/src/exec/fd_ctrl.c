@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 21:26:36 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/18 17:04:51 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/08/03 22:22:55 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ static int	out_redir(t_redir *red)
 	return (0);
 }
 
-void	pipex(int *fd, int INOUT)
+void	pipex(int *fd, int INOUT, t_cmd *pipe_chk)
 {
-	if (INOUT)
+	if (pipe_chk && INOUT)
 		dup2(fd[1], INOUT);
-	else
+	if (!INOUT)
 		dup2(fd[0], INOUT);
 	close(fd[0]);
 	close(fd[1]);
@@ -51,8 +51,7 @@ int	fd_ctrl(t_cmd *cmd, int *fd)
 {
 	t_redir	*red;
 
-	if (cmd->next)
-		pipex(fd, STDOUT_FILENO);
+	pipex(fd, STDOUT_FILENO, cmd->next);
 	red = cmd->red;
 	while (red)
 	{

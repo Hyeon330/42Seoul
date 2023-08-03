@@ -6,20 +6,22 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 13:33:49 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/31 18:58:53 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/08/02 17:34:23 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	clear_ppc(char ***ppc)
+void	clear_ppc(char **ppc)
 {
 	int	i;
 
+	if (!ppc)
+		return ;
 	i = -1;
-	while ((*ppc)[++i])
-		free((*ppc)[i]);
-	free(*ppc);
+	while (ppc[++i])
+		free(ppc[i]);
+	free(ppc);
 }
 
 void	clear_redir(t_redir *red)
@@ -32,6 +34,7 @@ void	clear_redir(t_redir *red)
 		red = red->next;
 		if (tmp->type == HEREDOC)
 			unlink(tmp->file);
+		free(tmp->file);
 		free(tmp);
 	}
 }
@@ -49,7 +52,7 @@ void	clear_token(t_token *token)
 		tmp = cmd;
 		cmd = cmd->next;
 		clear_redir(tmp->red);
-		clear_ppc(&tmp->av);
+		clear_ppc(tmp->av);
 		free(tmp);
 	}
 }

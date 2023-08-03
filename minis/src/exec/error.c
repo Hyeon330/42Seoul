@@ -6,24 +6,27 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 21:37:41 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/26 20:03:46 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/07/31 20:51:42 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void	print_detail(char *str)
+{
+	ft_putstr_fd(str, 2);
+	write(2, ": ", 2);
+}
+
 int	ft_exec_err(int e_no, char *cmd, char *str)
 {
 	write(2, "minish: ", 8);
 	if (cmd)
-	{
-		write(2, cmd, ft_strlen(cmd));
-		write(2, ": ", 2);
-	}
+		print_detail(cmd);
 	if (e_no < E_CRITICAL)
 	{
 		if (str)
-			write(2, str, ft_strlen(str));
+			print_detail(str);
 		if (e_no == EXEC_DYNAMIC)
 			write(2, "Dynamic allocation failed\n", 26);
 		if (e_no == EXEC_CNF)
