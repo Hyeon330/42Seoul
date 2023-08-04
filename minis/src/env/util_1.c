@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 16:49:40 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/08/03 14:48:20 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/08/04 18:26:57 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	print_env(t_node_env *node, void (*visit)(t_node_env *), int builtin_no)
 	if (!node)
 		return ;
 	print_env(node->left, visit, builtin_no);
-	if (builtin_no == EXPORT || (builtin_no == ENV && node->val))
+	if (builtin_no == B_EXPORT || (builtin_no == B_ENV && node->val))
 		visit(node);
 	print_env(node->right, visit, builtin_no);
 }

@@ -22,6 +22,7 @@
 # include <dirent.h>
 # include <signal.h>
 # include <stdbool.h>
+# include <termios.h>
 # include <sys/stat.h>
 # include "libft.h"
 # include "readline/readline.h"
@@ -40,14 +41,14 @@ enum e_redir_type {
 };
 
 enum e_builtin {
-	ECHO = 1,
-	CD,
-	PWD,
-	EXPORT,
-	UNSET,
-	ENV,
-	EXIT,
-	NONE
+	B_ECHO = 1,
+	B_CD,
+	B_PWD,
+	B_EXPORT,
+	B_UNSET,
+	B_ENV,
+	B_EXIT,
+	B_NONE
 };
 
 enum e_env_err {
@@ -101,8 +102,10 @@ typedef struct s_token {
 }	t_token;
 
 typedef struct s_vars {
-	t_env	env;
-	t_token	token;
+	t_env			env;
+	t_token			token;
+	struct termios	org;
+	struct termios	term;
 }	t_vars;
 
 // std_ioe.c
@@ -111,6 +114,10 @@ void	std_ioe_back(void);
 // clear.c
 void	clear_token(t_token *token);
 void	clear_ppc(char **ppc);
+// signal.c
+void	handler(int signum);
+void    set_origing(t_vars *vars);
+void	signal_set(t_vars *vars);
 
 // env
 // util_1.c
@@ -256,10 +263,6 @@ t_redir	*tokenize_redir(char **splited_token, int i);
 void	tokenize_redir_main(char **splited_token, int i, t_cmd	*cmd);
 void	tokenize_av(char **splited_token, t_cmd *cmd);
 t_cmd	*tokenize(char **splited_token);
-
-//signal.c
-void	handler(int signum);
-void	signal_set(void);
 
 int		g_exit_code;
 

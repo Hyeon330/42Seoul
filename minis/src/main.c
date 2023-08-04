@@ -6,16 +6,11 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 23:40:28 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/08/03 16:25:08 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/08/04 18:48:34 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	test()
-{
-	system("leaks minishell");
-}
 
 void	init_vars(t_vars *vars, char **p_env)
 {
@@ -23,6 +18,7 @@ void	init_vars(t_vars *vars, char **p_env)
 	ft_memset(vars, 0, sizeof(t_vars));
 	set_env(&vars->env, p_env);
 	std_ioe_backup();
+	signal_set(vars);
 }
 
 int	main(int ac, char **av, char **env)
@@ -30,11 +26,9 @@ int	main(int ac, char **av, char **env)
 	t_vars	vars;
 	char	*str;
 
-	// atexit(test);
 	(void)ac;
 	(void)av;
 	init_vars(&vars, env);
-	signal_set();
 	while (1)
 	{
 		str = readline(PROMPT);

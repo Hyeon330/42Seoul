@@ -25,12 +25,12 @@ ENV_FILES	=	insert remove search util_1 util_2 error
 
 PARSE_FILES	=	check_readline heredoc parse_error parse_free parse_init parse_utils parse remove_env_dollar remove_quote \
 				replace_character_quote replace_count replace_env_quote replace_env replace_free replace_main replace_utils replace_wave \
-				split_token tokenize_count tokenize signal
+				split_token tokenize_count tokenize
 
 EXEC_FILES	=	exec child execute fd_ctrl util error
 EXEC_BUILTIN_FILES	=	builtin echo cd pwd export unset env exit
 
-FILES	=	main std_ioe clear \
+FILES	=	main std_ioe signal clear \
 			$(addprefix $(ENV_DIR), $(ENV_FILES)) \
 			$(addprefix $(PARSE_DIR), $(PARSE_FILES)) \
 			$(addprefix $(EXEC_DIR), $(EXEC_FILES)) \

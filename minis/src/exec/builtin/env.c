@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 19:35:10 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/31 20:26:49 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/08/04 18:27:14 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ static void	print(t_node_env *node)
 
 int	env(t_node_env *env)
 {
-	print_env(env, print, ENV);
+	print_env(env, print, B_ENV);
 	return (0);
 }

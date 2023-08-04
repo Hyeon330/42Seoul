@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 15:11:49 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/08/03 20:20:58 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/08/04 18:51:03 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	child_proc(t_vars *vars, t_cmd *cmd, int *fd, int builtin_no)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
+		set_origing(vars);
 		if (fd_ctrl(cmd, fd))
 			exit(1);
 		if (builtin_no)

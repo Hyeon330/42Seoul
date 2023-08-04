@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 20:40:05 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/20 19:42:25 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/08/04 18:12:19 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,41 +15,41 @@
 int	isbuiltin(t_cmd *cmd)
 {
 	if (!cmd->ac)
-		return (NONE);
+		return (B_NONE);
 	if (!ft_strncmp(cmd->av[0], "echo", 5))
-		return (ECHO);
+		return (B_ECHO);
 	if (!ft_strncmp(cmd->av[0], "cd", 3))
-		return (CD);
+		return (B_CD);
 	if (!ft_strncmp(cmd->av[0], "pwd", 4))
-		return (PWD);
+		return (B_PWD);
 	if (!ft_strncmp(cmd->av[0], "export", 7))
-		return (EXPORT);
+		return (B_EXPORT);
 	if (!ft_strncmp(cmd->av[0], "unset", 6))
-		return (UNSET);
+		return (B_UNSET);
 	if (!ft_strncmp(cmd->av[0], "env", 4))
-		return (ENV);
+		return (B_ENV);
 	if (!ft_strncmp(cmd->av[0], "exit", 5))
-		return (EXIT);
+		return (B_EXIT);
 	return (0);
 }
 
 int	builtin(t_vars *vars, t_cmd *cmd, int builtin_no)
 {
-	if (builtin_no == NONE)
+	if (builtin_no == B_NONE)
 		return (0);
-	if (builtin_no == ECHO)
+	if (builtin_no == B_ECHO)
 		return (echo(cmd));
-	if (builtin_no == CD)
+	if (builtin_no == B_CD)
 		return (cd(cmd, &vars->env));
-	if (builtin_no == PWD)
+	if (builtin_no == B_PWD)
 		return (pwd(vars->env.root));
-	if (builtin_no == EXPORT)
+	if (builtin_no == B_EXPORT)
 		return (export(cmd, &vars->env));
-	if (builtin_no == UNSET)
+	if (builtin_no == B_UNSET)
 		return (unset(cmd, &vars->env));
-	if (builtin_no == ENV)
+	if (builtin_no == B_ENV)
 		return (env(vars->env.root));
-	if (builtin_no == EXIT)
+	if (builtin_no == B_EXIT)
 		return (exit_clear(vars, cmd));
 	return (1);
 }
