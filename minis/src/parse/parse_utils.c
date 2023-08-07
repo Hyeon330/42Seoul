@@ -6,11 +6,22 @@
 /*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 13:36:58 by eoh               #+#    #+#             */
-/*   Updated: 2023/08/02 13:37:11 by eoh              ###   ########.fr       */
+/*   Updated: 2023/08/07 20:43:10 by eoh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	is_character2(char c)
+{
+	int	result;
+
+	result = -1;
+	if (c == '?' || (c >= 48 && c <= 57) || \
+	(c >= 65 && c <= 90) || (c >= 97 && c <= 122))
+		result = 1;
+	return (result);
+}
 
 int	check_redirection(char *str)
 {
@@ -61,4 +72,13 @@ int	is_redir(char *str, int i)
 	if (str[i] == '<' && str[i + 1] == '<')
 		return (4);
 	return (0);
+}
+
+char	*heredoc_join_path(char *file_name)
+{
+	char	*result;
+
+	result = ft_strjoin("/tmp/", file_name);
+	free(file_name);
+	return (result);
 }

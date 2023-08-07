@@ -1,6 +1,6 @@
 NAME	= minishell
 
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -g -Wall -Wextra -Werror
 FSANITIZE	= -g -fsanitize=address
 
 MAKE_INC_DIR	= include/
@@ -23,9 +23,9 @@ EXEC_BUILTIN_DIR	=	$(EXEC_DIR)builtin/
 # FILES
 ENV_FILES	=	insert remove search util_1 util_2 error
 
-PARSE_FILES	=	check_readline heredoc parse_error parse_free parse_init parse_utils parse remove_env_dollar remove_quote \
-				replace_character_quote replace_count replace_env_quote replace_env replace_free replace_main replace_utils replace_wave \
-				split_token tokenize_count tokenize
+PARSE_FILES	=	check_readline heredoc parse_error parse_free parse_init parse_utils parse \
+				replace_env replace_utils replace replace_quote \
+				split_pipe split_token tokenize_count tokenize
 
 EXEC_FILES	=	exec child execute fd_ctrl util error
 EXEC_BUILTIN_FILES	=	builtin echo cd pwd export unset env exit

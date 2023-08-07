@@ -6,7 +6,7 @@
 /*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 14:03:08 by eoh               #+#    #+#             */
-/*   Updated: 2023/08/02 16:44:10 by eoh              ###   ########.fr       */
+/*   Updated: 2023/08/07 17:06:53 by eoh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,9 @@ int	count_token(char *str)
 {
 	int		i;
 	int		cnt;
-	char	q;
 
 	i = 0;
 	cnt = 0;
-	q = 0;
 	while (str[i])
 	{
 		if (str[i] == 34 || str[i] == 39)
@@ -45,7 +43,6 @@ int	count_token(char *str)
 		i++;
 	}
 	return (cnt);
-	printf("cnt : %d\n", cnt);
 }
 
 char	**do_split_token(char *str, int cnt)
@@ -77,14 +74,14 @@ char	**do_split_token(char *str, int cnt)
 	return (splited_token);
 }
 
-char	**split_token_main(char *splited_pipe)
+char	**split_token_main(char *splited_pipe, t_vars *vars)
 {
 	int		cnt;
 	char	**splited_token;
 
+	(void)vars;
 	cnt = count_token(splited_pipe);
 	splited_token = do_split_token(splited_pipe, cnt);
-	remove_env_main(splited_token);
-	remove_quote_main(splited_token);
+	replace_new(splited_token, vars);
 	return (splited_token);
 }

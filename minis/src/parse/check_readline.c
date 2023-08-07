@@ -3,26 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   check_readline.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eoh <eoh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 17:11:48 by eoh               #+#    #+#             */
-/*   Updated: 2023/08/02 17:37:41 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/08/07 16:51:41 by eoh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_valid_redir(char *s)
+int	check_valid_redir(char *s, int cnt, int c)
 {
 	int	i;
-	int	c;
-	int	cnt;
 
-	cnt = 0;
-	c = 0;
 	i = -1;
 	while (s[++i])
 	{
+		if (s[i] == 34 || s[i] == 39)
+			i = replace_index_quote(s, i) + 1;
 		if (s[i] == '<' || s[i] == '>')
 		{
 			if (cnt == 2 || (c != 0 && c != s[i]))
@@ -45,13 +43,16 @@ int	check_valid_pipe(char *str)
 {
 	int	i;
 	int	cnt;
-	int	len;
 
 	i = 0;
 	cnt = 0;
-	len = ft_strlen(str);
 	while (str[i])
 	{
+		while (str[i] == 34 || str[i] == 39)
+		{
+			i = replace_index_quote(str, i) + 1;
+			continue ;
+		}
 		if (str[i] == '|' && cnt != 0)
 			return (-1);
 		if (str[i] == '|' && cnt == 0)
@@ -68,13 +69,9 @@ int	check_valid_pipe(char *str)
 int	check_valid_quote(char *str)
 {
 	int		i;
-	int		double_quote;
-	int		single_quote;
 	char	q;
 
 	i = 0;
-	double_quote = 0;
-	single_quote = 0;
 	q = 0;
 	while (str[i])
 	{
@@ -100,7 +97,7 @@ int	check_splited_pipe(char **splited_pipe)
 	while (splited_pipe[i])
 	{
 		if (check_only_whitespace(splited_pipe[i]) == 1 || \
-		check_valid_redir(splited_pipe[i]) == -1)
+		check_valid_redir(splited_pipe[i], 0, 0) == -1)
 		{
 			free_two_dimen(splited_pipe);
 			error_parse(258);
@@ -111,28 +108,19 @@ int	check_splited_pipe(char **splited_pipe)
 	return (1);
 }
 
-char	**check_readline(char *str, t_vars *vars)
+char	**check_readline(char *str)
 {
 	char	**splited_pipe;
-	char	*replaced_str;
-	int		i;
 
-	i = 0;
 	if (check_only_whitespace(str) == 1)
 		return (NULL);
-	if (check_valid_quote(str) == -1 || check_valid_pipe(str) == -1)
+	if (str[0] == '|' || \
+	check_valid_quote(str) == -1 || check_valid_pipe(str) == -1)
 	{
 		error_parse(258);
 		return (NULL);
 	}
-	replaced_str = replace_character_main(str, vars);
-	if (replaced_str != NULL)
-	{
-		splited_pipe = ft_split(replaced_str, '|');
-		free(replaced_str);
-	}
-	else
-		splited_pipe = ft_split(str, '|');
+	splited_pipe = split_pipe(str);
 	if (check_splited_pipe(splited_pipe) == -1)
 		return (NULL);
 	return (splited_pipe);

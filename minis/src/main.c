@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 23:40:28 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/08/04 18:48:34 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/08/07 21:16:14 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ void	init_vars(t_vars *vars, char **p_env)
 	signal_set(vars);
 }
 
+void	test()
+{
+	system("leaks minishell");
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_vars	vars;
@@ -28,6 +33,7 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
+	atexit(test);
 	init_vars(&vars, env);
 	while (1)
 	{

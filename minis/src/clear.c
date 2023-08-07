@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 13:33:49 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/08/02 17:34:23 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/08/07 19:09:47 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,13 @@ void	clear_redir(t_redir *red)
 	}
 }
 
+void	clear_cmd(t_cmd *cmd)
+{
+	clear_redir(cmd->red);
+	clear_ppc(cmd->av);
+	free(cmd);
+}
+
 void	clear_token(t_token *token)
 {
 	t_cmd	*cmd;
@@ -51,8 +58,6 @@ void	clear_token(t_token *token)
 	{
 		tmp = cmd;
 		cmd = cmd->next;
-		clear_redir(tmp->red);
-		clear_ppc(tmp->av);
-		free(tmp);
+		clear_cmd(tmp);
 	}
 }

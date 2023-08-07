@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 20:46:35 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/08/03 22:22:44 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/08/07 21:13:47 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,13 @@ static void	waiting(void)
 		;
 	g_exit_code = status >> 8;
 	if (status == 2)
+	{
+		write(1, "\n", 1);
 		g_exit_code = 130;
+	}
 	if (status == 3)
 	{
-		ft_putstr_fd("Quit: 3\n", STDOUT_FILENO);
+		write(1, "Quit: 3\n", 8);
 		g_exit_code = 131;
 	}
 }
@@ -59,11 +62,8 @@ static int	set_(t_vars *vars, t_cmd *cmd)
 	return (0);
 }
 
-static int	built_child(t_vars *vars, t_cmd *cmd, int *fd)
+static int	built_child(t_vars *vars, t_cmd *cmd, int *fd, int builtin_no)
 {
-	int	builtin_no;
-
-	builtin_no = isbuiltin(cmd);
 	if (!builtin_no || vars->token.size - 1)
 	{
 		if (child_proc(vars, cmd, fd, builtin_no))
@@ -80,13 +80,15 @@ void	exec(t_vars *vars)
 {
 	t_cmd	*cmd;
 	int		fd[2];
+	int		builtin_no;
 
 	cmd = vars->token.cmd;
 	if (set_(vars, cmd))
 		return ;
 	while (cmd)
 	{
-		if (handle_pipe(cmd, fd) || built_child(vars, cmd, fd) < 0)
+		builtin_no = isbuiltin(cmd);
+		if (handle_pipe(cmd, fd) || built_child(vars, cmd, fd, builtin_no) < 0)
 		{
 			close(fd[0]);
 			close(fd[1]);
@@ -95,7 +97,8 @@ void	exec(t_vars *vars)
 		pipex(fd, STDIN_FILENO, cmd->next);
 		cmd = cmd->next;
 	}
-	waiting();
+	if (!builtin_no || vars->token.size - 1)
+		waiting();
 	std_ioe_back();
 	signal(SIGINT, handler);
 }
