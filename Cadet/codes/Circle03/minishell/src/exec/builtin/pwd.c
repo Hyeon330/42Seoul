@@ -1,34 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/09 18:19:35 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/07/25 16:41:00 by hyeonsul         ###   ########.fr       */
+/*   Created: 2023/05/29 19:32:46 by hyeonsul          #+#    #+#             */
+/*   Updated: 2023/08/08 18:03:32 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strdup(const char *src)
+int	pwd(void)
 {
-	char	*pc;
-	int		i;
+	char	path[5120];
+	char	*chk;
 
-	i = 0;
-	while (src[i])
-		i++;
-	pc = (char *)malloc(sizeof(char) * (i + 1));
-	if (pc == NULL)
-		return (NULL);
-	i = 0;
-	while (src[i])
-	{
-		pc[i] = src[i];
-		i++;
-	}
-	pc[i] = 0;
-	return (pc);
+	chk = getcwd(path, 5120);
+	ft_putstr_fd(chk, STDOUT_FILENO);
+	write(1, "\n", 1);
+	return (0);
 }
