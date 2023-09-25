@@ -6,7 +6,7 @@
 /*   By: hyeonsul <hyeonsul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 18:42:26 by hyeonsul          #+#    #+#             */
-/*   Updated: 2023/05/02 15:23:32 by hyeonsul         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:08:33 by hyeonsul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,22 +41,20 @@ void	set_img(t_vars *vars, t_img *img, char *texture_path)
 
 void	set_back(t_vars *vars)
 {
-	int		height;
-	int		width;
 	int		i;
 	int		j;
 
-	height = vars->x_height * BLOCK_HEIGHT;
-	width = vars->x_width * BLOCK_WIDTH;
-	vars->element.back.img = mlx_new_image(vars->mlx, width, height);
+	vars->element.back.height = vars->x_height * BLOCK_HEIGHT;
+	vars->element.back.width = vars->x_width * BLOCK_WIDTH;
+	vars->element.back.img = mlx_new_image(vars->mlx, vars->element.back.width, vars->element.back.height);
 	vars->element.back.addr = mlx_get_data_addr(vars->element.back.img, \
 	&vars->element.back.bits_per_pixel, &vars->element.back.line_length, \
 	&vars->element.back.endian);
 	i = -1;
-	while (++i < height)
+	while (++i < vars->element.back.height)
 	{
 		j = -1;
-		while (++j < width)
+		while (++j < vars->element.back.width)
 			my_mlx_pixel_put(&vars->element.back, j, i, SPACE_COLOR);
 	}
 }
