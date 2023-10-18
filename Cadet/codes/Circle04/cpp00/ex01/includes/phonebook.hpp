@@ -1,39 +1,24 @@
 #ifndef PHONEBOOK_HPP
 # define PHONEBOOK_HPP
 
-class PhoneBook
-{
-private:
-    Contact[8];
+# include <iostream>
+# include <iomanip>
+# include <string>
+# include <regex>
+# include "contact.hpp"
+
+class PhoneBook {
 public:
-    PhoneBook(/* args */);
-    ~PhoneBook();
-};
-
-PhoneBook::PhoneBook(/* args */)
-{
-}
-
-PhoneBook::~PhoneBook()
-{
-}
-
-class Contact
-{
+	PhoneBook();
+	void	add();
+	void	add(const Contact& contact);
+	void	search();
+	bool	search(int i);
 private:
-    /* data */
-public:
-    Contact(/* args */);
-    ~Contact();
+	static const int	maxContacts = 8;
+	Contact				contacts[maxContacts];
+	int					currIdx;
+	int					size;
 };
-
-Contact::Contact(/* args */)
-{
-}
-
-Contact::~Contact()
-{
-}
-
 
 #endif
