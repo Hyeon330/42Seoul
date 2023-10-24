@@ -17,12 +17,22 @@ void	Contact::displayNames(int i) {
 	std::cout << '|';
 	std::cout << std::setw(10) << std::right << i;
 	std::cout << '|';
-	std::cout << std::setw(10) << std::right << firstName;
+	printName(firstName);
 	std::cout << '|';
-	std::cout << std::setw(10) << std::right << lastName;
+	printName(lastName);
 	std::cout << '|';
-	std::cout << std::setw(10) << std::right << nickName;
+	printName(nickName);
 	std::cout << '|' << std::endl;
+}
+
+void	Contact::printName(std::string text) {
+	std::cout << std::right;
+	if (text.length() < 10)
+		std::cout << std::setw(10) << text;
+	else {
+		std::cout << std::setw(9) << text.substr(0, 9);
+		std::cout << '.';
+	}
 }
 
 void	Contact::displayContact() {

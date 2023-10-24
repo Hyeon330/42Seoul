@@ -1,6 +1,6 @@
 #include "phonebook.hpp"
 
-PhoneBook::PhoneBook() : currIdx(-1), size(0) {
+PhoneBook::PhoneBook() : minNum(0), maxNum(-1) {
 	for (int i = 0; i < maxContacts; ++i)
 		contacts[i] = Contact();
 }
@@ -34,15 +34,16 @@ void	PhoneBook::add() {
 }
 
 void	PhoneBook::add(const Contact& contact) {
-	contacts[currIdx = ++currIdx % maxContacts] = contact;
-	if (size < maxContacts)
-		size++;
+	++maxNum;
+	contacts[maxNum % maxContacts] = contact;
+	if (maxNum - minNum >= maxContacts)
+		++minNum;
 }
 
 void	PhoneBook::search() {
-	int	idx;
+	int idx;
 
-	if (!size) {
+	if (maxNum < 0) {
 		std::cout << "아직 저장된 연락처가 없습니다." << std::endl;
 		return ;
 	}
@@ -55,23 +56,19 @@ void	PhoneBook::search() {
 	std::cout << '|';
 	std::cout << std::setw(10) << std::right << "NickName";
 	std::cout << '|' << std::endl;
-	for (int i = 0; i < size; ++i)
-		contacts[i].displayNames(i);
+	for (int i = minNum; i <= maxNum; ++i)
+		contacts[i % maxContacts].displayNames(i);
 
 	while (true) {
 		std::cout << "검색할 번호: ";
-		std::cin >> idx;
-		if (this->search(idx))
+		if (!(std::cin >> idx)) {
+			// 정수가 아닌 입력을 받을 경우 처리
+			std::cin.clear();	// 에러 플래그를 리셋
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // 버퍼 비우기
+		} else if (minNum <= idx && maxNum >= idx) {
+			contacts[idx % maxContacts].displayContact();
 			break;
-		std::cin >> idx;
+		}
+		std::cout << "해당 번호의 연락처가 없습니다. 다시 입력해주세요." << std::endl;
 	}
-}
-
-bool	PhoneBook::search(int i) {
-	if (size <= i) {
-		std::cout << "해당 번호의 연락처가 없습니다." << std::endl;
-		return 0;
-	}
-	contacts[i].displayContact();
-	return 1;
 }
