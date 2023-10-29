@@ -1,0 +1,1 @@
+#ifndef CLAPTRAP_HPP
