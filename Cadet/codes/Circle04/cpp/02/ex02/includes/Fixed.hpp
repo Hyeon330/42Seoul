@@ -28,10 +28,10 @@ public:
 	bool	operator!=(const Fixed&) const;
 
 	// 산술 연산자
-	Fixed	operator+(const Fixed&);
-	Fixed	operator-(const Fixed&);
-	Fixed	operator*(const Fixed&);
-	Fixed	operator/(const Fixed&);
+	Fixed	operator+(const Fixed&) const;
+	Fixed	operator-(const Fixed&) const;
+	Fixed	operator*(const Fixed&) const;
+	Fixed	operator/(const Fixed&) const;
 	
 	// 증감 연산자
 	Fixed&	operator++();		// 전위

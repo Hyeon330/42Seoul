@@ -1,32 +1,19 @@
 #include "Fixed.hpp"
 using namespace std;
 
-Fixed::Fixed() : value(0) {
-	cout << "Default constructor called" << endl;
-}
+Fixed::Fixed() : value(0) {}
 
 Fixed::Fixed(const Fixed& otherFixed) {
-	cout << "Copy constructor called" << endl;
 	*this = otherFixed;
 }
 
-Fixed::Fixed(const int value) {
-	cout << "Int constructor called" << endl;
-	this->value = value << bits;
-}
+Fixed::Fixed(const int value) : value(value << bits) {}
 
-Fixed::Fixed(const float value) {
-	cout << "Float constructor called" << endl;
-	// Round Half Up(기준 반올림) 전략
-	this->value = roundf(value * (1 << bits));
-}
+Fixed::Fixed(const float value) : value(roundf(value * (1 << bits))) {}
 
-Fixed::~Fixed() {
-	cout << "Destructor called" << endl;
-}
+Fixed::~Fixed() {}
 
 Fixed&	Fixed::operator=(const Fixed& otherFixed) {
-	cout << "Copy assignment operator called" << endl;
 	if (this != &otherFixed)
 		value = otherFixed.getRawBits();
 	return *this;
@@ -63,19 +50,19 @@ bool	Fixed::operator!=(const Fixed& fixed) const {
 }
 
 // 산술 연산자
-Fixed	Fixed::operator+(const Fixed& fixed) {
+Fixed	Fixed::operator+(const Fixed& fixed) const {
 	return Fixed(toFloat() + fixed.toFloat());
 }
 
-Fixed	Fixed::operator-(const Fixed& fixed) {
+Fixed	Fixed::operator-(const Fixed& fixed) const {
 	return Fixed(toFloat() - fixed.toFloat());
 }
 
-Fixed	Fixed::operator*(const Fixed& fixed) {
+Fixed	Fixed::operator*(const Fixed& fixed) const {
 	return Fixed(toFloat() * fixed.toFloat());
 }
 
-Fixed	Fixed::operator/(const Fixed& fixed) {
+Fixed	Fixed::operator/(const Fixed& fixed) const {
 	return Fixed(toFloat() / fixed.toFloat());
 }
 

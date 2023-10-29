@@ -63,19 +63,19 @@ bool	Fixed::operator!=(const Fixed& fixed) const {
 }
 
 // 산술 연산자
-Fixed	Fixed::operator+(const Fixed& fixed) {
+Fixed	Fixed::operator+(const Fixed& fixed) const {
 	return Fixed(toFloat() + fixed.toFloat());
 }
 
-Fixed	Fixed::operator-(const Fixed& fixed) {
+Fixed	Fixed::operator-(const Fixed& fixed) const {
 	return Fixed(toFloat() - fixed.toFloat());
 }
 
-Fixed	Fixed::operator*(const Fixed& fixed) {
+Fixed	Fixed::operator*(const Fixed& fixed) const {
 	return Fixed(toFloat() * fixed.toFloat());
 }
 
-Fixed	Fixed::operator/(const Fixed& fixed) {
+Fixed	Fixed::operator/(const Fixed& fixed) const {
 	return Fixed(toFloat() / fixed.toFloat());
 }
 

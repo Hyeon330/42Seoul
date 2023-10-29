@@ -1,15 +1,14 @@
-#include "Fixed.hpp"
+#include "Point.hpp"
 
 int main( void ) {
-	Fixed	a;
-	Fixed	const b( Fixed( 5.05f ) * Fixed( 2 ) );
+	Point	a(2, 2);
+	Point	b(4, 5);
+	Point	c(8, 2);
 
-	std::cout << a << std::endl;
-	std::cout << ++a << std::endl;
-	std::cout << a << std::endl;
-	std::cout << a++ << std::endl;
-	std::cout << a << std::endl;
-	std::cout << b << std::endl;
-	std::cout << Fixed::max( a, b ) << std::endl;
+	if (bsp(a, b, c, Point(3, 3)))
+		std::cout << "Good Position." << std::endl;
+	else
+		std::cout << "Bad Position." << std::endl;
+
 	return 0;
 }
