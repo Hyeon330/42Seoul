@@ -17,7 +17,6 @@ public:
 	~Fixed();
 
 	Fixed&	operator=(const Fixed&);
-	friend std::ostream& operator<<(std::ostream&, const Fixed&);
 
 	// 비교 연산자
 	bool	operator>(const Fixed&) const;
@@ -50,5 +49,7 @@ public:
 	float	toFloat(void) const;
 	int		toInt(void) const;
 };
+
+std::ostream& operator<<(std::ostream&, const Fixed&);
 
 #endif

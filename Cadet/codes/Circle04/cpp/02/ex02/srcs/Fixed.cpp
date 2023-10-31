@@ -25,16 +25,16 @@ Fixed::~Fixed() {
 	cout << "Destructor called" << endl;
 }
 
+ostream& operator<<(ostream& os, const Fixed& fixed) {
+    os << fixed.toFloat();
+    return os;
+}
+
 Fixed&	Fixed::operator=(const Fixed& otherFixed) {
 	cout << "Copy assignment operator called" << endl;
 	if (this != &otherFixed)
 		value = otherFixed.getRawBits();
 	return *this;
-}
-
-ostream& operator<<(ostream& os, const Fixed& fixed) {
-    os << fixed.toFloat();
-    return os;
 }
 
 // 비교 연산자

@@ -13,15 +13,15 @@ Fixed::Fixed(const float value) : value(roundf(value * (1 << bits))) {}
 
 Fixed::~Fixed() {}
 
+ostream& operator<<(ostream& os, const Fixed& fixed) {
+	os << fixed.toFloat();
+	return os;
+}
+
 Fixed&	Fixed::operator=(const Fixed& otherFixed) {
 	if (this != &otherFixed)
 		value = otherFixed.getRawBits();
 	return *this;
-}
-
-ostream& operator<<(ostream& os, const Fixed& fixed) {
-    os << fixed.toFloat();
-    return os;
 }
 
 // 비교 연산자
