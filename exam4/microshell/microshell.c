@@ -1,11 +1,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
-
-#define STDIN_BACK 3
-#define STDOUT_BACK 4
-#define STDERR_BACK 5
 
 typedef struct	s_cmd {
 	struct s_cmd	*next;
@@ -18,6 +13,24 @@ typedef struct	s_token {
 	char	**env;
 	int		size;
 }	t_token;
+
+void	ft_memset(void* m, int v, int s) {
+	char*	tmp;
+	int		i;
+	
+	tmp = (char*)m;
+	i = -1;
+	while (++i < s)
+		tmp[i] = v;
+}
+
+int	ft_strlen(char* str) {
+	int	cnt;
+
+	cnt = -1;
+	while (str[++cnt]) ;
+	return cnt;
+}
 
 int	cnt_av(char** av) {
 	int i;
@@ -55,7 +68,7 @@ int	parse(char** av, char** env, t_token* token) {
 			tail = tail->next;
 		}
 
-		memset(tail, 0, sizeof(t_cmd));
+		ft_memset(tail, 0, sizeof(t_cmd));
 		tail->ac = cnt_av(av + i);
 		tail->av = (char**)malloc(sizeof(char*) * (tail->ac + 1));
 		tail->av[tail->ac] = NULL;
@@ -76,17 +89,12 @@ char*	get_home(char** env) {
 	return NULL;
 }
 
-void	cd(t_cmd* cmd, char** env) {
-	if (cmd->ac > 2) {
+void	cd(t_cmd* cmd) {
+	if (cmd->ac != 2) {
 		write(2, "error: cd: bad arguments\n", 25);
 		return ;
 	}
-	if (cmd->ac == 1) {
-		printf("%s\n", get_home(env));
-		chdir(get_home(env));
-		return ;
-	}
-	if (chdir(cmd->av[1]) < 0) 
+	if (chdir(cmd->av[1]) < 0)
 		write(2, "error: cd: cannot change directory to path_to_change\n", 53);
 }
 
@@ -98,11 +106,13 @@ void	exec(t_token *token) {
 
 	cmd = token->cmd;
 	if (!strncmp(cmd->av[0], "cd", 3)) {
-		cd(cmd, token->env);
+		cd(cmd);
 		return ;
 	}
 	i = -1;
 	while (++i < token->size) {
+		if (!cmd->ac)
+			exit(EXIT_FAILURE);
 		if (pipe(fd) < 0) {
 			write(2, "error: fatal\n", 13);
 			exit(EXIT_FAILURE);
@@ -119,7 +129,7 @@ void	exec(t_token *token) {
 			close(fd[1]);
 			if (execve(cmd->av[0], cmd->av, token->env) < 0) {
 				write(2, "error: cannot execute ", 22);
-				write(2, cmd->av[0], strlen(cmd->av[0]));
+				write(2, cmd->av[0], ft_strlen(cmd->av[0]));
 				write(2, "\n", 1);
 				exit(EXIT_FAILURE);
 			}
@@ -129,7 +139,7 @@ void	exec(t_token *token) {
 		close(fd[1]);
 		cmd = cmd->next;
 	}
-	wait(NULL);
+	waitpid(-1, NULL, 0);
 }
 
 int main(int ac, char** av, char** env) {
@@ -138,7 +148,7 @@ int main(int ac, char** av, char** env) {
 	(void)ac;
 	++av;
 	while (*av) {
-		memset(&token, 0, sizeof(t_token));
+		ft_memset(&token, 0, sizeof(t_token));
 		token.env = env;
 
 		av += parse(av, env, &token);
