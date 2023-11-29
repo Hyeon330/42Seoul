@@ -1,65 +1,52 @@
-#include <unistd.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 
 typedef struct	s_cmd {
-	struct s_cmd	*next;
+	struct s_cmd*	next;
+	char**			av;
 	int				ac;
-	char			**av;
 }	t_cmd;
 
 typedef struct	s_token {
-	t_cmd	*cmd;
-	char	**env;
+	t_cmd*	cmd;
+	char**	env;
 	int		size;
 }	t_token;
 
 void	ft_memset(void* m, int v, int s) {
 	char*	tmp;
-	int		i;
-	
-	tmp = (char*)m;
-	i = -1;
-	while (++i < s)
+
+	tmp = (char*) m;
+	for (int i = 0; i < s; i++)
 		tmp[i] = v;
 }
 
-int	ft_strlen(char* str) {
-	int	cnt;
-
-	cnt = -1;
-	while (str[++cnt]) ;
-	return cnt;
-}
-
 int	cnt_av(char** av) {
-	int i;
+	int	i;
 
 	i = -1;
 	while (av[++i] && strncmp(av[i], ";", 2) && strncmp(av[i], "|", 2)) ;
 	return i;
 }
 
-void	set_av(char** av, t_cmd* cmd) {
-	int i;
-
-	i = -1;
-	while (++i < cmd->ac)
+void	set_av(t_cmd* cmd, char** av) {
+	for (int i = 0; i < cmd->ac; i++)
 		cmd->av[i] = av[i];
 }
 
-int	parse(char** av, char** env, t_token* token) {
-	t_cmd	*tail;
+int	parse(t_token* token, char** av) {
+	t_cmd*	tail;
 	int		i;
 
 	tail = NULL;
 	i = 0;
 	while (av[i]) {
 		if (!strncmp(av[i], ";", 2))
-			break;
+			break ;
 		if (!strncmp(av[i], "|", 2))
 			i++;
-
+		
 		if (!tail) {
 			token->cmd = (t_cmd*)malloc(sizeof(t_cmd));
 			tail = token->cmd;
@@ -67,26 +54,25 @@ int	parse(char** av, char** env, t_token* token) {
 			tail->next = (t_cmd*)malloc(sizeof(t_cmd));
 			tail = tail->next;
 		}
-
 		ft_memset(tail, 0, sizeof(t_cmd));
+
 		tail->ac = cnt_av(av + i);
 		tail->av = (char**)malloc(sizeof(char*) * (tail->ac + 1));
 		tail->av[tail->ac] = NULL;
-		set_av(av + i, tail);
+		set_av(tail, av + i);
 		token->size++;
 		i += tail->ac;
 	}
-	token->env = env;
+
 	return i;
 }
 
-char*	get_home(char** env) {
-	while (*env) {
-		if (!strncmp("HOME=", *env, 5))
-			return *env + 5;
-		env++;
-	}
-	return NULL;
+int	ft_strlen(char* str) {
+	int	i;
+
+	i = -1;
+	while (str[++i]) ;
+	return i;
 }
 
 void	cd(t_cmd* cmd) {
@@ -94,31 +80,27 @@ void	cd(t_cmd* cmd) {
 		write(2, "error: cd: bad arguments\n", 25);
 		return ;
 	}
-	if (chdir(cmd->av[1]) < 0)
-		write(2, "error: cd: cannot change directory to path_to_change\n", 53);
+	if (chdir(cmd->av[1]) < 0) {
+		write(2, "error: cd: cannot change directory to ", 38);
+		write(2, cmd->av[1], ft_strlen(cmd->av[1]));
+		write(2, "\n", 1);
+	}
 }
 
-void	exec(t_token *token) {
-	t_cmd	*cmd;
+void	exec(t_token* token) {
+	t_cmd*	cmd;
 	pid_t	pid;
 	int		fd[2];
-	int		i;
 
 	cmd = token->cmd;
 	if (!strncmp(cmd->av[0], "cd", 3)) {
 		cd(cmd);
 		return ;
 	}
-	i = -1;
-	while (++i < token->size) {
+	for (int i = 0; i < token->size; i++) {
 		if (!cmd->ac)
 			exit(EXIT_FAILURE);
-		if (pipe(fd) < 0) {
-			write(2, "error: fatal\n", 13);
-			exit(EXIT_FAILURE);
-		}
-		pid = fork();
-		if (pid < 0) {
+		if (pipe(fd) < 0 || (pid = fork()) < 0) {
 			write(2, "error: fatal\n", 13);
 			exit(EXIT_FAILURE);
 		}
@@ -145,13 +127,13 @@ void	exec(t_token *token) {
 int main(int ac, char** av, char** env) {
 	t_token	token;
 
-	(void)ac;
-	++av;
+	(void) ac;
+	av++;
 	while (*av) {
 		ft_memset(&token, 0, sizeof(t_token));
 		token.env = env;
 
-		av += parse(av, env, &token);
+		av += parse(&token, av);
 		if (token.size)
 			exec(&token);
 		if (*av && !strncmp(*av, ";", 2))

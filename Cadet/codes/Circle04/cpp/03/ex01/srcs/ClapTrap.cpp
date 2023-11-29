@@ -17,10 +17,10 @@ ClapTrap::~ClapTrap() {
 }
 
 ClapTrap::ClapTrap(const string& name) :
-name(name),
-hitPoints(10),
-energyPoints(10),
-attackDamage(0) {
+	name(name),
+	hitPoints(10),
+	energyPoints(10),
+	attackDamage(0) {
 	cout << "ClapTrap ";
 	cout << "Create a " << name << endl;
 }
