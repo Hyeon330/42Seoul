@@ -3,8 +3,7 @@
 using namespace std;
 
 ClapTrap::ClapTrap() {
-	cout << "ClapTrap ";
-	cout << "Create a " << name << endl;
+	ClapTrap("Default");
 }
 
 ClapTrap::ClapTrap(const ClapTrap& clapTrap) {
@@ -12,17 +11,15 @@ ClapTrap::ClapTrap(const ClapTrap& clapTrap) {
 }
 
 ClapTrap::~ClapTrap() {
-	cout << "ClapTrap ";
-	cout << "Delete " << name << endl;
+	cout << "ClapTrap Delete " << name << endl;
 }
 
 ClapTrap::ClapTrap(const string& name) :
-name(name),
-hitPoints(10),
-energyPoints(10),
-attackDamage(0) {
-	cout << "ClapTrap ";
-	cout << "Create a " << name << endl;
+	name(name),
+	hitPoints(10),
+	energyPoints(10),
+	attackDamage(0) {
+	cout << "ClapTrap Create " << name << endl;
 }
 
 ClapTrap&	ClapTrap::operator=(const ClapTrap& other) {
@@ -36,18 +33,29 @@ ClapTrap&	ClapTrap::operator=(const ClapTrap& other) {
 }
 
 void	ClapTrap::attack(const std::string& target) {
+	if (hitPoints <= 0) {
+		cout << "ClapTrap ";
+		cout << name << " is already dead..." << endl;
+		return ;
+	}
 	if (!energyPoints) {
-		cout << "You've not enough energy" << endl;
+		cout << "ClapTrap ";
+		cout << name << " have not enough energy" << endl;
 		return ;
 	}
 	energyPoints--;
-	cout << "ClapTrap " << name;
-	cout << " attacks " << target;
+	cout << "ClapTrap " << name << " attacks " << target;
+	cout << ", causing " << attackDamage << " points of damage!" << endl;
 }
 
 void	ClapTrap::takeDamage(unsigned int amount) {
-	hitPoints -= amount;
-	cout << ", causing " << amount << " points of damage!" << endl;
+	cout << "ClapTrap " << name << " take " << amount << " damage!" << endl;
+	if (hitPoints > amount)
+		hitPoints -= amount;
+	else {
+		hitPoints = 0;
+		cout << "ClapTrap " << name << "is dead." << endl;
+	}
 }
 
 void	ClapTrap::beRepaired(unsigned int amount) {

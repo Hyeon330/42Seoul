@@ -1,8 +1,10 @@
 #include "ScavTrap.hpp"
+#include "FragTrap.hpp"
 
 int main() {
 	ClapTrap	c("C");
 	ScavTrap	s("S");
+	FragTrap	f("F");
 
 	std::cout << std::endl;
 
@@ -21,7 +23,19 @@ int main() {
 
 	std::cout << std::endl;
 
+	f.attack("S");
+	s.takeDamage(f.getAttackDamage());
+
+	std::cout << std::endl;
+
+	s.beRepaired(10);
+	std::cout << std::endl;
+
 	s.guardGate();
 
+	std::cout << std::endl;
+
+	f.highFiveGuys();
+	
 	std::cout << std::endl;
 }
