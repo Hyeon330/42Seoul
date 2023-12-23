@@ -3,10 +3,34 @@
 #include <ctime>
 using namespace std;
 
-int	Account::_nbAccounts;
-int Account::_totalAmount;
-int Account::_totalNbDeposits;
-int Account::_totalNbWithdrawals;
+// 정적 멤버 변수 초기화
+int	Account::_nbAccounts = 0;
+int	Account::_totalAmount = 0;
+int	Account::_totalNbDeposits = 0;
+int	Account::_totalNbWithdrawals = 0;
+
+Account::Account(int initial_deposit) {
+	_accountIndex = _nbAccounts++;
+	_amount = initial_deposit;
+	_nbDeposits = 0;
+	_nbWithdrawals = 0;
+	_totalAmount += initial_deposit;
+	_displayTimestamp();
+	cout << "index:" << _accountIndex << ';';
+	cout << "amount:" << _amount << ';';
+	cout << "created" << endl;
+}
+
+Account::~Account() {
+	_nbAccounts--;
+	_totalAmount -= _amount;
+	_totalNbDeposits -= _nbDeposits;
+	_totalNbWithdrawals -= _nbWithdrawals;
+	_displayTimestamp();
+	cout << "index:" << _accountIndex << ';';
+	cout << "amount:" << _amount << ';';
+	cout << "closed" << endl;
+}
 
 int		Account::getNbAccounts() {
 	return _nbAccounts;
@@ -30,29 +54,6 @@ void	Account::displayAccountsInfos() {
 	cout << "total:" << _totalAmount << ';';
 	cout << "deposits:" << _totalNbDeposits << ';';
 	cout << "withdrawals" << _totalNbWithdrawals << endl;
-}
-
-Account::Account(int initial_deposit) {
-	_accountIndex = _nbAccounts++;
-	_amount = initial_deposit;
-	_nbDeposits = 0;
-	_nbWithdrawals = 0;
-	_totalAmount += initial_deposit;
-	_displayTimestamp();
-	cout << "index:" << _accountIndex << ';';
-	cout << "amount:" << _amount << ';';
-	cout << "created" << endl;
-}
-
-Account::~Account() {
-	_nbAccounts--;
-	_totalAmount -= _amount;
-	_totalNbDeposits -= _nbDeposits;
-	_totalNbWithdrawals -= _nbWithdrawals;
-	_displayTimestamp();
-	cout << "index:" << _accountIndex << ';';
-	cout << "amount:" << _amount << ';';
-	cout << "closed" << endl;
 }
 
 void	Account::makeDeposit(int deposit) {

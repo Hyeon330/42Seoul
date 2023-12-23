@@ -15,7 +15,7 @@ Contact::Contact(std::string firstName, std::string lastName, std::string nickNa
 
 void	Contact::displayNames(int i) {
 	std::cout << '|';
-	std::cout << std::setw(10) << std::right << i;
+	printName(std::to_string(i));
 	std::cout << '|';
 	printName(firstName);
 	std::cout << '|';
@@ -27,7 +27,7 @@ void	Contact::displayNames(int i) {
 
 void	Contact::printName(std::string text) {
 	std::cout << std::right;
-	if (text.length() < 10)
+	if (text.length() <= 10)
 		std::cout << std::setw(10) << text;
 	else {
 		std::cout << std::setw(9) << text.substr(0, 9);

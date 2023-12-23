@@ -4,8 +4,10 @@
 int main(int ac, char **av) {
 	int	i, j;
 
-	if (ac < 2)
-		std::cout << "* LOUD AND UNBEARABLE FEEDBACK NOISE *";
+	if (ac < 2) {
+		std::cout << "* LOUD AND UNBEARABLE FEEDBACK NOISE *" << std::endl;
+		return (1);
+	}
 	i = 0;
 	while (++i < ac) {
 		j = -1;

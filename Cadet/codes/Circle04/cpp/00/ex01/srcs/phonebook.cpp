@@ -10,8 +10,8 @@ void	PhoneBook::add() {
 	std::string	lastName;
 	std::string	nickName;
 	std::string	phoneNumber;
-    std::string darkestSecret;
 	std::regex regexPhoneNumber("\\b\\d{3}-\\d{4}-\\d{4}\\b");
+    std::string darkestSecret;
 
 	std::cout << "FirstName: ";
 	std::cin >> firstName;
@@ -19,8 +19,7 @@ void	PhoneBook::add() {
 	std::cin >> lastName;
 	std::cout << "NickName: ";
 	std::cin >> nickName;
-	while (true)
-	{
+	while (true) {
 		std::cout << "PhoneNumber(000-0000-0000): ";
 		std::cin >> phoneNumber;
 		if (std::regex_match(phoneNumber, regexPhoneNumber))
@@ -31,6 +30,7 @@ void	PhoneBook::add() {
 	std::cin >> darkestSecret;
 
 	this->add(Contact(firstName, lastName, nickName, phoneNumber, darkestSecret));
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // 버퍼 비우기
 }
 
 void	PhoneBook::add(const Contact& contact) {
@@ -40,8 +40,19 @@ void	PhoneBook::add(const Contact& contact) {
 		++minNum;
 }
 
+bool	isNums(std::string s) {
+	if (s.length() == 0)
+		return false;
+	for (std::string::size_type i = 0; i < s.length(); i++) {
+		if (s[i] < '0' || s[i] > '9')
+			return false;
+	}
+	return true;
+}
+
 void	PhoneBook::search() {
-	int idx;
+	std::string tmp;
+	int			idx;
 
 	if (maxNum < 0) {
 		std::cout << "아직 저장된 연락처가 없습니다." << std::endl;
@@ -61,14 +72,17 @@ void	PhoneBook::search() {
 
 	while (true) {
 		std::cout << "검색할 번호: ";
-		if (!(std::cin >> idx)) {
-			// 정수가 아닌 입력을 받을 경우 처리
-			std::cin.clear();	// 에러 플래그를 리셋
-			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // 버퍼 비우기
-		} else if (minNum <= idx && maxNum >= idx) {
+		std::getline(std::cin, tmp);
+		if (std::cin.eof())
+			break;
+		idx = -1;
+		if (isNums(tmp))
+			idx = std::stoi(tmp);
+		if (idx > -1 && minNum <= idx && maxNum >= idx) {
 			contacts[idx % maxContacts].displayContact();
 			break;
 		}
+		std::cin.clear();	// 에러 플래그를 리셋
 		std::cout << "해당 번호의 연락처가 없습니다. 다시 입력해주세요." << std::endl;
 	}
 }
