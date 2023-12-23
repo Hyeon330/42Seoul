@@ -1,6 +1,8 @@
 #include "phonebook.hpp"
 
-PhoneBook::PhoneBook() : minNum(0), maxNum(-1) {
+PhoneBook::PhoneBook() : 
+	minNum(0),
+	maxNum(-1) {
 	for (int i = 0; i < maxContacts; ++i)
 		contacts[i] = Contact();
 }
