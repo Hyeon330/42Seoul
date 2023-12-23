@@ -1,10 +1,20 @@
-#include "phonebook.hpp"
+#include "Phonebook.hpp"
 
 PhoneBook::PhoneBook() : 
 	minNum(0),
 	maxNum(-1) {
 	for (int i = 0; i < maxContacts; ++i)
 		contacts[i] = Contact();
+}
+
+static bool	setInfo(std::string title, std::string *info) {
+	while (info->length() <= 0) {
+		std::cout << title;
+		std::getline(std::cin, *info);
+		if (std::cin.eof())
+			return false;
+	}
+	return true;
 }
 
 void	PhoneBook::add() {
@@ -15,24 +25,24 @@ void	PhoneBook::add() {
 	std::regex regexPhoneNumber("\\b\\d{3}-\\d{4}-\\d{4}\\b");
     std::string darkestSecret;
 
-	std::cout << "FirstName: ";
-	std::cin >> firstName;
-	std::cout << "LastName: ";
-	std::cin >> lastName;
-	std::cout << "NickName: ";
-	std::cin >> nickName;
+	if (!setInfo("FirstName: ", &firstName))
+		return ;
+	if (!setInfo("LastName: ", &lastName))
+		return ;
+	if (!setInfo("NickName: ", &nickName))
+		return ;
 	while (true) {
-		std::cout << "PhoneNumber(000-0000-0000): ";
-		std::cin >> phoneNumber;
+		phoneNumber = "";
+		if (!setInfo("PhoneNumber(000-0000-0000): ", &phoneNumber))
+			return ;
 		if (std::regex_match(phoneNumber, regexPhoneNumber))
-			break;
+			break ;
 		std::cout << "잘못된 형태의 연락처입니다." << std::endl;
 	}
-	std::cout << "DarkestSecert: ";
-	std::cin >> darkestSecret;
+	if (!setInfo("DarkestSecert: ", &darkestSecret))
+		return ;
 
 	this->add(Contact(firstName, lastName, nickName, phoneNumber, darkestSecret));
-	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // 버퍼 비우기
 }
 
 void	PhoneBook::add(const Contact& contact) {
@@ -42,7 +52,7 @@ void	PhoneBook::add(const Contact& contact) {
 		++minNum;
 }
 
-bool	isNums(std::string s) {
+static bool	isNums(std::string s) {
 	if (s.length() == 0)
 		return false;
 	for (std::string::size_type i = 0; i < s.length(); i++) {
