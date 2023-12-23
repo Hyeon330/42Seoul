@@ -89,12 +89,11 @@ void	PhoneBook::search() {
 			break;
 		idx = -1;
 		if (isNums(tmp))
-			idx = std::stoi(tmp);
+			idx = std::atoi(tmp.c_str());
 		if (idx > -1 && minNum <= idx && maxNum >= idx) {
 			contacts[idx % maxContacts].displayContact();
 			break;
 		}
-		std::cin.clear();	// 에러 플래그를 리셋
 		std::cout << "해당 번호의 연락처가 없습니다. 다시 입력해주세요." << std::endl;
 	}
 }
