@@ -12,12 +12,12 @@ int main(int ac, char **av) {
 	std::string	s2 = av[3];
 	std::string	line;
 
-	std::ifstream	inputFile(filename);
+	std::ifstream	inputFile(filename.c_str());
 	if (!inputFile.is_open()) {
 		std::cerr << "Open Error.";
 		return 1;
 	}
-	std::ofstream	outputFile(filename + ".replace");
+	std::ofstream	outputFile((filename + ".replace").c_str());
 	if (!outputFile.is_open()) {
 		std::cerr << "Cannot Create File.";
 		return 1;
