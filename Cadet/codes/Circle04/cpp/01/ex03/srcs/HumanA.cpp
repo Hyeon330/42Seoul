@@ -3,11 +3,12 @@
 HumanA::HumanA(const std::string& name, Weapon& weapon) :
 	weapon(weapon),
 	name(name) {
-	std::cout << "HumanA " << name << " constuctor called" << std::endl;
+	std::cout << "Created HumanA " << name;
+	std::cout << " set " << weapon.getType() << std::endl;
 }
 
 HumanA::~HumanA() {
-	std::cout << "Human A destructor called" << std::endl;
+	std::cout << "Deleted HumanA " << name << std::endl;
 }
 
 void	HumanA::attack() const {

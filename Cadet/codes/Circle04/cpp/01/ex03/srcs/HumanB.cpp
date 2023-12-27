@@ -2,11 +2,11 @@
 
 HumanB::HumanB(std::string name) :
 	name(name) {
-	std::cout << "Human B " << name << " constructor called" << std::endl;
+	std::cout << "Created HumanB " << name << std::endl;
 }
 
 HumanB::~HumanB() {
-	std::cout << "Human B destructor called" << std::endl;
+	std::cout << "Deleted HumanB " << name << std::endl;
 }
 
 void	HumanB::attack() const {
@@ -15,4 +15,5 @@ void	HumanB::attack() const {
 
 void	HumanB::setWeapon(Weapon& weapon) {
 	this->weapon = &weapon;
+	std::cout << name << " set " << weapon.getType() << std::endl;
 }

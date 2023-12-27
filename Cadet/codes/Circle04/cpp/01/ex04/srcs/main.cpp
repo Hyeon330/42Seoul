@@ -43,6 +43,6 @@ int main(int ac, char **av) {
 		std::cerr << "Cannot Create File.";
 		return 1;
 	}
-	
+
 	return 0;
 }
