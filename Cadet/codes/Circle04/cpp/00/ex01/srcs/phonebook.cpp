@@ -1,10 +1,13 @@
 #include "Phonebook.hpp"
 
-PhoneBook::PhoneBook() : 
-	minNum(0),
-	maxNum(-1) {
-	for (int i = 0; i < maxContacts; ++i)
-		contacts[i] = Contact();
+static bool	isNums(std::string s) {
+	if (s.length() == 0)
+		return false;
+	for (std::string::size_type i = 0; i < s.length(); i++) {
+		if (s[i] < '0' || s[i] > '9')
+			return false;
+	}
+	return true;
 }
 
 static bool	setInfo(std::string title, std::string *info) {
@@ -17,12 +20,18 @@ static bool	setInfo(std::string title, std::string *info) {
 	return true;
 }
 
+PhoneBook::PhoneBook() : 
+	minNum(0),
+	maxNum(-1) {
+	for (int i = 0; i < maxContacts; ++i)
+		contacts[i] = Contact();
+}
+
 void	PhoneBook::add() {
 	std::string	firstName;
 	std::string	lastName;
 	std::string	nickName;
 	std::string	phoneNumber;
-	std::regex regexPhoneNumber("\\b\\d{3}-\\d{4}-\\d{4}\\b");
     std::string darkestSecret;
 
 	if (!setInfo("FirstName: ", &firstName))
@@ -33,11 +42,11 @@ void	PhoneBook::add() {
 		return ;
 	while (true) {
 		phoneNumber = "";
-		if (!setInfo("PhoneNumber(000-0000-0000): ", &phoneNumber))
+		if (!setInfo("PhoneNumber: ", &phoneNumber))
 			return ;
-		if (std::regex_match(phoneNumber, regexPhoneNumber))
+		if (isNums(phoneNumber))
 			break ;
-		std::cout << "잘못된 형태의 연락처입니다." << std::endl;
+		std::cout << "숫자를 입력하세요." << std::endl;
 	}
 	if (!setInfo("DarkestSecert: ", &darkestSecret))
 		return ;
@@ -50,16 +59,6 @@ void	PhoneBook::add(const Contact& contact) {
 	contacts[maxNum % maxContacts] = contact;
 	if (maxNum - minNum >= maxContacts)
 		++minNum;
-}
-
-static bool	isNums(std::string s) {
-	if (s.length() == 0)
-		return false;
-	for (std::string::size_type i = 0; i < s.length(); i++) {
-		if (s[i] < '0' || s[i] > '9')
-			return false;
-	}
-	return true;
 }
 
 void	PhoneBook::search() {
