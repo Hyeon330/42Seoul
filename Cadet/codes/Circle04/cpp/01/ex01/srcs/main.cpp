@@ -7,7 +7,7 @@ int main() {
 	for (int i = 0; i < Z_NUM; ++i) {
 		horde[i].announcement();
 	}
-	
+
 	delete[] horde;
 	return 0;
 }

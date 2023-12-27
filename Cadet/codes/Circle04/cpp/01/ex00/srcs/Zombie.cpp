@@ -1,14 +1,16 @@
 #include "Zombie.hpp"
 
 Zombie::Zombie() {
-	Zombie("");
+	Zombie("Default_Z");
 }
 
 Zombie::Zombie(std::string name) :
-	name(name) {}
+	name(name) {
+	std::cout << "Created " << name << " Zombie" << std::endl;
+}
 
 Zombie::~Zombie() {
-	std::cout << "Deleted " << name << std::endl;
+	std::cout << "Deleted " << name << " Zombie" << std::endl;
 }
 
 void	Zombie::announcement() {

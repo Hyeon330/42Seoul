@@ -1,14 +1,13 @@
 #include "Zombie.hpp"
 
 int main() {
-    Zombie* zombie1 = newZombie("hello");
-    Zombie* zombie2 = newZombie("world");
-
-    zombie1->announcement();
-    zombie2->announcement();
+    Zombie hello("hello");
+    Zombie* world = newZombie("world");
 
     randomChump("4242");
 
-    delete zombie1;
-    delete zombie2;
+    hello.announcement();
+    world->announcement();
+
+    delete world;
 }

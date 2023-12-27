@@ -1,9 +1,13 @@
 #include "HumanB.hpp"
 
 HumanB::HumanB(std::string name) :
-	name(name) {}
+	name(name) {
+	std::cout << "Human B " << name << " constructor called" << std::endl;
+}
 
-HumanB::~HumanB() {}
+HumanB::~HumanB() {
+	std::cout << "Human B destructor called" << std::endl;
+}
 
 void	HumanB::attack() const {
 	std::cout << name << " attacks with their " << weapon->getType() << std::endl;

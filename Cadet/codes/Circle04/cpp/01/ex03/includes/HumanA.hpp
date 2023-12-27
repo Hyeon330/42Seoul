@@ -9,6 +9,7 @@ private:
 	Weapon&		weapon;
 	std::string	name;
 public:
+	HumanA();
 	HumanA(const std::string& name, Weapon& weapon);
 	~HumanA();
 
