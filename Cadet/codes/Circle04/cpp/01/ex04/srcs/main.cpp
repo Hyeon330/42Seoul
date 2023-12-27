@@ -28,7 +28,7 @@ int main(int ac, char **av) {
 
 		while ((pos = line.find(s1, pos)) != std::string::npos) {
 			line.erase(pos, s1.length());	// s1을 삭제
-			line.insert(pos, s2);	// s2를 삽입
+			line.insert(pos, s2);			// s2를 삽입
 			pos += s2.length();
 		}
 		outputFile << line;
