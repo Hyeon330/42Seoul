@@ -1,7 +1,5 @@
 #include "Harl.hpp"
 
-using namespace std;
-
 Harl::Harl() {
 	harl[0] = &Harl::debug;
 	harl[1] = &Harl::info;
@@ -12,23 +10,23 @@ Harl::Harl() {
 Harl::~Harl() {}
 
 void	Harl::debug() {
-	cout << "[DEBUG]: I love having extra bacon for my 7XL-double cheese-triple-pickle-specialketchup burger. I really do!" << endl;
+	std::cout << "[DEBUG]: I love having extra bacon for my 7XL-double cheese-triple-pickle-specialketchup burger. I really do!" << std::endl;
 }
 
 void	Harl::info() {
-	cout << "[INFO]: I cannot believe adding extra bacon costs more money. You didn’t put enough bacon in my burger! If you did, I wouldn’t be asking for more!" << endl;
+	std::cout << "[INFO]: I cannot believe adding extra bacon costs more money. You didn’t put enough bacon in my burger! If you did, I wouldn’t be asking for more!" << std::endl;
 }
 
 void	Harl::warning() {
-	cout << "[WARNING]: I think I deserve to have some extra bacon for free. I’ve been coming for years whereas you started working here since last month." << endl;
+	std::cout << "[WARNING]: I think I deserve to have some extra bacon for free. I’ve been coming for years whereas you started working here since last month." << std::endl;
 }
 
 void	Harl::error() {
-	cout << "[ERROR]: This is unacceptable! I want to speak to the manager now." << endl;
+	std::cout << "[ERROR]: This is unacceptable! I want to speak to the manager now." << std::endl;
 }
 
-static int	getHarlNum(string level) {
-	const static string str[] = {"DEBUG", "INFO", "WARNING", "ERROR"};
+static int	getHarlNum(std::string level) {
+	const static std::string str[] = {"DEBUG", "INFO", "WARNING", "ERROR"};
 
 	for (int i = 0; i < 4; i++) {
 		if (level == str[i])
@@ -37,11 +35,11 @@ static int	getHarlNum(string level) {
 	return -1;
 }
 
-void	Harl::complain(string level) {
+void	Harl::complain(std::string level) {
 	int	harlNum = getHarlNum(level);
 
 	if (harlNum == -1) {
-		cout << "Out of Range" << endl;
+		std::cout << "Out of Range" << std::endl;
 		return ;
 	}
 	(this->*harl[harlNum])();

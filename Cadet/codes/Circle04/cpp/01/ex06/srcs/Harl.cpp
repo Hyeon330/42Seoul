@@ -1,7 +1,5 @@
 #include "Harl.hpp"
 
-using namespace std;
-
 Harl::Harl() {
 	harl[0] = &Harl::debug;
 	harl[1] = &Harl::info;
@@ -12,29 +10,29 @@ Harl::Harl() {
 Harl::~Harl() {}
 
 void	Harl::debug() {
-	cout << "[ DEBUG ]" << endl;
-	cout << "I love having extra bacon for my 7XL-double cheese-triple-pickle-specialketchup burger. I really do!" << endl;
+	std::cout << "[ DEBUG ]" << std::endl;
+	std::cout << "I love having extra bacon for my 7XL-double cheese-triple-pickle-specialketchup burger. I really do!" << std::endl;
 }
 
 void	Harl::info() {
-	cout << "[ INFO ]" << endl;
-	cout << "I cannot believe adding extra bacon costs more money." << endl;
-	cout << "You didn’t put enough bacon in my burger! If you did, I wouldn’t be asking for more!" << endl;
+	std::cout << "[ INFO ]" << std::endl;
+	std::cout << "I cannot believe adding extra bacon costs more money." << std::endl;
+	std::cout << "You didn’t put enough bacon in my burger! If you did, I wouldn’t be asking for more!" << std::endl;
 }
 
 void	Harl::warning() {
-	cout << "[ WARNING ]" << endl;
-	cout << "I think I deserve to have some extra bacon for free." << endl;
-	cout << "I’ve been coming for years whereas you started working here since last month." << endl;
+	std::cout << "[ WARNING ]" << std::endl;
+	std::cout << "I think I deserve to have some extra bacon for free." << std::endl;
+	std::cout << "I’ve been coming for years whereas you started working here since last month." << std::endl;
 }
 
 void	Harl::error() {
-	cout << "[ ERROR ]" << endl;
-	cout << "This is unacceptable! I want to speak to the manager now." << endl;
+	std::cout << "[ ERROR ]" << std::endl;
+	std::cout << "This is unacceptable! I want to speak to the manager now." << std::endl;
 }
 
-static int	getHarlNum(string level) {
-	const static string str[] = {"DEBUG", "INFO", "WARNING", "ERROR"};
+static int	getHarlNum(std::string level) {
+	const static std::string str[] = {"DEBUG", "INFO", "WARNING", "ERROR"};
 
 	for (int i = 0; i < 4; i++) {
 		if (level == str[i])
@@ -43,7 +41,7 @@ static int	getHarlNum(string level) {
 	return -1;
 }
 
-void	Harl::complain(string level) {
+void	Harl::complain(std::string level) {
 	switch (getHarlNum(level)) {
 		case 0:
 			(this->*harl[0])();
@@ -58,7 +56,7 @@ void	Harl::complain(string level) {
 			(this->*harl[3])();
 			break;
 		default:
-			cout << "[ Probably complaining about insignificant problems ]" << endl;
+			std::cout << "[ Probably complaining about insignificant problems ]" << std::endl;
 			break;
 	}
 }

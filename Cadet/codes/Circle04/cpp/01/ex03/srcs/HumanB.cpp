@@ -1,13 +1,12 @@
 #include "HumanB.hpp"
-using namespace std;
 
-HumanB::HumanB(string name) :
+HumanB::HumanB(std::string name) :
 	name(name) {}
 
 HumanB::~HumanB() {}
 
 void	HumanB::attack() const {
-	cout << name << " attacks with their " << weapon->getType() << endl;
+	std::cout << name << " attacks with their " << weapon->getType() << std::endl;
 }
 
 void	HumanB::setWeapon(Weapon& weapon) {

@@ -1,15 +1,13 @@
 #include <iostream>
 #include <fstream>
 
-using namespace	std;
-
-static void	replaceFile(ifstream& inputFile, ofstream& outputFile, string& s1, string& s2) {
-	string	line;
+static void	replaceFile(std::ifstream& inputFile, std::ofstream& outputFile, std::string& s1, std::string& s2) {
+	std::string	line;
 
 	while (getline(inputFile, line)) {
 		size_t	pos = 0;	// position
 
-		while ((pos = line.find(s1, pos)) != string::npos) {
+		while ((pos = line.find(s1, pos)) != std::string::npos) {
 			line.erase(pos, s1.length());	// s1을 삭제
 			line.insert(pos, s2);	// s2를 삽입
 			pos += s2.length();
@@ -19,30 +17,30 @@ static void	replaceFile(ifstream& inputFile, ofstream& outputFile, string& s1, s
 			outputFile << '\n';
 	}
 
-	cout << "Success!!" << endl;
+	std::cout << "Success!!" << std::endl;
 }
 
 int main(int ac, char **av) {
 	if (ac != 4) {
-		cerr << "Arguments Error.";
+		std::cerr << "Arguments Error.";
 		return 1;
 	}
 
-	string	filename = av[1];
-	string	s1 = av[2];
-	string	s2 = av[3];
+	std::string	filename = av[1];
+	std::string	s1 = av[2];
+	std::string	s2 = av[3];
 
-	ifstream	inputFile(filename);
+	std::ifstream	inputFile(filename);
 	if (!inputFile.is_open()) {
-		cerr << "Open Error.";
+		std::cerr << "Open Error.";
 		return 1;
 	}
 
-	ofstream	outputFile(filename + ".replace");
+	std::ofstream	outputFile(filename + ".replace");
 	if (outputFile.is_open())
 		replaceFile(inputFile, outputFile, s1, s2);
 	else {
-		cerr << "Cannot Create File.";
+		std::cerr << "Cannot Create File.";
 		return 1;
 	}
 	

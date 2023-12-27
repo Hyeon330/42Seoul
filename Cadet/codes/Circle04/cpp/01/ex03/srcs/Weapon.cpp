@@ -1,9 +1,8 @@
 #include "Weapon.hpp"
-using namespace std;
 
 Weapon::Weapon() {}
 
-Weapon::Weapon(const string& type) :
+Weapon::Weapon(const std::string& type) :
 	type(type) {}
 
 Weapon::~Weapon() {}
