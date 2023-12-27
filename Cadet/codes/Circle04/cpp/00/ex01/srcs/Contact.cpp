@@ -15,7 +15,7 @@ Contact::Contact(std::string firstName, std::string lastName, std::string nickNa
 
 void	Contact::displayNames(int i) {
 	std::cout << '|';
-	printName(std::to_string(i));
+	printName(std::wstring(i));
 	std::cout << '|';
 	printName(firstName);
 	std::cout << '|';
