@@ -20,6 +20,14 @@ static bool	setInfo(std::string title, std::string *info) {
 	return true;
 }
 
+static int	atoi(std::string s) {
+	int	result = 0;
+
+	for (std::string::size_type i = 0; i < s.length(); i++)
+		result = result * 10 + (s[i] - '0');
+	return result;
+}
+
 PhoneBook::PhoneBook() : 
 	minNum(0),
 	maxNum(-1) {
@@ -88,7 +96,7 @@ void	PhoneBook::search() {
 			break;
 		idx = -1;
 		if (isNums(tmp))
-			idx = std::atoi(tmp.c_str());
+			idx = atoi(tmp);
 		if (idx > -1 && minNum <= idx && maxNum >= idx) {
 			contacts[idx % maxContacts].displayContact();
 			break;

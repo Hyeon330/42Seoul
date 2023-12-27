@@ -15,11 +15,7 @@ Contact::Contact(std::string firstName, std::string lastName, std::string nickNa
 
 void	Contact::displayNames(int i) {
 	std::cout << '|';
-<<<<<<< HEAD:Cadet/codes/Circle04/cpp/00/ex01/srcs/contact.cpp
 	std::cout << std::setw(10) << i;
-=======
-	printName(std::wstring(i));
->>>>>>> 5f35e3f7422df20f11159ef3d8e0ead335995ef1:Cadet/codes/Circle04/cpp/00/ex01/srcs/Contact.cpp
 	std::cout << '|';
 	printName(firstName);
 	std::cout << '|';
