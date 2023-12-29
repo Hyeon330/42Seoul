@@ -6,6 +6,9 @@
 class Harl
 {
 private:
+	const static std::string	levels[];
+	const static int			levelSize;
+
 	void	(Harl::*harl[4])(void);
 	void	debug(void);
 	void	info(void);

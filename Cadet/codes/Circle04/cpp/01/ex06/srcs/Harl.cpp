@@ -1,5 +1,8 @@
 #include "Harl.hpp"
 
+const std::string	Harl::levels[] = {"DEBUG", "INFO", "WARNING", "ERROR"};
+const int			Harl::levelSize = sizeof(levels) / sizeof(levels[0]);
+
 Harl::Harl() {
 	harl[0] = &Harl::debug;
 	harl[1] = &Harl::info;
@@ -31,18 +34,16 @@ void	Harl::error() {
 	std::cout << "This is unacceptable! I want to speak to the manager now." << std::endl;
 }
 
-static int	getHarlNum(std::string level) {
-	const static std::string str[] = {"DEBUG", "INFO", "WARNING", "ERROR"};
-
-	for (int i = 0; i < 4; i++) {
-		if (level == str[i])
-			return i;
-	}
-	return -1;
-}
-
 void	Harl::complain(std::string level) {
-	switch (getHarlNum(level)) {
+	int	harlNum = -1;
+
+	for (int i = 0; i < levelSize; i++) {
+		if (levels[i] == level) {
+			harlNum = i;
+			break ;
+		}
+	}
+	switch (harlNum) {
 		case 0:
 			(this->*harl[0])();
 			break;
