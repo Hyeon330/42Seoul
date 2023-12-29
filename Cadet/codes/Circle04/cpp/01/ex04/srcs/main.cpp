@@ -3,7 +3,7 @@
 
 int main(int ac, char **av) {
 	if (ac != 4) {
-		std::cerr << "Arguments Error.";
+		std::cerr << "Arguments Error." << std::endl;
 		return 1;
 	}
 
