@@ -1,5 +1,4 @@
 #include "Fixed.hpp"
-using namespace std;
 
 Fixed::Fixed() : value(0) {}
 
@@ -13,7 +12,7 @@ Fixed::Fixed(const float value) : value(roundf(value * (1 << bits))) {}
 
 Fixed::~Fixed() {}
 
-ostream& operator<<(ostream& os, const Fixed& fixed) {
+std::ostream& operator<<(std::ostream& os, const Fixed& fixed) {
 	os << fixed.toFloat();
 	return os;
 }
