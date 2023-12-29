@@ -13,7 +13,7 @@ Zombie::~Zombie() {
 	std::cout << "Deleted " << name << " Zombie" << std::endl;
 }
 
-void	Zombie::announcement() {
+void	Zombie::announce() {
 	std::cout << name << ": BraiiiiiinnzzZ..." << std::endl;
 }
 
