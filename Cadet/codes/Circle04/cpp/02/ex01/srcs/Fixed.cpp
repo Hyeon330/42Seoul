@@ -16,7 +16,6 @@ Fixed::Fixed(const int value) {
 
 Fixed::Fixed(const float value) {
 	std::cout << "Float constructor called" << std::endl;
-	// Round Half Up(기준 반올림) 전략
 	this->value = roundf(value * (1 << bits));
 }
 
