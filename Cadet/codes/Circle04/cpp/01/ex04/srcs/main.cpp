@@ -12,6 +12,10 @@ int main(int ac, char **av) {
 	std::string	s2 = av[3];
 	std::string	line;
 
+	if (!s1.length()) {
+		std::cerr << "No string that need to be replaced." << std::endl;
+		return 1;
+	}
 	std::ifstream	inputFile(filename.c_str());
 	if (!inputFile.is_open()) {
 		std::cerr << "Open Error.";

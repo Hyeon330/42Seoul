@@ -1,7 +1,8 @@
 #include "Zombie.hpp"
 
-Zombie::Zombie() {
-	Zombie("Default_Z");
+Zombie::Zombie() :
+name("Default_Z") {
+	std::cout << "Created " << name << " Zombie" << std::endl;
 }
 
 Zombie::Zombie(std::string name) :
