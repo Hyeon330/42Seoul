@@ -38,10 +38,10 @@ public:
 	Fixed&	operator--();		// 전위
 	Fixed	operator--(int);	// 후위
 
-	static Fixed&	min(Fixed& f1, Fixed& f2);
-	const static Fixed&	min(const Fixed& f1, const Fixed& f2);
-	static Fixed&	max(Fixed& f1, Fixed& f2);
-	const static Fixed&	max(const Fixed& f1, const Fixed& f2);
+	static Fixed&	min(Fixed&, Fixed&);
+	const static Fixed&	min(const Fixed&, const Fixed&);
+	static Fixed&	max(Fixed&, Fixed&);
+	const static Fixed&	max(const Fixed&, const Fixed&);
 
 	int		getRawBits(void) const;
 	void	setRawBits(const int);
