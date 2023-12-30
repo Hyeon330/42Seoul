@@ -37,11 +37,9 @@ void	Harl::error() {
 void	Harl::complain(std::string level) {
 	int	harlNum = -1;
 
-	for (int i = 0; i < levelSize; i++) {
-		if (levels[i] == level) {
+	for (int i = 0; i < levelSize && harlNum < 0; i++) {
+		if (levels[i] == level)
 			harlNum = i;
-			break ;
-		}
 	}
 	switch (harlNum) {
 		case 0:
