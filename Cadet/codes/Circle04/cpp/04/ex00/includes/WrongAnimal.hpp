@@ -4,15 +4,17 @@
 # include <iostream>
 
 class WrongAnimal {
-	protected:
-		std::string type;
-	public:
-		WrongAnimal();
-		WrongAnimal(WrongAnimal const &ob);
-		~WrongAnimal();
-		WrongAnimal& operator=(WrongAnimal const &ob);
+protected:
+	std::string	type;
+public:
+	WrongAnimal();
+	WrongAnimal(const WrongAnimal&);
+	~WrongAnimal();
 
-		void	makeSound() const;
+	WrongAnimal&	operator=(const WrongAnimal&);
+
+	void		makeSound() const;
+	std::string	getType() const;
 };
 
 #endif

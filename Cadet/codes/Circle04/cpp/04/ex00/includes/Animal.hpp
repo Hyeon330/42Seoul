@@ -3,18 +3,18 @@
 
 # include <iostream>
 
-class Animal
-{
+class Animal {
 protected:
 	std::string	type;
 public:
 	Animal();
 	Animal(const Animal&);
-	~Animal();
+	virtual ~Animal();
 
 	Animal&	operator=(const Animal&);
 
-	virtual void	makeSound();
+	virtual void	makeSound() const;
+	std::string		getType() const;
 };
 
 # endif

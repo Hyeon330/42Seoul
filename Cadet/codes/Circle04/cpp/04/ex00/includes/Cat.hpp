@@ -3,8 +3,7 @@
 
 # include "Animal.hpp"
 
-class Cat: public Animal
-{
+class Cat: public Animal {
 public:
 	Cat();
 	Cat(const Cat&);
@@ -12,7 +11,7 @@ public:
 
 	Cat&	operator=(const Cat&);
 
-	void	makeSound();
+	void	makeSound() const;
 };
 
 #endif

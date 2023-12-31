@@ -4,14 +4,14 @@
 # include "WrongAnimal.hpp"
 
 class WrongCat: public WrongAnimal {
-    public:
-        WrongCat();
-        WrongCat(WrongCat const &ob);
-        ~WrongCat();
+public:
+	WrongCat();
+	WrongCat(const WrongCat&);
+	~WrongCat();
 
-        WrongCat& operator=(WrongCat const &ob);
+	WrongCat&	operator=(const WrongCat&);
 
-        void	makeSound() const;
+	void	makeSound() const;
 };
 
 #endif
