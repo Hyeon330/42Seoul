@@ -24,11 +24,6 @@ Fixed::~Fixed() {
 	std::cout << "Destructor called" << std::endl;
 }
 
-std::ostream& operator<<(std::ostream& os, const Fixed& fixed) {
-    os << fixed.toFloat();
-    return os;
-}
-
 Fixed&	Fixed::operator=(const Fixed& otherFixed) {
 	std::cout << "Copy assignment operator called" << std::endl;
 	if (this != &otherFixed)
@@ -131,4 +126,9 @@ int	Fixed::toInt() const {
 
 float Fixed::toFloat() const {
 	return static_cast<float>(value) / (1 << bits);
+}
+
+std::ostream& operator<<(std::ostream& os, const Fixed& fixed) {
+    os << fixed.toFloat();
+    return os;
 }
