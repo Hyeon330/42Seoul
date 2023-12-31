@@ -10,12 +10,12 @@ private:
 	int	value;
 public:
 	Fixed();
-	Fixed(const Fixed& otherFixed);
+	Fixed(const Fixed&);
 	~Fixed();
-	Fixed& operator=(const Fixed& otherFixed);
+	Fixed& operator=(const Fixed&);
 
 	int		getRawBits(void) const;
-	void	setRawBits(int const raw);
+	void	setRawBits(const int);
 };
 
 #endif
