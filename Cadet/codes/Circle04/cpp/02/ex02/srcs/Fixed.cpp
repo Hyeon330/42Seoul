@@ -1,31 +1,30 @@
 #include "Fixed.hpp"
 
 Fixed::Fixed() : value(0) {
-	std::cout << "Default constructor called" << std::endl;
+	std::cout << "Default constructor call" << std::endl;
 }
 
 Fixed::Fixed(const Fixed& otherFixed) {
-	std::cout << "Copy constructor called" << std::endl;
+	std::cout << "Copy constructor call" << std::endl;
 	*this = otherFixed;
 }
 
 Fixed::Fixed(const int value) {
-	std::cout << "Int constructor called" << std::endl;
+	std::cout << "Int constructor call" << std::endl;
 	this->value = value << bits;
 }
 
 Fixed::Fixed(const float value) {
-	std::cout << "Float constructor called" << std::endl;
-	// Round Half Up(기준 반올림) 전략
+	std::cout << "Float constructor call" << std::endl;
 	this->value = roundf(value * (1 << bits));
 }
 
 Fixed::~Fixed() {
-	std::cout << "Destructor called" << std::endl;
+	std::cout << "Destructor call" << std::endl;
 }
 
 Fixed&	Fixed::operator=(const Fixed& otherFixed) {
-	std::cout << "Copy assignment operator called" << std::endl;
+	std::cout << "Copy assignment operator call" << std::endl;
 	if (this != &otherFixed)
 		value = otherFixed.getRawBits();
 	return *this;
@@ -74,6 +73,7 @@ Fixed	Fixed::operator/(const Fixed& fixed) const {
 }
 
 // 증감 연산자
+// 참조변수로 리턴하는 이유는 메모리의 오버헤드를 막기위해
 Fixed&	Fixed::operator++() {
 	value++;
 	return *this;
