@@ -35,7 +35,7 @@ int main() {
 
 	std::cout << std::endl;
 
-	f.highFiveGuys();
+	f.highFivesGuys();
 	
 	std::cout << std::endl;
 }
