@@ -17,12 +17,14 @@ Cat::~Cat() {
 }
 
 Cat&	Cat::operator=(const Cat& other) {
-	if (this != &other)
+	if (this != &other) {
 		type = other.getType();
+		brain = other.brain;
+	}
 	std::cout << type << " copy assignment operator call" << std::endl;
 	return *this;
 }
 
 void	Cat::makeSound() const {
-	std::cout << "hey~hey~" << std::endl;
+	std::cout << "meow~~" << std::endl;
 }
