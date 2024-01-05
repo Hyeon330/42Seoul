@@ -37,5 +37,13 @@ int main() {
 	delete wrongAnimal;
 	delete wrongCat;
 
+	std::cout << std:: endl << "====================================" << std::endl;
+
+	Animal test = Dog();
+
+	std::cout << test.getType() << " " << std::endl;
+	
+	test.makeSound();
+
 	return 0;
 }

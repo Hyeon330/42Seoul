@@ -44,13 +44,10 @@ void	Harl::complain(std::string level) {
 	switch (harlNum) {
 		case 0:
 			(this->*harl[0])();
-			break;
 		case 1:
 			(this->*harl[1])();
-			break;
 		case 2:
 			(this->*harl[2])();
-			break;
 		case 3:
 			(this->*harl[3])();
 			break;
