@@ -1,29 +1,33 @@
 #include "DiamondTrap.hpp"
 
-using namespace std;
+DiamondTrap::DiamondTrap() {
+	ClapTrap::name = "Default_clap_name";
+	hitPoints = FragTrap::hitPoints;
+	energyPoints = ScavTrap::energyPoints;
+	attackDamage = FragTrap::attackDamage;
+	std::cout << "DiamondTrap Create " << name << std::endl;
+}
 
-DiamondTrap::DiamondTrap(const string& name) :
+DiamondTrap::DiamondTrap(const std::string& name) :
 	name(name) {
 	ClapTrap::name = name + "_clap_name";
 	hitPoints = FragTrap::hitPoints;
 	energyPoints = ScavTrap::energyPoints;
 	attackDamage = FragTrap::attackDamage;
-	cout << "DiamondTrap Create " << name << endl;
-}
-
-DiamondTrap::DiamondTrap() {
-	DiamondTrap("Default");
+	std::cout << "DiamondTrap Create " << name << std::endl;
 }
 
 DiamondTrap::DiamondTrap(const DiamondTrap& diamondTrap) {
+	std::cout << "DiamonTrap copy constructor call" << std::endl;
 	*this = diamondTrap;
 }
 
 DiamondTrap::~DiamondTrap() {
-	cout << "DiamondTrap Delete " << name << endl;
+	std::cout << "DiamondTrap Delete " << name << std::endl;
 }
 
 DiamondTrap&	DiamondTrap::operator=(const DiamondTrap& other) {
+	std::cout << "DiamondTrap copy assignment operator call" << std::endl;
 	if (this != &other) {
 		name = other.name;
 		ClapTrap::name = other.ClapTrap::name;
@@ -35,6 +39,6 @@ DiamondTrap&	DiamondTrap::operator=(const DiamondTrap& other) {
 }
 
 void	DiamondTrap::whoAmI() {
-	cout << "ClapTrap name is " << ClapTrap::name << endl;
-	cout << "DiamondTrap name is " << this->name << endl;
+	std::cout << "ClapTrap name is " << ClapTrap::name << std::endl;
+	std::cout << "DiamondTrap name is " << this->name << std::endl;
 }

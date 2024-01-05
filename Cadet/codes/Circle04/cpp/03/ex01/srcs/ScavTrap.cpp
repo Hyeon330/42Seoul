@@ -1,28 +1,32 @@
 #include "ScavTrap.hpp"
 
-using namespace std;
+ScavTrap::ScavTrap() {
+	this->name = "Default";
+	this->hitPoints = 100;
+	this->energyPoints = 50;
+	this->attackDamage = 20;
+	std::cout << "ScavTrap Create " << name << std::endl;
+}
 
-ScavTrap::ScavTrap(const string& name) {
+ScavTrap::ScavTrap(const std::string& name) {
 	this->name = name;
 	this->hitPoints = 100;
 	this->energyPoints = 50;
 	this->attackDamage = 20;
-	cout << "ScavTrap Create " << name << endl;
-}
-
-ScavTrap::ScavTrap() {
-	ScavTrap("Default");
+	std::cout << "ScavTrap Create " << name << std::endl;
 }
 
 ScavTrap::ScavTrap(const ScavTrap& scavTrap) {
+	std::cout << "ScavTrap copy constructor call" << std::endl;
 	*this = scavTrap;
 }
 
 ScavTrap::~ScavTrap() {
-	cout << "ScavTrap Delete " << name << endl;
+	std::cout << "ScavTrap Delete " << name << std::endl;
 }
 
 ScavTrap&   ScavTrap::operator=(const ScavTrap& other) {
+	std::cout << "ScavTrap copy assignment operator call" << std::endl;
 	if (this != &other) {
 		name = other.name;
 		hitPoints = other.hitPoints;
@@ -32,26 +36,30 @@ ScavTrap&   ScavTrap::operator=(const ScavTrap& other) {
 	return *this;
 }
 
-void    ScavTrap::attack(const string& target) {
+void    ScavTrap::attack(const std::string& target) {
+	std::cout << "ScavTrap " << name;
 	if (!hitPoints) {
-		cout << "ScavTrap ";
-		cout << name << " is already dead..." << endl;
+		std::cout << " is already dead..." << std::endl;
 		return ;
 	}
 	if (!energyPoints) {
-		cout << "ScavTrap ";
-		cout << name << " have not enough energy" << endl;
+		std::cout << " have not enough energy" << std::endl;
 		return ;
 	}
 	energyPoints--;
-	cout << "ScavTrap " << name << " attacks " << target;
-	cout << ", causing " << attackDamage << " points of damage!" << endl;
+	std::cout << " attacks " << target;
+	std::cout << ", causing " << attackDamage << " points of damage!" << std::endl;
 }
 
 void	ScavTrap::guardGate() {
+	std::cout << "ScavTrap " << name;
 	if (!hitPoints) {
-		cout << "ScavTrap ";
-		cout << name << " is already dead..." << endl;
-	} else
-		cout << "ScavTrap " << name << " is now in Gate Keeper mode" << endl;
+		std::cout << " is already dead..." << std::endl;
+		return ;
+	}
+	if (!energyPoints) {
+		std::cout << " have not enough energy" << std::endl;
+		return ;
+	}
+	std::cout << " is now in Gate Keeper mode" << std::endl;
 }

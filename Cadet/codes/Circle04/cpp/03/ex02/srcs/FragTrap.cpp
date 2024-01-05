@@ -1,28 +1,32 @@
 #include "FragTrap.hpp"
 
-using namespace std;
+FragTrap::FragTrap() {
+	this->name = "Default";
+	this->hitPoints = 100;
+	this->energyPoints = 100;
+	this->attackDamage = 30;
+	std::cout << "FragTrap Create " << name << std::endl;
+}
 
-FragTrap::FragTrap(const string& name) {
+FragTrap::FragTrap(const std::string& name) {
 	this->name = name;
 	this->hitPoints = 100;
 	this->energyPoints = 100;
 	this->attackDamage = 30;
-	cout << "FragTrap Create " << name << endl;
-}
-
-FragTrap::FragTrap() {
-	FragTrap("Default");
+	std::cout << "FragTrap Create " << name << std::endl;
 }
 
 FragTrap::FragTrap(const FragTrap& fragTrap) {
+	std::cout << "FragTrap copy constructor call" << std::endl;
 	*this = fragTrap;
 }
 
 FragTrap::~FragTrap() {
-	cout << "FragTrap Delete " << name << endl;
+	std::cout << "FragTrap Delete " << name << std::endl;
 }
 
 FragTrap&   FragTrap::operator=(const FragTrap& other) {
+	std::cout << "FragTrap copy assignment operator call" << std::endl;
 	if (this != &other) {
 		name = other.name;
 		hitPoints = other.hitPoints;
@@ -32,10 +36,16 @@ FragTrap&   FragTrap::operator=(const FragTrap& other) {
 	return *this;
 }
 
-void    FragTrap::highFiveGuys() {
+void    FragTrap::highFivesGuys() {
+	std::cout << "FragTrap " << name;
 	if (!hitPoints) {
-		cout << "FragTrap ";
-		cout << name << " is already dead..." << endl;
-	} else
-		cout << "FragTrap " << name << " high five~!" << endl;
+		std::cout << " is already dead..." << std::endl;
+		return ;
+	}
+	if (!energyPoints) {
+		std::cout << " have not enough energy" << std::endl;
+		return ;
+	}
+	energyPoints--;
+	std::cout << " high five!~" << std::endl;
 }

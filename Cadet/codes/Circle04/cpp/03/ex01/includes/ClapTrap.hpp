@@ -21,7 +21,7 @@ public:
 	void	takeDamage(unsigned int);
 	void	beRepaired(unsigned int);
 	
-	int		getAttackDamage();
+	int		getAttackDamage() const;
 };
 
 #endif

@@ -1,41 +1,27 @@
-#include "ScavTrap.hpp"
-#include "FragTrap.hpp"
+#include "DiamondTrap.hpp"
 
 int main() {
-	ClapTrap	c("C");
-	ScavTrap	s("S");
-	FragTrap	f("F");
+	DiamondTrap a("A");
+	DiamondTrap b("B");
 
-	std::cout << std::endl;
-
-	c.beRepaired(30);
-	c.attack("S");
-	s.takeDamage(c.getAttackDamage());
-
-	std::cout << std::endl;
-
-	s.attack("C");
-	c.takeDamage(s.getAttackDamage());
-
-	std::cout << std::endl;
-
-	c.beRepaired(10);
-
-	std::cout << std::endl;
-
-	f.attack("S");
-	s.takeDamage(f.getAttackDamage());
-
-	std::cout << std::endl;
-
-	s.beRepaired(10);
-	std::cout << std::endl;
-
-	s.guardGate();
-
-	std::cout << std::endl;
-
-	f.highFiveGuys();
-	
-	std::cout << std::endl;
+	std::cout << "-----------------------------------------------------------" << std::endl;
+	a.attack("B");
+	b.takeDamage(a.getAttackDamage());
+	b.beRepaired(3);
+	std::cout << "-----------------------------------------------------------" << std::endl;
+	b.attack("A");
+	a.takeDamage(b.getAttackDamage());
+	a.beRepaired(55);
+	std::cout << "-----------------------------------------------------------" << std::endl;
+	a.guardGate();
+	std::cout << "-----------------------------------------------------------" << std::endl;
+	b.highFivesGuys();
+	std::cout << "-----------------------------------------------------------" << std::endl;
+	a.whoAmI();
+	b.whoAmI();
+	std::cout << "-----------------------------------------------------------" << std::endl;
+	DiamondTrap c(a);
+	DiamondTrap d;
+	d = a;
+	std::cout << "-----------------------------------------------------------" << std::endl;
 }
