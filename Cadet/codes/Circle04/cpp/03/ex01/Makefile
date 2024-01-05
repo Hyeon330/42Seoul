@@ -1,4 +1,4 @@
-NAME		=	ex01
+NAME		=	$(notdir $(CURDIR))
 
 CC			=	c++
 CFLAGS		=	-Wall -Wextra -Werror -std=c++98

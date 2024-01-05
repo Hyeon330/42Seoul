@@ -1,7 +1,7 @@
-NAME		=	ex03
+NAME		=	$(notdir $(CURDIR))
 
 CC			=	c++
-CFLAGS		=	-Wall -Wextra -Werror -std=c++98 -Wshadow -Wno-shadow
+CFLAGS		=	-Wall -Wextra -Werror -std=c++98
 INC 		=	-Iincludes
 
 HEADERS 	=	$(wildcard includes/*.hpp)
