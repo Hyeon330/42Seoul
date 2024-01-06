@@ -17,7 +17,7 @@ int main() {
 	std::cout << j->getType() << " " << std::endl;
 	std::cout << i->getType() << " " << std::endl;
 
-	std::cout << std::endl << "====================================" << std::endl << std::endl;
+	std::cout << std::endl;
 
 	i->makeSound(); //will output the cat sound!
 	j->makeSound();
@@ -40,14 +40,6 @@ int main() {
 
 	delete wrongAnimal;
 	delete wrongCat;
-
-	std::cout << std:: endl << "===================================" << std::endl << std::endl;
-
-	Animal test = Dog();
-
-	std::cout << test.getType() << " " << std::endl;
-	
-	test.makeSound();
 
 	return 0;
 }
