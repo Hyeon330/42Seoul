@@ -6,7 +6,7 @@ Animal::Animal() :
 }
 
 Animal::Animal(const Animal& animal) {
-	*this = animal;
+	type = animal.getType();
 	std::cout << type << " copy constructor call" << std::endl;
 }
 
