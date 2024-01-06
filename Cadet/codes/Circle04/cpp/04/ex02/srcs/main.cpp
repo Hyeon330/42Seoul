@@ -110,5 +110,7 @@ int main() {
 
 	test3();
 
+	// Animal animal = Animal();
+
 	return 0;
 }
