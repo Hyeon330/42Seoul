@@ -2,9 +2,9 @@
 #include "Cat.hpp"
 #include "WrongCat.hpp"
 
-void	test() {
-	system("leaks ex00");
-}
+// void	test() {
+// 	system("leaks ex00");
+// }
 
 int main() {
 	// atexit(test);
