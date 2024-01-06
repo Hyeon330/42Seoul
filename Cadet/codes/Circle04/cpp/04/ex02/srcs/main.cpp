@@ -4,9 +4,9 @@
 
 #define	ANIMAL_SIZE 6
 
-void	leak_test() {
-	system("leaks ex01");
-}
+// void	leak_test() {
+// 	system("leaks ex01");
+// }
 
 void	test1() {
 	std::cout << "==================== test1 ====================" << std::endl;
