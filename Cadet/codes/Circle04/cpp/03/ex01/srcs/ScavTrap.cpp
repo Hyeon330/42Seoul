@@ -17,7 +17,7 @@ ScavTrap::ScavTrap(const std::string& name) {
 }
 
 ScavTrap::ScavTrap(const ScavTrap& scavTrap) :
-ClapTrap(scavTrap) {
+ClapTrap(scavTrap) {	// -Wextra 플래그 떄문에 명시적 초기화
 	std::cout << "ScavTrap copy constructor call" << std::endl;
 	*this = scavTrap;
 }
