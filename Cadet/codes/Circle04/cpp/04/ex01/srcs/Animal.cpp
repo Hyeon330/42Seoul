@@ -7,7 +7,7 @@ Animal::Animal() :
 
 Animal::Animal(const Animal& animal) {
 	type = animal.getType();
-	std::cout << type << " copy constructor call" << std::endl;
+	std::cout << type << " 111copy constructor call" << std::endl;
 }
 
 Animal::~Animal() {
@@ -19,6 +19,10 @@ Animal&	Animal::operator=(const Animal& other) {
 		type = other.type;
 	std::cout << type << " copy assignment operator call" << std::endl;
 	return *this;
+}
+
+void	Animal::makeSound() const {
+	std::cout << "No type" << std::endl;
 }
 
 std::string	Animal::getType() const {
