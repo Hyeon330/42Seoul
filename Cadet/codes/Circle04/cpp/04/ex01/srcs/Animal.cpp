@@ -6,12 +6,12 @@ Animal::Animal() :
 }
 
 Animal::Animal(const Animal& animal) {
-	*this = animal;
+	type = animal.getType();
 	std::cout << type << " copy constructor call" << std::endl;
 }
 
 Animal::~Animal() {
-	std::cout << type << " destructor call" << std::endl;
+	std::cout << "Animal " << type << " destructor call" << std::endl;
 }
 
 Animal&	Animal::operator=(const Animal& other) {

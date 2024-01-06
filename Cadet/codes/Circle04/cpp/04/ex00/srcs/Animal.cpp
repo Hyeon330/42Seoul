@@ -11,13 +11,13 @@ Animal::Animal(const Animal& animal) {
 }
 
 Animal::~Animal() {
-	std::cout << type << " destructor call" << std::endl;
+	std::cout << "Animal " << type << " destructor call" << std::endl;
 }
 
 Animal&	Animal::operator=(const Animal& other) {
-	if (this != &other) {
+	if (this != &other)
 		type = other.type;
-	}
+	std::cout << type << " copy assignment operator call" << std::endl;
 	return *this;
 }
 

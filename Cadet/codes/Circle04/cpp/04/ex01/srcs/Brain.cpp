@@ -5,7 +5,8 @@ Brain::Brain() {
 }
 
 Brain::Brain(const Brain& brain) {
-	*this = brain;
+	for (int i = 0; i < 100; i++)
+        idea[i] = brain.idea[i];
 	std::cout << "Brain copy constructor call" << std::endl;
 }
 
@@ -20,4 +21,12 @@ Brain&  Brain::operator=(const Brain& other) {
 	}
 	std::cout << "Brain assignment operator call" << std::endl;
 	return *this;
+}
+
+std::string	Brain::getIdea(int i) const {
+	return idea[i];
+}
+
+void	Brain::setIdea(std::string think, int i) {
+	idea[i] = think;
 }

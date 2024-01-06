@@ -11,7 +11,7 @@ Cat::Cat(const Cat& cat) {
 }
 
 Cat::~Cat() {
-	std::cout << type << " destructor call" << std::endl;
+	std::cout << "Cat " << type << " destructor call" << std::endl;
 }
 
 Cat&	Cat::operator=(const Cat& other) {
